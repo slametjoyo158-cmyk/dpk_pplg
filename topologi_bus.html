@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Topologi Bus - SMK Bhakti Persada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #64748b;
+            --bg: #f8fafc;
+            --accent: #3b82f6;
+            --danger: #ef4444;
+        }
+
+        body {
+            background-color: var(--bg);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
+        }
+
+        .backbone {
+            height: 8px;
+            background: #cbd5e1;
+            position: relative;
+            border-radius: 4px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .backbone-active {
+            background: var(--primary);
+            transition: background 0.3s;
+        }
+
+        .terminator {
+            width: 14px;
+            height: 34px;
+            background: #475569;
+            position: absolute;
+            top: -13px;
+            border-radius: 2px;
+            transition: all 0.3s;
+            z-index: 5;
+        }
+
+        .terminator.off {
+            opacity: 0.1;
+            transform: translateY(20px);
+        }
+
+        .terminator-left { left: -14px; }
+        .terminator-right { right: -14px; }
+
+        .computer-node {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .computer-node.active {
+            transform: translateY(-10px);
+            color: var(--primary);
+        }
+
+        .computer-node.receiving {
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); color: #10b981; }
+            100% { transform: scale(1); }
+        }
+
+        .packet {
+            width: 18px;
+            height: 18px;
+            background: var(--danger);
+            border-radius: 50%;
+            position: absolute;
+            top: -5px;
+            z-index: 10;
+            display: none;
+            box-shadow: 0 0 10px rgba(239, 68, 68, 0.6);
+        }
+
+        .collision-blast {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: orange;
+            border-radius: 50%;
+            transform: scale(0);
+            z-index: 20;
+            top: -16px;
+            display: none;
+            animation: blast 0.5s ease-out forwards;
+        }
+
+        @keyframes blast {
+            0% { transform: scale(0); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .connection-line {
+            width: 4px;
+            height: 40px;
+            background: #cbd5e1;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="text-3xl font-bold text-slate-800">Simulasi Topologi Bus</h1>
+            <h2 class="text-xl font-semibold text-blue-600 mt-1 uppercase tracking-wider">SMK BHAKTI PERSADA PATEBON KENDAL</h2>
+            <p class="text-slate-500 mt-3">Pelajari alur data, tabrakan sinyal (collision), dan fungsi terminator.</p>
+        </div>
+
+        <!-- Simulation Area -->
+        <div class="bg-white rounded-2xl shadow-xl p-12 mb-8 relative border border-slate-100 overflow-visible">
+            
+            <!-- Computers Row -->
+            <div class="flex justify-between items-end mb-0">
+                <div id="node-1" class="computer-node flex flex-col items-center w-32" onclick="selectNode(1)">
+                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 5h16v11H4V5z"/></svg>
+                    <span class="mt-2 font-semibold">PC 01</span>
+                    <div class="connection-line"></div>
+                </div>
+                <div id="node-2" class="computer-node flex flex-col items-center w-32" onclick="selectNode(2)">
+                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 5h16v11H4V5z"/></svg>
+                    <span class="mt-2 font-semibold">PC 02</span>
+                    <div class="connection-line"></div>
+                </div>
+                <div id="node-3" class="computer-node flex flex-col items-center w-32" onclick="selectNode(3)">
+                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 5h16v11H4V5z"/></svg>
+                    <span class="mt-2 font-semibold">PC 03</span>
+                    <div class="connection-line"></div>
+                </div>
+                <div id="node-4" class="computer-node flex flex-col items-center w-32" onclick="selectNode(4)">
+                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 5h16v11H4V5z"/></svg>
+                    <span class="mt-2 font-semibold">PC 04</span>
+                    <div class="connection-line"></div>
+                </div>
+                <div id="node-5" class="computer-node flex flex-col items-center w-32" onclick="selectNode(5)">
+                    <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M20 18c1.1 0 1.99-.9 1.99-2L22 5c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2H0v2h24v-2h-4zM4 5h16v11H4V5z"/></svg>
+                    <span class="mt-2 font-semibold">PC 05</span>
+                    <div class="connection-line"></div>
+                </div>
+            </div>
+
+            <!-- Bus Backbone -->
+            <div class="backbone" id="backboneLine">
+                <div id="term-left" class="terminator terminator-left" title="Terminator Kiri"></div>
+                <div id="term-right" class="terminator terminator-right" title="Terminator Kanan"></div>
+                
+                <!-- Packets -->
+                <div id="packet1" class="packet"></div>
+                <div id="packet2" class="packet" style="background: #a855f7;"></div>
+                <div id="collision" class="collision-blast"></div>
+            </div>
+
+            <!-- Labels -->
+            <div class="flex justify-between mt-4 text-xs font-bold text-slate-400 uppercase tracking-widest">
+                <span id="label-term-left">Terminator On</span>
+                <span>Jalur Bus Utama</span>
+                <span id="label-term-right">Terminator On</span>
+            </div>
+        </div>
+
+        <!-- Controls & Legend -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Control Panel -->
+            <div class="md:col-span-2 space-y-4">
+                <div class="bg-white rounded-xl shadow-md p-6 border border-slate-100">
+                    <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                        Panel Kontrol Utama
+                    </h3>
+                    <div class="flex flex-wrap gap-4 items-center mb-4">
+                        <div class="flex-1 min-w-[120px]">
+                            <label class="block text-xs text-slate-500 mb-1 font-bold">PENGIRIM</label>
+                            <select id="sourceSelect" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="1">PC 01</option><option value="2">PC 02</option><option value="3">PC 03</option><option value="4">PC 04</option><option value="5">PC 05</option>
+                            </select>
+                        </div>
+                        <div class="flex-1 min-w-[120px]">
+                            <label class="block text-xs text-slate-500 mb-1 font-bold">PENERIMA</label>
+                            <select id="destSelect" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="1">PC 01</option><option value="2" selected>PC 02</option><option value="3">PC 03</option><option value="4">PC 04</option><option value="5">PC 05</option>
+                            </select>
+                        </div>
+                        <button onclick="startStandardSim()" id="sendBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all shadow-md active:scale-95 text-sm mt-4">
+                            Kirim Data
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                        <button onclick="simulateCollision()" id="collisionBtn" class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-lg transition text-sm shadow-sm">
+                            Simulasi Collision
+                        </button>
+                        <button onclick="toggleTerminator()" id="termBtn" class="bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg transition text-sm shadow-sm">
+                            Lepas Terminator
+                        </button>
+                    </div>
+                </div>
+
+                <div id="statusBox" class="p-4 bg-white rounded-xl shadow-md border-l-4 border-blue-500 hidden">
+                    <p id="statusText" class="text-slate-700 text-sm leading-relaxed"></p>
+                </div>
+            </div>
+
+            <!-- Legend/Educational Info -->
+            <div class="bg-blue-600 rounded-xl shadow-md p-6 text-white h-fit">
+                <h3 class="text-lg font-bold mb-4">Materi Topologi</h3>
+                <ul class="space-y-4 text-sm opacity-90">
+                    <li class="bg-blue-700/50 p-3 rounded-lg border border-white/10">
+                        <b>Collision:</b> Terjadi saat 2 perangkat mengirim data di waktu yang sama pada kabel yang sama.
+                    </li>
+                    <li class="bg-blue-700/50 p-3 rounded-lg border border-white/10">
+                        <b>Reflection:</b> Tanpa terminator, sinyal listrik akan memantul kembali dan merusak data baru.
+                    </li>
+                    <li class="bg-blue-700/50 p-3 rounded-lg border border-white/10">
+                        <b>Terminator:</b> Berfungsi menyerap sinyal agar tidak memantul.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isSimulating = false;
+        let terminatorOn = true;
+
+        function updateStatus(msg, color = 'blue') {
+            const box = document.getElementById('statusBox');
+            const txt = document.getElementById('statusText');
+            box.classList.remove('hidden');
+            box.style.borderLeftColor = color === 'orange' ? '#f97316' : (color === 'red' ? '#ef4444' : '#3b82f6');
+            txt.innerHTML = msg;
+        }
+
+        function getPosition(nodeId) {
+            const backbone = document.getElementById('backboneLine').getBoundingClientRect();
+            const node = document.getElementById('node-' + nodeId).getBoundingClientRect();
+            return ((node.left + node.width / 2) - backbone.left);
+        }
+
+        function selectNode(id) {
+            if (isSimulating) return;
+            document.getElementById('sourceSelect').value = id;
+            updateStatus(`<b>PC 0${id}</b> dipilih sebagai pengirim.`);
+        }
+
+        function toggleTerminator() {
+            if (isSimulating) return;
+            terminatorOn = !terminatorOn;
+            const btn = document.getElementById('termBtn');
+            const left = document.getElementById('term-left');
+            const right = document.getElementById('term-right');
+            const l_label = document.getElementById('label-term-left');
+            const r_label = document.getElementById('label-term-right');
+
+            if (terminatorOn) {
+                btn.innerHTML = "Lepas Terminator";
+                btn.className = "bg-slate-700 hover:bg-slate-800 text-white font-bold py-2 px-4 rounded-lg transition text-sm shadow-sm";
+                left.classList.remove('off');
+                right.classList.remove('off');
+                l_label.innerText = "Terminator On";
+                r_label.innerText = "Terminator On";
+                updateStatus("<b>Terminator Terpasang:</b> Sinyal akan diserap di ujung kabel.");
+            } else {
+                btn.innerHTML = "Pasang Terminator";
+                btn.className = "bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition text-sm shadow-sm";
+                left.classList.add('off');
+                right.classList.add('off');
+                l_label.innerText = "Terminator Off";
+                r_label.innerText = "Terminator Off";
+                updateStatus("<b>Terminator Dilepas:</b> Waspada! Sinyal akan memantul (*reflection*) saat mencapai ujung kabel.", "orange");
+            }
+        }
+
+        async function startStandardSim() {
+            if (isSimulating) return;
+            const src = parseInt(document.getElementById('sourceSelect').value);
+            const dest = parseInt(document.getElementById('destSelect').value);
+
+            if (src === dest) {
+                updateStatus("<b>Error:</b> Pengirim dan penerima tidak boleh sama.", "red");
+                return;
+            }
+
+            isSimulating = true;
+            const packet = document.getElementById('packet1');
+            const startPos = getPosition(src);
+            const endPos = getPosition(dest);
+            const backbone = document.getElementById('backboneLine');
+            const backboneWidth = backbone.offsetWidth;
+
+            packet.style.display = 'block';
+            packet.style.left = startPos + 'px';
+            document.getElementById('node-' + src).classList.add('active');
+
+            updateStatus(`<b>PC 0${src}</b> menyiarkan data ke jalur bus...`);
+
+            // Phase: Travel to Destination
+            await movePacket(packet, startPos, endPos, src, dest);
+
+            if (!terminatorOn) {
+                // If terminator is off, packet goes to the very end and bounces
+                const finalEdge = endPos > startPos ? backboneWidth : 0;
+                await movePacketSimple(packet, endPos, finalEdge);
+                updateStatus("<b>Reflection!</b> Karena tidak ada terminator, sinyal memantul kembali dari ujung kabel!", "orange");
+                await movePacketSimple(packet, finalEdge, startPos);
+            }
+
+            setTimeout(() => {
+                resetSim();
+            }, 2000);
+        }
+
+        async function simulateCollision() {
+            if (isSimulating) return;
+            isSimulating = true;
+            
+            const p1 = document.getElementById('packet1');
+            const p2 = document.getElementById('packet2');
+            const backbone = document.getElementById('backboneLine');
+            const blast = document.getElementById('collision');
+            
+            const pos1 = getPosition(1);
+            const pos5 = getPosition(5);
+            const midpoint = (pos1 + pos5) / 2;
+
+            p1.style.display = 'block';
+            p2.style.display = 'block';
+            p1.style.left = pos1 + 'px';
+            p2.style.left = pos5 + 'px';
+            
+            document.getElementById('node-1').classList.add('active');
+            document.getElementById('node-5').classList.add('active');
+            
+            updateStatus("<b>Collision Alert!</b> PC 01 dan PC 05 mengirim data bersamaan...", "orange");
+
+            let current1 = pos1;
+            let current2 = pos5;
+            
+            const move = setInterval(() => {
+                current1 += 4;
+                current2 -= 4;
+                p1.style.left = current1 + 'px';
+                p2.style.left = current2 + 'px';
+
+                if (current1 >= current2) {
+                    clearInterval(move);
+                    p1.style.display = 'none';
+                    p2.style.display = 'none';
+                    blast.style.left = current1 + 'px';
+                    blast.style.display = 'block';
+                    updateStatus("<b>TABRAKAN (COLLISION)!</b> Sinyal hancur. Perangkat harus menunggu waktu acak (Backoff) untuk mengirim ulang.", "red");
+                    
+                    setTimeout(() => {
+                        blast.style.display = 'none';
+                        resetSim();
+                    }, 2000);
+                }
+            }, 20);
+        }
+
+        function movePacket(packet, start, end, src, dest) {
+            return new Promise(resolve => {
+                const step = (start < end) ? 6 : -6;
+                let current = start;
+                const interval = setInterval(() => {
+                    current += step;
+                    packet.style.left = current + 'px';
+
+                    for (let i = 1; i <= 5; i++) {
+                        const nodePos = getPosition(i);
+                        if (Math.abs(current - nodePos) < 10) {
+                            if (i === dest) {
+                                document.getElementById('node-' + i).classList.add('receiving');
+                                updateStatus(`Data tiba di <b>PC 0${i}</b>. Alamat IP cocok! Data diterima.`);
+                            } else if (i !== src) {
+                                updateStatus(`Data melewati <b>PC 0${i}</b>. Alamat tidak cocok, PC mengabaikan data.`);
+                            }
+                        }
+                    }
+
+                    if ((step > 0 && current >= end) || (step < 0 && current <= end)) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 20);
+            });
+        }
+
+        function movePacketSimple(packet, start, end) {
+            return new Promise(resolve => {
+                const step = (start < end) ? 10 : -10;
+                let current = start;
+                const interval = setInterval(() => {
+                    current += step;
+                    packet.style.left = current + 'px';
+                    if ((step > 0 && current >= end) || (step < 0 && current <= end)) {
+                        clearInterval(interval);
+                        resolve();
+                    }
+                }, 20);
+            });
+        }
+
+        function resetSim() {
+            isSimulating = false;
+            document.getElementById('packet1').style.display = 'none';
+            document.getElementById('packet2').style.display = 'none';
+            document.getElementById('sendBtn').disabled = false;
+            document.getElementById('sendBtn').classList.remove('opacity-50');
+            document.querySelectorAll('.computer-node').forEach(n => n.classList.remove('active', 'receiving'));
+        }
+
+        window.addEventListener('resize', () => {
+            if (!isSimulating) {
+                const src = parseInt(document.getElementById('sourceSelect').value);
+                document.getElementById('packet1').style.left = getPosition(src) + 'px';
+            }
+        });
+    </script>
+</body>
+</html>
