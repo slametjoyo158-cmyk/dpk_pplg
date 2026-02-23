@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Jaringan Topologi Star</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        canvas {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            cursor: pointer;
+        }
+        .correct { background-color: #22c55e !important; color: white !important; border-color: #16a34a !important; }
+        .incorrect { background-color: #ef4444 !important; color: white !important; border-color: #dc2626 !important; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-6 text-center lg:text-left">
+            <h1 class="text-3xl font-bold text-gray-800">Simulasi Jaringan Topologi Star</h1>
+            <p class="text-gray-600">Simulasi interaktif dengan fitur gangguan jaringan.</p>
+            <div class="mt-2 text-sm bg-yellow-100 text-yellow-800 p-2 rounded inline-block">
+                💡 <strong>Tips:</strong> Klik kiri untuk pilih node, <strong>Klik Kanan</strong> untuk memutus koneksi (Mati/Hidup).
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Kontrol Panel -->
+            <div class="lg:col-span-1 space-y-4">
+                <div class="bg-white p-4 rounded-lg shadow">
+                    <h2 class="font-semibold mb-3 border-b pb-2">Kontrol Jaringan</h2>
+                    <button id="addNode" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded mb-2 transition">
+                        Tambah Komputer
+                    </button>
+                    <button id="resetSim" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 py-2 px-4 rounded transition">
+                        Reset Jaringan
+                    </button>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow border-l-4 border-red-500">
+                    <h2 class="font-semibold mb-3 border-b pb-2">Status Pengiriman</h2>
+                    <div id="selectionStatus" class="text-sm text-gray-700 space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span>Pengirim:</span>
+                            <span id="senderText" class="font-mono font-bold text-blue-600 bg-blue-50 px-2 py-1 rounded">-</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span>Penerima:</span>
+                            <span id="receiverText" class="font-mono font-bold text-green-600 bg-green-50 px-2 py-1 rounded">-</span>
+                        </div>
+                    </div>
+                    <button id="sendPacket" disabled class="w-full mt-4 bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all transform active:scale-95 shadow-lg">
+                        KIRIM PAKET DATA
+                    </button>
+                </div>
+
+                <div class="bg-white p-4 rounded-lg shadow h-64 overflow-y-auto">
+                    <h2 class="font-semibold mb-2 border-b pb-2">Log Aktivitas</h2>
+                    <div id="activityLog" class="text-xs font-mono space-y-1 text-gray-600">
+                        <div class="text-blue-500 italic">Sistem siap. Silakan pilih node.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Area Canvas -->
+            <div class="lg:col-span-3">
+                <canvas id="networkCanvas" class="w-full h-[550px] border-2 border-gray-100"></canvas>
+            </div>
+        </div>
+
+        <!-- Bagian Latihan Soal -->
+        <section class="bg-white p-6 rounded-lg shadow-md border-t-4 border-blue-500">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4 flex items-center">
+                <span class="mr-2">📝</span> Latihan Soal (10 Pertanyaan)
+            </h2>
+            <div id="quizContainer" class="space-y-8">
+                <!-- Soal 1 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">1. Perangkat pusat dalam topologi Star biasanya berupa...</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Switch atau Hub</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Kabel Coaxial</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Terminator</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. NIC</button>
+                    </div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">2. Jika satu kabel workstation putus, apa dampaknya bagi workstation lain?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Semua koneksi terputus</button>
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Tidak ada dampak bagi workstation lain</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Jaringan melambat drastis</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Terjadi tabrakan data</button>
+                    </div>
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">3. Apa kelemahan terbesar dari topologi Star?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Sulit untuk diperbaiki</button>
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Bergantung sepenuhnya pada perangkat pusat</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Kabel yang digunakan sangat sedikit</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Tidak bisa menambah komputer baru</button>
+                    </div>
+                </div>
+
+                <!-- Soal 4 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">4. Dibandingkan topologi Bus, topologi Star menggunakan kabel...</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Lebih banyak</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Lebih sedikit</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Sama saja</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Tanpa kabel (Wireless)</button>
+                    </div>
+                </div>
+
+                <!-- Soal 5 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">5. Apa jenis kabel yang paling umum digunakan pada topologi Star saat ini?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Kabel Listrik</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Kabel Coaxial</button>
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Kabel UTP/Twisted Pair</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Kabel Telepon</button>
+                    </div>
+                </div>
+
+                <!-- Soal 6 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">6. Manakah pernyataan yang BENAR tentang keamanan data pada topologi Star?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Semua komputer menerima data yang sama</button>
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Lebih aman karena data diarahkan ke node tujuan oleh Switch</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Data mudah disadap di sepanjang kabel tunggal</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Tidak memerlukan password</button>
+                    </div>
+                </div>
+
+                <!-- Soal 7 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">7. Mengapa penambahan komputer baru pada topologi Star dianggap mudah?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Hanya perlu menyambungkan satu kabel ke Switch</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Tidak perlu kabel sama sekali</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Karena Switch tidak perlu dikonfigurasi</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Otomatis terdeteksi oleh satelit</button>
+                    </div>
+                </div>
+
+                <!-- Soal 8 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">8. Apa kepanjangan dari UTP yang sering digunakan di topologi Star?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Union Transfer Port</button>
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Unshielded Twisted Pair</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Universal Tactical Plug</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Unified Transmission Part</button>
+                    </div>
+                </div>
+
+                <!-- Soal 9 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">9. Dalam simulasi ini, apa yang direpresentasikan oleh kotak hitam di tengah?</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Server Database</button>
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Perangkat pusat (Hub/Switch)</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Power Supply Utama</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Firewall Hardware</button>
+                    </div>
+                </div>
+
+                <!-- Soal 10 -->
+                <div class="p-4 border rounded-lg bg-gray-50 quiz-item">
+                    <p class="font-semibold text-gray-700 mb-3">10. Jika kita menggunakan Hub sebagai perangkat pusat, data akan dikirim ke...</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">A. Hanya komputer tujuan</button>
+                        <button onclick="checkAnswer(this, true)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">B. Semua komputer yang terhubung (Broadcasting)</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">C. Tidak ke mana-mana</button>
+                        <button onclick="checkAnswer(this, false)" class="option-btn text-left p-3 border rounded bg-white hover:bg-blue-50 transition">D. Hanya komputer pengirim balik</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="quizResult" class="mt-8 p-4 rounded-lg bg-blue-100 text-blue-800 text-center hidden">
+                <p class="text-xl font-bold">Latihan Selesai!</p>
+                <p id="scoreText">Skor Anda: 0 / 10</p>
+                <button onclick="location.reload()" class="mt-4 bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700 transition">Ulangi Latihan</button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('networkCanvas');
+        const ctx = canvas.getContext('2d');
+        const addNodeBtn = document.getElementById('addNode');
+        const resetBtn = document.getElementById('resetSim');
+        const sendBtn = document.getElementById('sendPacket');
+        const logContainer = document.getElementById('activityLog');
+        
+        const senderDisplay = document.getElementById('senderText');
+        const receiverDisplay = document.getElementById('receiverText');
+
+        let nodes = [];
+        let centralHub = { x: 0, y: 0, id: 'HUB', label: 'SWITCH', active: true };
+        let packets = [];
+        let selectedSender = null;
+        let selectedReceiver = null;
+        let isAnimating = false;
+
+        let correctAnswersCount = 0;
+        let totalQuestionsAnswered = 0;
+
+        function resize() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            centralHub.x = canvas.width / 2;
+            centralHub.y = canvas.height / 2;
+            if (nodes.length === 0) initDefaultNodes();
+            repositionNodes();
+            draw();
+        }
+
+        function initDefaultNodes() {
+            nodes = [];
+            for (let i = 0; i < 6; i++) {
+                const id = 'PC-' + (i + 1);
+                nodes.push({ id, label: id, x: 0, y: 0, active: true });
+            }
+        }
+
+        function addNode() {
+            if (nodes.length >= 16) {
+                log("Maksimum node tercapai.");
+                return;
+            }
+            const id = 'PC-' + (nodes.length + 1);
+            nodes.push({ id, label: id, x: 0, y: 0, active: true });
+            repositionNodes();
+            log(`Node ${id} ditambahkan.`);
+            draw();
+        }
+
+        function repositionNodes() {
+            const radius = Math.min(canvas.width, canvas.height) * 0.35;
+            nodes.forEach((node, index) => {
+                const angle = (index / nodes.length) * Math.PI * 2;
+                node.x = centralHub.x + radius * Math.cos(angle);
+                node.y = centralHub.y + radius * Math.sin(angle);
+            });
+        }
+
+        function log(message, color = "text-gray-600") {
+            const div = document.createElement('div');
+            div.className = color;
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logContainer.prepend(div);
+        }
+
+        function drawNode(node, isHub = false) {
+            const isSender = selectedSender === node;
+            const isReceiver = selectedReceiver === node;
+            const isActive = node.active;
+
+            ctx.save();
+            ctx.shadowBlur = isActive ? 15 : 0;
+            ctx.shadowColor = 'rgba(0,0,0,0.1)';
+
+            if (isHub) {
+                ctx.fillStyle = isActive ? '#1e293b' : '#64748b';
+                ctx.fillRect(node.x - 30, node.y - 30, 60, 60);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('HUB', node.x, node.y + 5);
+            } else {
+                ctx.beginPath();
+                ctx.arc(node.x, node.y, 22, 0, Math.PI * 2);
+                
+                if (!isActive) {
+                    ctx.fillStyle = '#e2e8f0';
+                    ctx.strokeStyle = '#94a3b8';
+                } else if (isSender) {
+                    ctx.fillStyle = '#3b82f6';
+                    ctx.strokeStyle = '#2563eb';
+                } else if (isReceiver) {
+                    ctx.fillStyle = '#22c55e';
+                    ctx.strokeStyle = '#16a34a';
+                } else {
+                    ctx.fillStyle = '#ffffff';
+                    ctx.strokeStyle = '#cbd5e1';
+                }
+                
+                ctx.lineWidth = 3;
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = (!isActive) ? '#94a3b8' : ((isSender || isReceiver) ? '#ffffff' : '#1e293b');
+                ctx.font = 'bold 11px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(node.label, node.x, node.y + 4);
+
+                if (!isActive) {
+                    ctx.strokeStyle = '#ef4444';
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(node.x - 10, node.y - 10);
+                    ctx.lineTo(node.x + 10, node.y + 10);
+                    ctx.moveTo(node.x + 10, node.y - 10);
+                    ctx.lineTo(node.x - 10, node.y + 10);
+                    ctx.stroke();
+                }
+            }
+            ctx.restore();
+        }
+
+        function drawConnections() {
+            nodes.forEach(node => {
+                ctx.beginPath();
+                if (node.active) {
+                    ctx.strokeStyle = '#e2e8f0';
+                    ctx.setLineDash([]);
+                } else {
+                    ctx.strokeStyle = '#fca5a5';
+                    ctx.setLineDash([5, 5]);
+                }
+                ctx.lineWidth = 2;
+                ctx.moveTo(centralHub.x, centralHub.y);
+                ctx.lineTo(node.x, node.y);
+                ctx.stroke();
+            });
+            ctx.setLineDash([]);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawConnections();
+            nodes.forEach(node => drawNode(node));
+            drawNode(centralHub, true);
+
+            packets.forEach(p => {
+                ctx.beginPath();
+                ctx.fillStyle = '#ef4444';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = '#ef4444';
+                ctx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        function animate() {
+            if (packets.length === 0) {
+                isAnimating = false;
+                draw();
+                return;
+            }
+
+            isAnimating = true;
+            for (let i = packets.length - 1; i >= 0; i--) {
+                const p = packets[i];
+                const dx = p.targetX - p.x;
+                const dy = p.targetY - p.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < 5) {
+                    if (p.stage === 'toHub') {
+                        log(`Hub: Menerima paket dari ${p.from}, meneruskan ke ${p.to}...`, "text-orange-600");
+                        p.x = centralHub.x;
+                        p.y = centralHub.y;
+                        p.targetX = p.finalTarget.x;
+                        p.targetY = p.finalTarget.y;
+                        p.stage = 'toTarget';
+                    } else {
+                        if (!p.finalTarget.active) {
+                            log(`GAGAL: ${p.to} terputus sebelum paket tiba!`, "text-red-700 font-bold");
+                        } else {
+                            log(`SUKSES: ${p.to} telah menerima data.`, "text-green-600");
+                        }
+                        packets.splice(i, 1);
+                        selectedSender = null;
+                        selectedReceiver = null;
+                        updateSelectionUI();
+                    }
+                } else {
+                    const speed = 5;
+                    p.x += (dx / dist) * speed;
+                    p.y += (dy / dist) * speed;
+                }
+            }
+
+            draw();
+            requestAnimationFrame(animate);
+        }
+
+        function updateSelectionUI() {
+            senderDisplay.textContent = selectedSender ? selectedSender.id : '-';
+            receiverDisplay.textContent = selectedReceiver ? selectedReceiver.id : '-';
+            
+            if (selectedSender && selectedReceiver) {
+                sendBtn.disabled = false;
+                sendBtn.classList.remove('opacity-30');
+            } else {
+                sendBtn.disabled = true;
+                sendBtn.classList.add('opacity-30');
+            }
+        }
+
+        function getClickedNode(mouseX, mouseY) {
+            for (let i = nodes.length - 1; i >= 0; i--) {
+                const node = nodes[i];
+                const dist = Math.sqrt((node.x - mouseX)**2 + (node.y - mouseY)**2);
+                if (dist < 25) return node;
+            }
+            return null;
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            if (isAnimating) return;
+            if (e.button !== 0) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+
+            const clickedNode = getClickedNode(mouseX, mouseY);
+
+            if (clickedNode) {
+                if (!clickedNode.active) {
+                    log(`Peringatan: ${clickedNode.id} sedang offline!`, "text-red-500");
+                }
+
+                if (!selectedSender) {
+                    selectedSender = clickedNode;
+                    log(`Pengirim dipilih: ${clickedNode.id}`, "text-blue-600");
+                } else if (!selectedReceiver) {
+                    if (clickedNode === selectedSender) {
+                        selectedSender = null;
+                        log("Seleksi dibatalkan.");
+                    } else {
+                        selectedReceiver = clickedNode;
+                        log(`Penerima dipilih: ${clickedNode.id}. Siap kirim!`, "text-green-600");
+                    }
+                } else {
+                    selectedSender = clickedNode;
+                    selectedReceiver = null;
+                    log(`Pengirim diubah: ${clickedNode.id}`, "text-blue-600");
+                }
+                updateSelectionUI();
+                draw();
+            }
+        });
+
+        canvas.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = (e.clientX - rect.left) * (canvas.width / rect.width);
+            const mouseY = (e.clientY - rect.top) * (canvas.height / rect.height);
+            const clickedNode = getClickedNode(mouseX, mouseY);
+
+            if (clickedNode) {
+                clickedNode.active = !clickedNode.active;
+                const status = clickedNode.active ? "Aktif (Online)" : "Mati (Offline)";
+                log(`${clickedNode.id} sekarang ${status}`, clickedNode.active ? "text-blue-500" : "text-red-500");
+                
+                if (!clickedNode.active) {
+                    if (selectedSender === clickedNode) selectedSender = null;
+                    if (selectedReceiver === clickedNode) selectedReceiver = null;
+                    updateSelectionUI();
+                }
+                draw();
+            }
+        });
+
+        sendBtn.addEventListener('click', () => {
+            if (!selectedSender || !selectedReceiver || isAnimating) return;
+            if (!selectedSender.active || !selectedReceiver.active) return;
+            
+            log(`Mengirim paket dari ${selectedSender.id}...`, "text-red-600");
+            packets.push({
+                x: selectedSender.x,
+                y: selectedSender.y,
+                targetX: centralHub.x,
+                targetY: centralHub.y,
+                finalTarget: selectedReceiver,
+                from: selectedSender.id,
+                to: selectedReceiver.id,
+                stage: 'toHub'
+            });
+            sendBtn.disabled = true;
+            animate();
+        });
+
+        // Quiz Logic
+        window.checkAnswer = function(button, isCorrect) {
+            const parent = button.closest('.quiz-item');
+            const buttons = parent.querySelectorAll('.option-btn');
+            
+            buttons.forEach(btn => btn.disabled = true);
+            
+            if (isCorrect) {
+                button.classList.add('correct');
+                correctAnswersCount++;
+                log("Kuis: Jawaban Benar!", "text-green-600 font-bold");
+            } else {
+                button.classList.add('incorrect');
+                log("Kuis: Jawaban Salah.", "text-red-600");
+                
+                // Show the right answer
+                buttons.forEach(btn => {
+                    // Logic to find right answer in each question manually in this static example
+                    // Simplest way for 10 questions is to re-check the true flag
+                });
+            }
+
+            totalQuestionsAnswered++;
+            if (totalQuestionsAnswered === 10) {
+                const resultDiv = document.getElementById('quizResult');
+                resultDiv.classList.remove('hidden');
+                document.getElementById('scoreText').textContent = `Skor Akhir Anda: ${correctAnswersCount} / 10`;
+                resultDiv.scrollIntoView({ behavior: 'smooth' });
+            }
+        };
+
+        addNodeBtn.addEventListener('click', addNode);
+        resetBtn.addEventListener('click', () => {
+            selectedSender = null;
+            selectedReceiver = null;
+            packets = [];
+            isAnimating = false;
+            initDefaultNodes();
+            repositionNodes();
+            updateSelectionUI();
+            log("Jaringan telah diatur ulang.");
+            draw();
+        });
+
+        window.addEventListener('resize', resize);
+        resize();
+    </script>
+</body>
+</html>
