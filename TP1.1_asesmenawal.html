@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen Diagnostik PPLG - Kelas X</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+    <!-- Custom Notification Toast -->
+    <div id="toast" class="fixed top-5 right-5 z-50 transform translate-y-[-100px] opacity-0 transition-all duration-300 ease-out bg-rose-500 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3 border border-rose-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span id="toast-message" class="font-medium"></span>
+    </div>
+
+    <!-- Main Content Box -->
+    <main class="flex-grow flex items-center justify-center p-4 sm:p-6 md:p-8">
+        <div id="app" class="w-full max-w-2xl bg-slate-800 rounded-3xl shadow-2xl border border-slate-700/50 overflow-hidden transition-all duration-500">
+            
+            <!-- LOGIN VIEW -->
+            <div id="login-view" class="p-8 sm:p-12">
+                <div class="text-center mb-8">
+                    <span class="inline-block px-4 py-1.5 rounded-full text-xs font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 mb-3 tracking-wide uppercase">Asesmen Awal</span>
+                    <h1 class="text-3xl font-extrabold text-white tracking-tight sm:text-4xl">Kelas X PPLG</h1>
+                    <p class="text-slate-400 mt-2 text-sm sm:text-base">Kenali dunia teknologi, perangkat lunak, dan gim di sekitarmu!</p>
+                </div>
+
+                <div class="space-y-5">
+                    <div>
+                        <label for="nis" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Nomor Induk Siswa (NIS)</label>
+                        <input type="text" id="nis" placeholder="Masukkan NIS Anda" class="w-full bg-slate-900/50 border border-slate-700 rounded-2xl px-4 py-3.5 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-base">
+                    </div>
+                    <div>
+                        <label for="password" class="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Password Pengaman</label>
+                        <input type="password" id="password" placeholder="Masukkan Password (123456)" class="w-full bg-slate-900/50 border border-slate-700 rounded-2xl px-4 py-3.5 text-white placeholder-slate-500 outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-base">
+                    </div>
+                    <button onclick="login()" class="w-full mt-2 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white py-4 rounded-2xl font-bold text-lg shadow-lg hover:shadow-indigo-500/25 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0">
+                        Masuk & Mulai Asesmen
+                    </button>
+                </div>
+            </div>
+
+            <!-- QUIZ VIEW -->
+            <div id="quiz-view" class="hidden flex flex-col h-[600px]">
+                <!-- Header Progress -->
+                <div class="px-6 py-4 bg-slate-800/80 border-b border-slate-700/50 flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <span class="text-sm font-semibold text-slate-400">Progress Soal:</span>
+                        <span id="progress-text" class="text-sm font-bold text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-full border border-indigo-500/25">1 / 20</span>
+                    </div>
+                    <div class="w-32 sm:w-48 bg-slate-900 rounded-full h-2 overflow-hidden">
+                        <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-violet-500 h-full transition-all duration-300" style="width: 5%"></div>
+                    </div>
+                </div>
+
+                <!-- Scrollable Quiz Body -->
+                <div class="flex-grow overflow-y-auto p-6 sm:p-8 space-y-6" id="quiz-content">
+                    <!-- Dynamic question rendered here -->
+                </div>
+
+                <!-- Bottom Navigation Navigation -->
+                <div class="px-6 py-4 bg-slate-900/40 border-t border-slate-700/50 flex justify-between items-center gap-4">
+                    <button id="prev-btn" onclick="prevQuestion()" class="px-5 py-2.5 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-semibold text-sm transition-all flex items-center gap-2 opacity-50 cursor-not-allowed" disabled>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                        Sebelumnya
+                    </button>
+                    <button id="next-btn" onclick="nextQuestion()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-sm transition-all flex items-center gap-2">
+                        Berikutnya
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    <button id="submit-btn" onclick="submitQuiz()" class="hidden px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold text-sm transition-all shadow-lg hover:shadow-emerald-500/25">
+                        Kirim Jawaban
+                    </button>
+                </div>
+            </div>
+
+            <!-- RESULT VIEW -->
+            <div id="result-view" class="hidden p-8 sm:p-12 text-center">
+                <div class="mb-6 flex justify-center">
+                    <div class="p-4 bg-indigo-500/10 rounded-full border-2 border-indigo-500/30 animate-bounce">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="text-3xl font-extrabold text-white mb-2">Asesmen Selesai!</h2>
+                <p class="text-slate-400 mb-6 text-sm sm:text-base">Terima kasih telah menjawab dengan jujur. Berikut hasil pemetaan awalmu:</p>
+                
+                <div class="inline-block bg-slate-900/60 rounded-3xl p-6 border border-slate-700/60 mb-8 min-w-[200px]">
+                    <span class="block text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">Skor Kamu</span>
+                    <span id="score-text" class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-teal-400">0 / 20</span>
+                </div>
+
+                <div id="feedback-card" class="bg-slate-700/30 border border-slate-700/50 rounded-2xl p-4 mb-8 text-left text-sm text-slate-300">
+                    <!-- Dynamic feedback message will load here -->
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="location.reload()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg hover:shadow-indigo-500/25">
+                        Ulangi Asesmen
+                    </button>
+                    <button onclick="toggleKeyDetails()" class="bg-slate-700 hover:bg-slate-600 text-slate-300 px-6 py-3 rounded-2xl font-bold transition-all border border-slate-600">
+                        Lihat Kunci Jawaban
+                    </button>
+                </div>
+
+                <!-- Collapsible Answer Details -->
+                <div id="key-details" class="hidden mt-8 text-left max-h-[250px] overflow-y-auto bg-slate-900/50 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <h3 class="font-bold text-white mb-2">Kunci & Penjelasan Singkat:</h3>
+                    <div id="key-list" class="space-y-2 text-xs"></div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Footer Credit -->
+    <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800/60 bg-slate-950/20">
+        &copy; 2026 Program Keahlian PPLG. Dioptimalkan untuk Orientasi Siswa Baru.
+    </footer>
+
+    <script>
+        let currentQuestionIdx = 0;
+        const userAnswers = {};
+
+        // 20 Simplified, contextual questions optimized for SMP graduates entering Class X SMK PPLG
+        const questions = [
+            {
+                q: "Mobile Legends: Bang Bang adalah game yang sangat populer di HP. Siapakah perusahaan pembuat game tersebut?",
+                a: ["Garena", "Moonton", "Tencent Games", "Supercell"],
+                correct: 1,
+                hint: "Berlogo huruf 'M' berwarna emas dengan lambang sayap di atasnya."
+            },
+            {
+                q: "Aplikasi di smartphone yang biasa kamu pakai untuk mengirim pesan teks, suara, dan panggilan video gratis menggunakan internet adalah...",
+                a: ["WhatsApp", "Instagram", "TikTok", "YouTube"],
+                correct: 0,
+                hint: "Aplikasi berlogo warna hijau dengan gambar gagang telepon."
+            },
+            {
+                q: "Saat bermain gim, terkadang karakter kita terjebak di tembok atau tidak bisa bergerak. Istilah populer untuk menyebut error/kesalahan sistem ini adalah...",
+                a: ["Lag", "Bug / Glitch", "Cheat", "Buff"],
+                correct: 1,
+                hint: "Bug adalah istilah serangga dalam bahasa Inggris yang dipakai untuk error komputer."
+            },
+            {
+                q: "Di bawah ini, manakah yang merupakan platform berbagi video pendek kreatif yang saat ini paling populer di kalangan anak muda?",
+                a: ["Facebook", "Microsoft Word", "TikTok", "Google Map"],
+                correct: 2,
+                hint: "Identik dengan logo berbentuk not balok musik bernuansa neon."
+            },
+            {
+                q: "Orang yang bekerja menulis baris kode program agar aplikasi atau gim dapat berjalan sesuai rencana disebut...",
+                a: ["Pro Player", "YouTuber", "Programmer / Developer", "Video Editor"],
+                correct: 2,
+                hint: "Mereka berkutat langsung menyusun kode (coding)."
+            },
+            {
+                q: "Sistem operasi yang paling banyak dipakai pada handphone Android di Indonesia saat ini diprakarsai oleh...",
+                a: ["Apple", "Google", "Microsoft", "Samsung"],
+                correct: 1,
+                hint: "Sama dengan raksasa mesin pencari terbesar di dunia."
+            },
+            {
+                q: "Perangkat keras (hardware) komputer yang berfungsi utama sebagai penunjuk kursor dan alat klik di layar adalah...",
+                a: ["Keyboard", "Mouse", "Monitor", "Printer"],
+                correct: 1,
+                hint: "Nama benda ini dalam bahasa Inggris mirip dengan nama tikus kecil."
+            },
+            {
+                q: "Game kreatif bertema susun balok piksel 3D yang sangat populer dan sering dimainkan untuk mengasah kreativitas membangun gedung adalah...",
+                a: ["Minecraft", "PUBG Mobile", "Subway Surfers", "Candy Crush"],
+                correct: 0,
+                hint: "Game bernuansa kotak-kotak piksel yang diciptakan oleh Mojang."
+            },
+            {
+                q: "Jika kamu ingin belajar mendalam tentang cara membuat aplikasi web, aplikasi mobile, dan gim, jurusan di SMK yang kamu masuki ini bernama...",
+                a: ["PPLG (Pengembangan Perangkat Lunak & Gim)", "TKJT (Teknik Jaringan Komputer & Telekomunikasi)", "DKV (Desain Komunikasi Visual)", "AKL (Akuntansi & Keuangan Lembaga)"],
+                correct: 0,
+                hint: "Perangkat lunak sama dengan software, dan gim sama dengan game."
+            },
+            {
+                q: "Aplikasi ojek online buatan asli karya anak bangsa Indonesia yang membantu pengantaran barang dan makanan adalah...",
+                a: ["Grab", "Gojek", "Shopee", "Uber"],
+                correct: 1,
+                hint: "Memiliki logo lingkaran hijau dengan lambang sinyal/helm ojek."
+            },
+            {
+                q: "Untuk mengunduh game atau aplikasi resmi di HP dengan sistem operasi Android, kita membukanya melalui...",
+                a: ["App Store", "Google Play Store", "Google Chrome", "File Manager"],
+                correct: 1,
+                hint: "Platform khusus buatan Google untuk unduh aplikasi."
+            },
+            {
+                q: "Orang yang bertugas merancang visual, karakter, senjata, dan latar belakang estetis di dalam game disebut...",
+                a: ["Game Artist / Designer", "Game Streamer", "Game Tester", "Project Manager"],
+                correct: 0,
+                hint: "Artist berkaitan erat dengan penciptaan seni visual."
+            },
+            {
+                q: "Mengapa kita harus membuat password akun game yang rumit (gabungan huruf besar, angka, dan simbol)?",
+                a: ["Supaya gampang diingat orang lain", "Agar tidak mudah dibajak / di-hack oleh orang tidak bertanggung jawab", "Agar performa game lebih cepat", "Hanya formalitas belaka"],
+                correct: 1,
+                hint: "Password yang rumit bertujuan menjaga privasi keamanan data."
+            },
+            {
+                q: "Game bergenre Battle Royale di HP yang sangat digemari anak sekolah di Indonesia dan terkenal dengan sapaan akrabnya 'Booyah!' adalah...",
+                a: ["Free Fire", "Clash of Clans", "Chess.com", "Angry Birds"],
+                correct: 0,
+                hint: "Game bertema bertahan hidup buatan Garena."
+            },
+            {
+                q: "Istilah melakukan pengisian uang asli untuk membeli skin, diamond, atau item khusus dalam game disebut...",
+                a: ["Log In", "Top Up", "Log Out", "Download"],
+                correct: 1,
+                hint: "Arti harfiahnya adalah mengisi ulang dompet digital game."
+            },
+            {
+                q: "Jika sebuah game membutuhkan jaringan internet agar bisa dimainkan bersama teman dari jarak jauh, game tersebut tergolong...",
+                a: ["Game Offline", "Game Online (Multiplayer)", "Game Single Player", "Game Emulator"],
+                correct: 1,
+                hint: "Membutuhkan koneksi data internet aktif secara waktu-nyata."
+            },
+            {
+                q: "Mengapa mengunduh game modifikasi bajakan (Mod APK) dari situs web sembarangan berbahaya bagi HP kita?",
+                a: ["Karena bisa membawa virus/malware yang merusak HP kita", "Karena gamenya pasti lebih lambat", "Karena tidak seru lagi", "Karena dilarang oleh polisi internet langsung"],
+                correct: 0,
+                hint: "File modifikasi tidak berizin seringkali disusupi program berbahaya."
+            },
+            {
+                q: "Ketika bermain Roblox, pemain bisa masuk ke ribuan game buatan pemain lain. Roblox sendiri merupakan sebuah...",
+                a: ["Situs nonton film", "Platform pembuatan dan berbagi game", "Media sosial foto", "Aplikasi belajar matematika"],
+                correct: 1,
+                hint: "Di Roblox kita bisa bermain sekaligus mendesain dunia sendiri."
+            },
+            {
+                q: "Ketika kalian mematikan HP dengan menekan tombol daya secara penuh, proses ini disebut...",
+                a: ["Restart", "Shutdown / Power Off", "Sleep", "Standby"],
+                correct: 1,
+                hint: "Mematikan sistem operasi secara total."
+            },
+            {
+                q: "Jika kamu ingin membuat game petualanganmu sendiri, apa modal utama yang paling penting untuk dilatih sejak dini di kelas X PPLG?",
+                a: ["Kemampuan membeli HP paling mahal", "Kemampuan bermain game 10 jam sehari", "Ketekunan belajar logika, desain, dan cara kerja program komputer", "Hanya keberuntungan saja"],
+                correct: 2,
+                hint: "Aspek utama dari kreator game adalah logika berpikir kreatif dan coding."
+            }
+        ];
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            toastMsg.innerText = message;
+            
+            // Slide in animation
+            toast.classList.remove('translate-y-[-100px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            // Slide out after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-[-100px]', 'opacity-0');
+            }, 3000);
+        }
+
+        function login() {
+            const nis = document.getElementById('nis').value.trim();
+            const pass = document.getElementById('password').value;
+
+            if (!nis) {
+                showToast('Mohon masukkan Nomor Induk Siswa (NIS) Anda!');
+                return;
+            }
+            if (pass !== '123456') {
+                showToast('Password salah! Gunakan password bawaan: 123456');
+                return;
+            }
+
+            // Transition views smoothly
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('quiz-view').classList.remove('hidden');
+            renderQuestion();
+        }
+
+        function renderQuestion() {
+            const container = document.getElementById('quiz-content');
+            const q = questions[currentQuestionIdx];
+            
+            // Build Question Layout
+            let html = `
+                <div class="space-y-4 animate-fade-in">
+                    <h2 class="text-lg sm:text-xl font-bold text-white leading-relaxed">
+                        ${currentQuestionIdx + 1}. ${q.q}
+                    </h2>
+                    
+                    <!-- Hint Banner -->
+                    <div class="bg-indigo-950/40 border border-indigo-900/40 rounded-xl p-3.5 flex items-start gap-2.5 text-xs text-indigo-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span><strong>Petunjuk:</strong> ${q.hint}</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-3.5 mt-6">
+            `;
+
+            // Build Options Layout
+            q.a.forEach((opt, idx) => {
+                const isChecked = userAnswers[currentQuestionIdx] === idx;
+                html += `
+                    <label onclick="selectAnswer(${idx})" class="flex items-center gap-4 p-4 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                        isChecked 
+                        ? 'bg-indigo-600/20 border-indigo-500 text-white shadow-md' 
+                        : 'bg-slate-900/40 border-slate-700/60 text-slate-300 hover:bg-slate-700/30 hover:border-slate-600'
+                    }">
+                        <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                            isChecked ? 'border-indigo-500 bg-indigo-500' : 'border-slate-500'
+                        }">
+                            ${isChecked ? '<span class="block w-2.5 h-2.5 rounded-full bg-white"></span>' : ''}
+                        </div>
+                        <span class="font-medium text-sm sm:text-base">${opt}</span>
+                    </label>
+                `;
+            });
+
+            html += `</div></div>`;
+            container.innerHTML = html;
+
+            // Update Progress Bar & Navigation State
+            updateProgress();
+        }
+
+        function selectAnswer(index) {
+            userAnswers[currentQuestionIdx] = index;
+            renderQuestion();
+        }
+
+        function updateProgress() {
+            const progressPercent = ((currentQuestionIdx + 1) / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+            document.getElementById('progress-text').innerText = `${currentQuestionIdx + 1} / ${questions.length}`;
+
+            // Button visibility adjustments
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (currentQuestionIdx === 0) {
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                prevBtn.disabled = true;
+            } else {
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                prevBtn.disabled = false;
+            }
+
+            if (currentQuestionIdx === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                currentQuestionIdx--;
+                renderQuestion();
+            }
+        }
+
+        function nextQuestion() {
+            if (userAnswers[currentQuestionIdx] === undefined) {
+                showToast("Pilih salah satu jawaban terlebih dahulu sebelum lanjut!");
+                return;
+            }
+            if (currentQuestionIdx < questions.length - 1) {
+                currentQuestionIdx++;
+                renderQuestion();
+            }
+        }
+
+        function submitQuiz() {
+            if (userAnswers[currentQuestionIdx] === undefined) {
+                showToast("Pilih jawaban untuk soal terakhir sebelum menekan Kirim!");
+                return;
+            }
+
+            // Double check if any questions were missed (just in case they skipped back)
+            let missedCount = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === undefined) missedCount++;
+            }
+
+            if (missedCount > 0) {
+                showToast(`Masih ada ${missedCount} soal yang belum Anda jawab!`);
+                return;
+            }
+
+            let score = 0;
+            questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.correct) {
+                    score++;
+                }
+            });
+
+            // Transition to result view
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('result-view').classList.remove('hidden');
+            document.getElementById('score-text').innerText = `${score} / ${questions.length}`;
+
+            // Build Adaptive Feedback
+            const feedbackCard = document.getElementById('feedback-card');
+            let feedback = "";
+            
+            if (score >= 17) {
+                feedback = "<strong>Luar Biasa! (Kategori: Tinggi)</strong> Kamu memiliki literasi digital, pemahaman dasar game, dan logika teknologi yang sangat tajam untuk anak seusiamu. Kamu sangat siap memulai materi coding dan desain gim di PPLG.";
+            } else if (score >= 11) {
+                feedback = "<strong>Cukup Bagus! (Kategori: Sedang)</strong> Kamu sudah akrab dengan teknologi dan game populer sehari-hari. Beberapa pemahaman dasar masih bisa dipoles lagi lewat bimbingan terarah di kelas X.";
+            } else {
+                feedback = "<strong>Semangat Belajar! (Kategori: Dasar)</strong> Kamu tahu teknologi dasar di sekitarmu, namun perlu banyak mengeksplorasi cara kerja di balik gim dan aplikasi tersebut. Jangan khawatir, program PPLG ini dirancang tepat untuk membimbingmu dari nol!";
+            }
+            feedbackCard.innerHTML = feedback;
+
+            // Prepare answer review
+            const keyList = document.getElementById('key-list');
+            let keyHtml = "";
+            questions.forEach((q, idx) => {
+                const isCorrect = userAnswers[idx] === q.correct;
+                keyHtml += `
+                    <div class="p-2 border-b border-slate-800 flex justify-between items-start gap-2">
+                        <div>
+                            <p class="font-medium text-slate-300">${idx + 1}. ${q.q}</p>
+                            <p class="text-[10px] text-indigo-400 mt-1">Jawaban benar: <strong>${q.a[q.correct]}</strong></p>
+                        </div>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isCorrect ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">
+                            ${isCorrect ? 'Benar' : 'Salah'}
+                        </span>
+                    </div>
+                `;
+            });
+            keyList.innerHTML = keyHtml;
+        }
+
+        function toggleKeyDetails() {
+            const details = document.getElementById('key-details');
+            if (details.classList.contains('hidden')) {
+                details.classList.remove('hidden');
+                details.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                details.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
