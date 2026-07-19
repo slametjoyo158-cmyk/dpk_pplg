@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kisah Penyelamat Kantin - Interactive Storytelling</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 base */
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(241, 245, 249, 0.8);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.2);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.4);
+        }
+        
+        /* Animasi kustom untuk interaksi yang lebih menarik */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+        .animate-shake {
+            animation: shake 0.2s ease-in-out infinite;
+        }
+        
+        @keyframes printIn {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .animate-print {
+            animation: printIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col justify-between overflow-x-hidden antialiased">
+
+    <!-- Navigation / Header -->
+    <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/85 sticky top-0 z-40 px-6 py-4 shadow-sm">
+        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="p-3 bg-gradient-to-tr from-indigo-500 via-indigo-600 to-violet-600 rounded-2xl shadow-lg shadow-indigo-500/20 transform hover:rotate-3 transition-transform duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900 flex flex-wrap items-center gap-2">
+                        Kisah Penyelamat Kantin Bu Minah
+                        <span class="text-[10px] bg-indigo-50 text-indigo-600 border border-indigo-200 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">DPK PPLG Kelas X</span>
+                    </h1>
+                    <p class="text-xs text-slate-500 mt-0.5">Media Pembelajaran Storytelling & Simulasi Interaktif Peran Industri Perangkat Lunak & Gim</p>
+                </div>
+            </div>
+            
+            <!-- Quick Soundboard Indicators -->
+            <div class="flex items-center gap-2 bg-slate-100/80 border border-slate-200/60 rounded-2xl p-1.5 shadow-inner">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2.5">Soundboard:</span>
+                <button onclick="playSound('bell')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Bel Sekolah">🔔</button>
+                <button onclick="playSound('printer')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Printer Tiket">🖨️</button>
+                <button onclick="playSound('coin')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Koin Berhasil">🪙</button>
+                <button onclick="playSound('error')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Koneksi Error">⚠️</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Interactive Dashboard -->
+    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow w-full">
+        
+        <!-- Left Side: Interactive Chapters Navigation & Teacher Script -->
+        <section class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Chapter Tab Selector -->
+            <div class="flex flex-wrap gap-2 p-2 bg-slate-200/60 border border-slate-200/80 rounded-2xl">
+                <button onclick="switchChapter('prolog')" id="tab-prolog" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
+                    🎬 Prolog
+                </button>
+                <button onclick="switchChapter('budi')" id="tab-budi" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
+                    🕵️ Budi (Rookie)
+                </button>
+                <button onclick="switchChapter('citra')" id="tab-citra" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
+                    🎨 Citra (Explorer)
+                </button>
+                <button onclick="switchChapter('aris')" id="tab-aris" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
+                    ⚙️ Aris (Pioneer)
+                </button>
+                <button onclick="switchChapter('epilog')" id="tab-epilog" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
+                    🏆 Epilog
+                </button>
+            </div>
+
+            <!-- Storytelling Card with Teacher Prompts -->
+            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xl shadow-slate-100 flex flex-col justify-between h-[520px] transition-all hover:shadow-2xl hover:shadow-slate-100/80">
+                
+                <!-- Story Content Area (Scrollable) -->
+                <div class="overflow-y-auto custom-scrollbar flex-grow pr-2" id="story-body">
+                    <!-- Dynamic Chapter Text will be loaded here via JavaScript -->
+                </div>
+
+                <!-- Footer Navigation inside Card -->
+                <div class="mt-6 pt-5 border-t border-slate-100 flex justify-between items-center gap-4 shrink-0">
+                    <button id="prev-btn" onclick="navigateChapter(-1)" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 border border-slate-200/60 shadow-sm">
+                        ← Babak Sebelumnya
+                    </button>
+                    <button id="next-btn" onclick="navigateChapter(1)" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20">
+                        Lanjut Cerita →
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Side: Live Sandbox Simulators & Mini Games -->
+        <section class="lg:col-span-5 flex flex-col gap-6">
+            
+            <!-- Dynamic Simulator Box (Updates based on active chapter) -->
+            <div id="sim-container" class="bg-gradient-to-b from-white to-slate-50/50 rounded-3xl border border-slate-200/80 p-6 shadow-xl shadow-slate-100/50 relative overflow-hidden min-h-[390px] flex flex-col justify-between transition-all hover:shadow-2xl">
+                <!-- Sandbox Simulator and Interactive Visualizers load dynamically -->
+            </div>
+
+            <!-- Mini-Game Panel: "Siapa Pahlawannya?" -->
+            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xl shadow-slate-100/50 transition-all hover:shadow-2xl">
+                <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                    <h3 class="font-extrabold text-slate-800 text-sm sm:text-base tracking-wide flex items-center gap-2">
+                        🎮 Game Penguat: "Siapa Pahlawannya?"
+                        <span class="text-[9px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold uppercase">Uji Fokus</span>
+                    </h3>
+                    <span id="game-score" class="text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-xl shadow-sm">Skor: 0</span>
+                </div>
+
+                <!-- Game Screen Area -->
+                <div id="game-area" class="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/60 text-center min-h-[140px] flex flex-col justify-center items-center gap-4 shadow-inner">
+                    <p id="game-question" class="text-xs sm:text-sm font-medium text-slate-600 leading-relaxed max-w-sm">"Klik tombol Mulai Game untuk menguji pemahaman kelas pasca storytelling!"</p>
+                    <div id="game-actions" class="flex flex-wrap justify-center gap-2.5 w-full">
+                        <button onclick="startGame()" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/10 transition-all">Mulai Main</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white/80 border-t border-slate-200 py-4 text-center text-[10px] sm:text-xs text-slate-400 font-medium">
+        &copy; 2026 Program Keahlian PPLG. Skenario Penyelamat Kantin Bu Minah - Dirancang untuk Pembelajaran Kolaboratif Berdiferensiasi.
+    </footer>
+
+    <script>
+        // Web Audio API Synthesizer Soundboard
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'bell') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, now); // D5
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.4, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                osc.start(now);
+                osc.stop(now + 1.2);
+
+                const osc2 = audioCtx.createOscillator();
+                const gain2 = audioCtx.createGain();
+                osc2.connect(gain2);
+                gain2.connect(audioCtx.destination);
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(880, now); // A5
+                gain2.gain.setValueAtTime(0, now);
+                gain2.gain.linearRampToValueAtTime(0.3, now + 0.05);
+                gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+                osc2.start(now);
+                osc2.stop(now + 1.2);
+
+            } else if (type === 'printer') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(1200, now);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+                osc.start(now);
+                osc.stop(now + 0.4);
+
+                for (let i = 0; i < 6; i++) {
+                    const clickOsc = audioCtx.createOscillator();
+                    const clickGain = audioCtx.createGain();
+                    clickOsc.connect(clickGain);
+                    clickGain.connect(audioCtx.destination);
+                    clickOsc.type = 'sawtooth';
+                    clickOsc.frequency.setValueAtTime(150, now + 0.15 + (i * 0.08));
+                    clickGain.gain.setValueAtTime(0.08, now + 0.15 + (i * 0.08));
+                    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22 + (i * 0.08));
+                    clickOsc.start(now + 0.15 + (i * 0.08));
+                    clickOsc.stop(now + 0.22 + (i * 0.08));
+                }
+
+            } else if (type === 'coin') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(523.25, now); // C5
+                osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+                osc.frequency.setValueAtTime(1046.50, now + 0.24); // C6
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.3, now + 0.05);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+                osc.start(now);
+                osc.stop(now + 0.6);
+
+            } else if (type === 'error') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(110, now); // A2
+                gain.gain.setValueAtTime(0, now);
+                gain.gain.linearRampToValueAtTime(0.4, now + 0.05);
+                gain.gain.setValueAtTime(0.4, now + 0.3);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+                osc.start(now);
+                osc.stop(now + 0.6);
+            }
+        }
+
+        const storyChapters = {
+            prolog: {
+                title: "🎬 PROLOG: Membangun Keresahan Bersama",
+                roleName: "Narasumber",
+                theme: "indigo",
+                teatrikal: "Guru berjalan ke tengah kelas, memasang wajah lapar/lemas secara dramatis.",
+                skrip: `
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Teman-teman sekalian... Bapak/Ibu mau tanya jujur. Pernah tidak kalian mengalami situasi di mana bel istirahat berbunyi, perut kalian sudah berbunyi keroncongan seperti konser musik rock, lalu kalian berlari kencang ke kantin... tapi setibanya di sana... <strong>Zonk!</strong>"</p>
+                    <p class="mb-4 text-indigo-600 font-semibold leading-relaxed text-base italic">[Pura-pura menunjuk keputusasaan di wajah siswa]</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Antrean di warung bakso Bu Minah sudah sepanjang ular naga! Jam istirahat kita cuma 30 menit. Kalian harus mengantre 25 menit hanya untuk semangkuk bakso. Pas bakso di tangan, bel masuk kelas sudah berbunyi."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Alhasil, kalian lari ke kelas sambil makan bakso panas-panas, lidah melepuh, dan sampai kelas kalian malah kembung karena kepedasan. Menyedihkan, bukan? Bu Minah di kantin juga pusing setengah mati mengurus transaksi secara manual ditiup angin."</p>
+                `,
+                cue: "Ketuk tombol bel sekolah di soundboard atas untuk memulai pementasan!"
+            },
+            budi: {
+                title: "🕵️‍♂️ BABAK 1: Sang Detektif Empati (User Researcher)",
+                roleName: "Budi (Rookie)",
+                theme: "amber",
+                teatrikal: "Guru mengambil buku catatan kecil, berjalan mengendap-endap seperti detektif.",
+                skrip: `
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Dalam dunia industri Software House, masalah antrean Bu Minah ini adalah <strong>tambang emas</strong>! Kita butuh pahlawan pertama kita sebut saja <strong>Budi</strong>. Di dalam tim, Budi memegang peran sebagai <strong>User Researcher (Rookie)</strong>."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Tugas Budi tidak langsung mengetik coding di laptop canggih. Tugas pertama Budi sangat sederhana tapi krusial: <strong>Mendengar dan Mengamati</strong>."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Budi bertanya ke siswa: <em>'Kenapa antreannya lama bro?'</em> Siswa menjawab: <em>'Bu Minah kelamaan nyari kembalian receh!'</em> Budi mencatat itu. Budi adalah <strong>Suara Pengguna</strong>."</p>
+                `,
+                cue: "Minta salah satu siswa memegang buku catatan seolah-olah menjadi Budi!"
+            },
+            citra: {
+                title: "🎨 BABAK 2: Sang Perancang Kenyamanan (UI/UX Designer)",
+                roleName: "Citra (Explorer)",
+                theme: "teal",
+                teatrikal: "Guru berjalan ke papan tulis, menggambar layout ponsel fiktif dengan spidol.",
+                skrip: `
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Catatan rahasia dari Budi si User Researcher kemudian dibawa ke meja pahlawan kedua kita. Sebut saja namanya <strong>Citra</strong>. Citra memegang peran sebagai <strong>UI/UX Designer (Explorer)</strong>."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Citra bertugas merancang keindahan dan kenyamanan aplikasi. Citra berpikir bagaimana caranya supaya siswa bisa memesan bakso Bu Minah dengan cepat tanpa perlu teriak-teriak."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Citra menggambar tombol pesanan baksonya <strong>Besar Sekali</strong> tepat di tengah layar. Mengapa? Karena Citra tahu, anak sekolah kalau lapar jempolnya suka gemetaran! Tapi ingat... gambar ini belum punya mesin penggerak di belakangnya."</p>
+                `,
+                cue: "Tunjukkan simulasi tombol Citra di panel kanan pada siswa!"
+            },
+            aris: {
+                title: "⚙️ BABAK 3: Sang Arsitek Logika (System Architect)",
+                roleName: "Aris (Pioneer)",
+                theme: "sky",
+                teatrikal: "Guru merapatkan kedua tangan, memperagakan gerakan aliran pipa air yang mengalir.",
+                skrip: `
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Gambar desain Citra tadi dibawa ke pahlawan ketiga kita yang bernama <strong>Aris</strong>. Aris memegang peran sebagai <strong>System Architect atau Lead Programmer (Pioneer)</strong>."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Aris bertugas membuat aliran logika pintar di belakang layar agar tombol yang digambar Citra benar-benar 'hidup' dan mengirimkan data."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Aris menyusun aturan logika: <em>Jika saldo digital cukup</em>, kurangi saldo otomatis, lalu kirimkan sinyal pesanan instan ke printer HP Bu Minah di dapur. <em>Jika saldo kurang</em>, tampilkan peringatan."</p>
+                `,
+                cue: "Gunakan logika saldo simulator di sebelah kanan untuk memperagakan proses ini!"
+            },
+            epilog: {
+                title: "🏆 EPILOG: Harmoni Hasil Kolaborasi",
+                roleName: "Seluruh Tim",
+                theme: "emerald",
+                teatrikal: "Guru tersenyum lebar dan melipat tangan di dada dengan penuh kebanggaan.",
+                skrip: `
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Aplikasi <strong>'Kantin-Go'</strong> buatan Studio kita akhirnya dirilis di sekolah. 5 menit sebelum bel istirahat berbunyi, kalian yang sudah lapar tinggal membuka HP, klik tombol 'Bakso Urat' buatan Citra, saldo e-wallet terpotong otomatis lewat sistemnya Aris, dan printer dapur Bu Minah langsung mencetak pesanan."</p>
+                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Kalian tinggal berjalan santai ke kantin, mengambil mangkuk bakso yang sudah matang tanpa antre. Itulah keajaiban dunia PPLG. Kita tidak dididik jadi penonton pasif, tapi jadi <strong>Kreator Masa Depan</strong>!"</p>
+                `,
+                cue: "Kombinasikan semua simulator di panel kanan untuk mendemonstrasikan software house seutuhnya!"
+            }
+        };
+
+        let currentChapterKey = 'prolog';
+        const chapterOrder = ['prolog', 'budi', 'citra', 'aris', 'epilog'];
+
+        function switchChapter(chapterKey) {
+            currentChapterKey = chapterKey;
+            const ch = storyChapters[chapterKey];
+            
+            // Highlight active tab with elegant Tailwind classes
+            chapterOrder.forEach(key => {
+                const tab = document.getElementById(`tab-${key}`);
+                if (key === chapterKey) {
+                    tab.className = "flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-indigo-600 text-white shadow-md shadow-indigo-600/10";
+                } else {
+                    tab.className = "flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+                }
+            });
+
+            // Set contextual colors for badge
+            let themeBg = "bg-indigo-50 border-indigo-200 text-indigo-700";
+            if (chapterKey === 'budi') { themeBg = "bg-amber-50 border-amber-200 text-amber-700"; }
+            else if (chapterKey === 'citra') { themeBg = "bg-teal-50 border-teal-200 text-teal-700"; }
+            else if (chapterKey === 'aris') { themeBg = "bg-sky-50 border-sky-200 text-sky-700"; }
+            else if (chapterKey === 'epilog') { themeBg = "bg-emerald-50 border-emerald-200 text-emerald-700"; }
+
+            // Render Story
+            const storyHtml = `
+                <div class="space-y-4 animate-fade-in">
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold ${themeBg} border uppercase tracking-wider">Peran: ${ch.roleName}</span>
+                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">${ch.title}</h2>
+                    
+                    <!-- Teatrikal Banner -->
+                    <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4 flex items-start gap-3 text-xs text-indigo-900 shadow-sm">
+                        <span class="text-base select-none">🎭</span>
+                        <div>
+                            <strong class="text-slate-900 block mb-0.5">Panduan Teatrikal Guru:</strong>
+                            <p>${ch.teatrikal}</p>
+                        </div>
+                    </div>
+
+                    <!-- Story Text -->
+                    <div class="prose max-w-none text-slate-700 mt-4 leading-relaxed">
+                        ${ch.skrip}
+                    </div>
+
+                    <!-- Teacher Tip/Cue -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs text-slate-600 mt-6 flex items-center gap-2">
+                        <span class="text-indigo-600 font-bold shrink-0">💡 TIPS GURU:</span>
+                        <span>${ch.cue}</span>
+                    </div>
+                </div>
+            `;
+            document.getElementById('story-body').innerHTML = storyHtml;
+
+            // Update Navigation Buttons state
+            const currentIdx = chapterOrder.indexOf(chapterKey);
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            if (currentIdx === 0) {
+                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                prevBtn.disabled = true;
+            } else {
+                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                prevBtn.disabled = false;
+            }
+
+            if (currentIdx === chapterOrder.length - 1) {
+                nextBtn.innerText = "Selesai Bercerita 🎉";
+            } else {
+                nextBtn.innerText = "Lanjut Cerita →";
+            }
+
+            // Render matching simulator panel on the right side
+            renderSimulator(chapterKey);
+        }
+
+        function navigateChapter(direction) {
+            const currentIdx = chapterOrder.indexOf(currentChapterKey);
+            let nextIdx = currentIdx + direction;
+            if (nextIdx >= 0 && nextIdx < chapterOrder.length) {
+                switchChapter(chapterOrder[nextIdx]);
+            } else if (nextIdx >= chapterOrder.length) {
+                showToast("Sesi storytelling selesai! Lakukan game penguat bersama kelas.");
+            }
+        }
+
+        function renderSimulator(chapterKey) {
+            const container = document.getElementById('sim-container');
+            container.innerHTML = ''; // Clear container
+
+            if (chapterKey === 'prolog') {
+                container.innerHTML = `
+                    <div class="space-y-4 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                🏫 Keresahan Antrean Kantin
+                                <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full border border-indigo-200">Kondisi Awal</span>
+                            </h3>
+                            <p class="text-xs text-slate-500">Gunakan simulator ini untuk memvisualisasikan situasi kacau di sekolah sebelum dibantu oleh tim PPLG.</p>
+                        </div>
+                        
+                        <div class="bg-slate-100 p-6 rounded-2xl border border-slate-200 text-center space-y-4 py-8 shadow-inner">
+                            <div class="text-5xl animate-bounce select-none">🏃‍♂️💨 🌭🍟 🔔</div>
+                            <p class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">"Anak-anak berlarian saling dorong, pesanan berisik tidak teratur, dan Bu Minah kelabakan mencari uang kembalian kertas..."</p>
+                        </div>
+
+                        <button onclick="playSound('bell')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3.5 rounded-2xl font-bold text-sm shadow-md shadow-indigo-600/10 active:scale-95 transition-all flex items-center justify-center gap-2">
+                            🔔 Bunyikan Bel Sekolah
+                        </button>
+                    </div>
+                `;
+            } 
+            else if (chapterKey === 'budi') {
+                container.innerHTML = `
+                    <div class="space-y-4 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                🕵️ Buku Catatan Empati Budi
+                                <span class="text-[10px] bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">User Researcher</span>
+                            </h3>
+                            <p class="text-xs text-slate-500">Ketuk pada narasumber di bawah untuk mengumpulkan data keluhan asli di lapangan!</p>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 my-2">
+                            <button onclick="revealEmpathy('siswa')" class="p-3 bg-white border border-slate-200 hover:border-amber-400 hover:bg-amber-50/30 text-left rounded-2xl transition-all shadow-sm active:scale-95">
+                                <div class="text-3xl mb-1.5 select-none">🙋‍♂️</div>
+                                <span class="text-xs font-bold text-slate-800 block">Siswa Sekolah</span>
+                                <span class="text-[9px] text-slate-400">Curhat pembeli...</span>
+                            </button>
+                            <button onclick="revealEmpathy('buminah')" class="p-3 bg-white border border-slate-200 hover:border-amber-400 hover:bg-amber-50/30 text-left rounded-2xl transition-all shadow-sm active:scale-95">
+                                <div class="text-3xl mb-1.5 select-none">👵</div>
+                                <span class="text-xs font-bold text-slate-800 block">Bu Minah (Kantin)</span>
+                                <span class="text-[9px] text-slate-400">Keluhan penjual...</span>
+                            </button>
+                        </div>
+
+                        <div id="empathy-bubble" class="bg-amber-50/80 border border-amber-200/60 p-4 rounded-2xl min-h-[90px] flex items-center justify-center text-center text-xs text-amber-900 shadow-sm">
+                            "Silakan pilih salah satu narasumber di atas untuk digali keluhannya!"
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (chapterKey === 'citra') {
+                container.innerHTML = `
+                    <div class="space-y-4 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                🎨 Kanvas Gambar Citra
+                                <span class="text-[10px] bg-teal-50 text-teal-700 px-2.5 py-0.5 rounded-full border border-teal-200">UI/UX Designer</span>
+                            </h3>
+                            <p class="text-xs text-slate-500">Sesuaikan ukuran tombol dan uji skema warna visual untuk membandingkan tingkat kenyamanan penggunaan (usability).</p>
+                        </div>
+
+                        <!-- Canvas Mockup Simulator -->
+                        <div id="canvas-mockup" class="bg-slate-100 p-4 rounded-3xl border border-slate-200 flex flex-col items-center justify-center min-h-[140px] gap-3 shadow-inner">
+                            <button id="bakso-btn" onclick="citraBtnClick()" class="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black rounded-2xl shadow-md transition-all active:scale-95" style="padding: 14px 28px; font-size: 14px;">
+                                🍜 PESAN BAKSO URAT
+                            </button>
+                            <span id="click-feedback" class="text-[10px] text-slate-500">Silakan klik tombol di atas untuk tes antarmuka!</span>
+                        </div>
+
+                        <!-- Control Knobs -->
+                        <div class="space-y-3 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-500 font-medium">Ukuran Tombol Citra:</span>
+                                <input type="range" min="1" max="3" value="2" oninput="adjustButtonSize(this.value)" class="w-32 accent-teal-600 cursor-pointer">
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-500 font-medium">Skema Warna Visual:</span>
+                                <div class="flex gap-1.5">
+                                    <button onclick="setCitraTheme('elegant')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded-lg border border-slate-300 transition-all">Elegan</button>
+                                    <button onclick="setCitraTheme('blinking')" class="px-2.5 py-1 bg-rose-50 text-rose-700 hover:bg-rose-100 text-[10px] font-bold rounded-lg border border-rose-200 transition-all">Silau</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } 
+            else if (chapterKey === 'aris') {
+                container.innerHTML = `
+                    <div class="space-y-4 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                ⚙️ Penguji Alur Logika Aris
+                                <span class="text-[10px] bg-sky-50 text-sky-700 px-2.5 py-0.5 rounded-full border border-sky-200">System Architect</span>
+                            </h3>
+                            <p class="text-xs text-slate-500">Geser slider untuk mengubah saldo, lalu jalankan logika untuk melihat bagaimana Aris memvalidasi transaksi.</p>
+                        </div>
+
+                        <!-- Balance Panel -->
+                        <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 flex justify-between items-center shadow-inner">
+                            <div>
+                                <span class="text-[9px] text-slate-500 uppercase font-bold tracking-wider">Saldo Dompet Siswa:</span>
+                                <p id="siswa-balance" class="text-lg font-extrabold text-slate-800">Rp 15.000</p>
+                            </div>
+                            <input type="range" min="0" max="30000" step="5000" value="15000" oninput="adjustSiswaBalance(this.value)" class="w-32 accent-sky-600 cursor-pointer">
+                        </div>
+
+                        <!-- Flow State Display -->
+                        <div id="flow-display" class="bg-white p-4 rounded-2xl border border-slate-200 text-center text-xs space-y-1.5 min-h-[90px] flex flex-col justify-center shadow-sm">
+                            <span class="text-slate-400 uppercase tracking-widest text-[9px] font-bold">Kondisi Aliran Data:</span>
+                            <p id="flow-status" class="text-slate-600">"Sistem Aris menunggu input pesanan untuk memvalidasi saldo..."</p>
+                        </div>
+
+                        <button onclick="triggerArisValidation()" class="w-full bg-sky-600 hover:bg-sky-500 active:scale-95 text-white py-3.5 rounded-2xl font-bold text-sm shadow-md shadow-sky-500/10 transition-all flex items-center justify-center gap-2">
+                            ⚙️ Jalankan Logika Validasi (Harga: Rp 15.000)
+                        </button>
+                    </div>
+                `;
+            } 
+            else if (chapterKey === 'epilog') {
+                container.innerHTML = `
+                    <div class="space-y-4 flex flex-col justify-between h-full">
+                        <div>
+                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
+                                🤝 Integrasi Studio: Kantin-Go
+                                <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200">Hasil Sempurna</span>
+                            </h3>
+                            <p class="text-xs text-slate-500">Aplikasi siap uji! Padukan kinerja seluruh tim untuk mencetak pesanan di dapur Bu Minah secara otomatis.</p>
+                        </div>
+
+                        <!-- Full Studio Sandbox Panel -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="bg-slate-100 p-3 rounded-2xl border border-slate-200 text-center space-y-1 shadow-inner flex flex-col justify-center">
+                                <span class="text-[8px] text-slate-500 font-bold uppercase">Mockup HP Siswa</span>
+                                <div class="flex justify-center py-2">
+                                    <button id="sandbox-pesan-btn" onclick="triggerSandboxOrder()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-md transition-all">
+                                        🍜 PESAN BAKSO
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-slate-100 p-3 rounded-2xl border border-slate-200 flex flex-col justify-center items-center shadow-inner relative overflow-hidden">
+                                <span class="text-[8px] text-slate-500 font-bold uppercase mb-1">Dapur Bu Minah</span>
+                                <div class="h-14 flex items-end">
+                                    <div id="printer-paper" class="w-16 h-12 bg-white text-slate-900 border border-slate-300 rounded-t-md p-1.5 text-[6px] font-mono leading-none flex flex-col justify-between overflow-hidden shadow-sm">
+                                        <span class="font-black border-b border-dashed border-slate-300 pb-0.5 block text-center">KANTIN-GO</span>
+                                        <span class="text-[5px]">1x Bakso Urat</span>
+                                        <span class="text-emerald-600 font-extrabold text-[5px] text-right block">LUNAS ✅</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sandbox Logs -->
+                        <div class="bg-white p-3 rounded-2xl border border-slate-200 text-[10px] space-y-1 shadow-sm">
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Desain Visual Citra:</span>
+                                <span class="text-emerald-600 font-bold">100% Usable (Mudah Diklik)</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-slate-500">Integrasi Server Aris:</span>
+                                <span class="text-sky-600 font-bold">Aktif & Terproteksi</span>
+                            </div>
+                        </div>
+
+                        <div class="text-[10px] text-center text-slate-400 italic">
+                            "Aplikasi sukses dibuat! Antrean selesai diurai."
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Budi's Empathy Notebook Reveal Logic
+        function revealEmpathy(target) {
+            playSound('bell');
+            const bubble = document.getElementById('empathy-bubble');
+            if (target === 'siswa') {
+                bubble.innerHTML = `
+                    <div class="text-left animate-fade-in">
+                        <strong class="text-amber-700 block mb-1">📝 Temuan Budi (Siswa):</strong>
+                        <p class="leading-relaxed text-[11px] text-slate-700">"Siswa mengeluhkan waktu istirahat yang habis hanya untuk mengantre. Masalah terbesar terletak pada lamanya proses kembalian uang pecahan kertas kecil."</p>
+                    </div>
+                `;
+            } else if (target === 'buminah') {
+                bubble.innerHTML = `
+                    <div class="text-left animate-fade-in">
+                        <strong class="text-amber-700 block mb-1">📝 Temuan Budi (Bu Minah):</strong>
+                        <p class="leading-relaxed text-[11px] text-slate-700">"Bu Minah pusing mendengar suara pesanan yang saling tumpang tindih. Beliau juga sering lupa urutan siswa yang memesan terlebih dahulu."</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Citra's UI Canvas Logic
+        let currentBtnScale = 1;
+        function adjustButtonSize(val) {
+            const btn = document.getElementById('bakso-btn');
+            const sizeFeedback = document.getElementById('click-feedback');
+            
+            if (val == 1) {
+                btn.style.padding = "4px 8px";
+                btn.style.fontSize = "10px";
+                btn.style.borderRadius = "6px";
+                currentBtnScale = 0.5;
+                sizeFeedback.innerText = "Tombol terlalu kecil! Jempol gemetar saat lapar akan sulit menekannya (Usability Buruk).";
+                sizeFeedback.className = "text-[10px] text-rose-600 font-medium animate-pulse";
+            } else if (val == 2) {
+                btn.style.padding = "14px 28px";
+                btn.style.fontSize = "14px";
+                btn.style.borderRadius = "16px";
+                currentBtnScale = 1;
+                sizeFeedback.innerText = "Ukuran tombol ideal untuk ditekan jempol siswa secara instan.";
+                sizeFeedback.className = "text-[10px] text-teal-600 font-medium";
+            } else if (val == 3) {
+                btn.style.padding = "24px 48px";
+                btn.style.fontSize = "18px";
+                btn.style.borderRadius = "24px";
+                currentBtnScale = 1.5;
+                sizeFeedback.innerText = "Tombol sangat besar! Meminimalkan risiko meleset saat siswa terburu-buru.";
+                sizeFeedback.className = "text-[10px] text-emerald-600 font-bold";
+            }
+        }
+
+        function setCitraTheme(theme) {
+            const canvas = document.getElementById('canvas-mockup');
+            const btn = document.getElementById('bakso-btn');
+            const sizeFeedback = document.getElementById('click-feedback');
+
+            if (theme === 'elegant') {
+                canvas.className = "bg-slate-100 p-4 rounded-3xl border border-slate-200 flex flex-col items-center justify-center min-h-[140px] gap-3 shadow-inner";
+                btn.className = "bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black rounded-2xl shadow-md transition-all active:scale-95";
+                sizeFeedback.innerText = "Palet warna elegan & kontras tinggi membantu navigasi visual yang nyaman.";
+                sizeFeedback.className = "text-[10px] text-teal-600 font-medium";
+                playSound('coin');
+            } else if (theme === 'blinking') {
+                canvas.className = "bg-purple-100 p-4 rounded-3xl border-4 border-rose-400 flex flex-col items-center justify-center min-h-[140px] gap-3 animate-pulse shadow-inner";
+                btn.className = "bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-black rounded-sm border-2 border-dashed border-rose-400 animate-bounce transition-all";
+                sizeFeedback.innerText = "Siswa pusing! Kontras yang terlalu mencolok menurunkan kenyamanan navigasi.";
+                sizeFeedback.className = "text-[10px] text-rose-600 font-extrabold";
+                playSound('error');
+            }
+        }
+
+        function citraBtnClick() {
+            const sizeFeedback = document.getElementById('click-feedback');
+            const canvas = document.getElementById('canvas-mockup');
+            
+            if (currentBtnScale < 1) {
+                if (Math.random() < 0.6) {
+                    playSound('error');
+                    canvas.classList.add('animate-shake');
+                    setTimeout(() => canvas.classList.remove('animate-shake'), 200);
+                    sizeFeedback.innerText = "❌ Meleset! Tombol terlalu kecil untuk dibidik dengan cepat.";
+                    sizeFeedback.className = "text-[10px] text-rose-600 font-bold";
+                } else {
+                    playSound('coin');
+                    sizeFeedback.innerText = "✔️ Berhasil ditekan! Namun memerlukan fokus ekstra.";
+                    sizeFeedback.className = "text-[10px] text-amber-600 font-bold";
+                }
+            } else {
+                playSound('coin');
+                sizeFeedback.innerText = "✔️ Sukses! Navigasi nyaman dan pesanan langsung terdaftar.";
+                sizeFeedback.className = "text-[10px] text-emerald-600 font-bold";
+            }
+        }
+
+        // Aris's Logic Validation Simulator
+        let currentSiswaBalance = 15000;
+        function adjustSiswaBalance(val) {
+            currentSiswaBalance = parseInt(val);
+            document.getElementById('siswa-balance').innerText = `Rp ${currentSiswaBalance.toLocaleString('id-ID')}`;
+        }
+
+        function triggerArisValidation() {
+            const status = document.getElementById('flow-status');
+            const display = document.getElementById('flow-display');
+
+            if (currentSiswaBalance >= 15000) {
+                playSound('printer');
+                status.innerHTML = `
+                    <span class="text-emerald-600 font-extrabold block text-xs sm:text-sm">✅ TRANSAKSI DISETUJUI</span>
+                    <span class="text-slate-600 text-[11px] leading-relaxed block mt-0.5">Saldo memadai. Sistem mengurangi saldo Rp 15.000 secara otomatis & mencetak tiket pesanan di dapur Bu Minah!</span>
+                `;
+                display.className = "bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl text-center text-xs space-y-1.5 min-h-[90px] flex flex-col justify-center transition-all shadow-sm";
+            } else {
+                playSound('error');
+                status.innerHTML = `
+                    <span class="text-rose-600 font-extrabold block text-xs sm:text-sm">❌ TRANSAKSI DITOLAK</span>
+                    <span class="text-slate-600 text-[11px] leading-relaxed block mt-0.5">Saldo kurang. Aliran data dihentikan agar penjual tidak mengalami kerugian transaksi.</span>
+                `;
+                display.className = "bg-rose-50 border-2 border-rose-300 p-4 rounded-2xl text-center text-xs space-y-1.5 min-h-[90px] flex flex-col justify-center transition-all shadow-sm";
+            }
+        }
+
+        // Epilog Sandbox Interaction
+        function triggerSandboxOrder() {
+            const paper = document.getElementById('printer-paper');
+            
+            // Apply animation class reset
+            paper.classList.remove('animate-print');
+            void paper.offsetWidth; // Trigger reflow
+            paper.classList.add('animate-print');
+            
+            playSound('printer');
+        }
+
+        // Custom UI Toast Notification
+        function showToast(msg) {
+            const container = document.body;
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 z-50 bg-indigo-600 text-white font-bold px-6 py-3 rounded-2xl shadow-xl border border-indigo-500 text-xs sm:text-sm transition-all";
+            toast.innerText = msg;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // Mini Game "Siapa Pahlawannya?" Logic
+        const gameQuestions = [
+            {
+                q: "Tulisan menu di layar HP Bu Minah kekecilan, tidak terbaca! Siapa pahlawan yang harus mendesain ulang antarmuka tersebut?",
+                options: ["Budi", "Citra", "Aris"],
+                ans: 1, // Citra
+                hint: "Tugasnya berfokus pada visual, penataan antarmuka, dan estetika warna."
+            },
+            {
+                q: "Kita bingung, sebenarnya siswa sekolah lebih suka menggunakan dompet digital atau pembayaran tunai di kantin? Siapa yang harus melakukan survei langsung?",
+                options: ["Budi", "Citra", "Aris"],
+                ans: 0, // Budi
+                hint: "Tugasnya adalah menggali data lapangan dan mewawancarai pengguna nyata."
+            },
+            {
+                q: "Tombol 'Beli' diketuk berulang-ulang namun tidak merespon sama sekali! Siapa yang bertanggung jawab memeriksa kerusakan database aliran data?",
+                options: ["Budi", "Citra", "Aris"],
+                ans: 2, // Aris
+                hint: "Tugasnya merancang logika pemrosesan data dan integrasi server di belakang layar."
+            },
+            {
+                q: "Aplikasi Kantin-Go ingin ditambahkan fitur mode gelap (Dark Mode) agar ramah baterai di ponsel siswa. Siapa pahlawan perancangnya?",
+                options: ["Budi", "Citra", "Aris"],
+                ans: 1, // Citra
+                hint: "Berkaitan dengan keindahan tema visual dan palet warna antarmuka."
+            },
+            {
+                q: "Sistem mengalami error: Saldo siswa terpotong otomatis tetapi printer di dapur Bu Minah tidak mencetak nota pesanan. Masalah ini harus diselesaikan oleh siapa?",
+                options: ["Budi", "Citra", "Aris"],
+                ans: 2, // Aris
+                hint: "Berhubungan dengan sinkronisasi logika transfer data antar perangkat keras."
+            }
+        ];
+
+        let gameIdx = 0;
+        let score = 0;
+
+        function startGame() {
+            gameIdx = 0;
+            score = 0;
+            document.getElementById('game-score').innerText = `Skor: ${score}`;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = gameQuestions[gameIdx];
+            const gameArea = document.getElementById('game-area');
+            
+            let optionsHtml = "";
+            q.options.forEach((opt, idx) => {
+                optionsHtml += `
+                    <button onclick="checkAnswer(${idx})" class="px-5 py-3 bg-white hover:bg-indigo-50 text-slate-800 border border-slate-200 hover:border-indigo-500 rounded-2xl font-bold text-xs transition-all active:scale-95 flex-grow sm:flex-grow-0 shadow-sm">
+                        ${opt.toUpperCase()}!
+                    </button>
+                `;
+            });
+
+            gameArea.innerHTML = `
+                <div class="space-y-3 w-full animate-fade-in">
+                    <span class="text-[9px] bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full border border-indigo-100 font-bold uppercase tracking-wider">Soal Ke ${gameIdx + 1} dari ${gameQuestions.length}</span>
+                    <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed max-w-sm mx-auto">${q.q}</p>
+                    <div class="flex flex-wrap justify-center gap-2.5 w-full mt-2">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function checkAnswer(selectedIdx) {
+            const q = gameQuestions[gameIdx];
+            const gameArea = document.getElementById('game-area');
+
+            if (selectedIdx === q.ans) {
+                playSound('coin');
+                score += 20;
+                document.getElementById('game-score').innerText = `Skor: ${score}`;
+                gameArea.innerHTML = `
+                    <div class="space-y-2 text-center animate-fade-in">
+                        <span class="text-3xl">🎉</span>
+                        <p class="text-xs sm:text-sm font-black text-emerald-600">JAWABAN BENAR!</p>
+                        <p class="text-[10px] sm:text-xs text-slate-500 max-w-xs leading-relaxed mx-auto">Hebat! Pemahaman peran penyelamat sistem diidentifikasi secara tepat.</p>
+                    </div>
+                `;
+            } else {
+                playSound('error');
+                gameArea.innerHTML = `
+                    <div class="space-y-2 text-center animate-fade-in">
+                        <span class="text-3xl">😢</span>
+                        <p class="text-xs sm:text-sm font-black text-rose-600">JAWABAN KURANG TEPAT!</p>
+                        <p class="text-[10px] sm:text-xs text-slate-500 max-w-xs leading-relaxed mx-auto">Kunci jawaban yang benar adalah <strong>${q.options[q.ans].toUpperCase()}</strong>. ${q.hint}</p>
+                    </div>
+                `;
+            }
+
+            setTimeout(() => {
+                gameIdx++;
+                if (gameIdx < gameQuestions.length) {
+                    loadQuestion();
+                } else {
+                    endGame();
+                }
+            }, 3000);
+        }
+
+        function endGame() {
+            const gameArea = document.getElementById('game-area');
+            let evaluationMsg = "";
+            if (score >= 80) {
+                evaluationMsg = "Siswa fokus dengan luar biasa! Kelas siap berkolaborasi menyelesaikan LKPD tim heterogen.";
+            } else if (score >= 50) {
+                evaluationMsg = "Kerja bagus! Konsep dasar pembagian peran industri PPLG sudah mulai dipahami.";
+            } else {
+                evaluationMsg = "Diskusikan kembali materi dengan teman kelompokmu untuk memperkuat pemahaman.";
+            }
+
+            gameArea.innerHTML = `
+                <div class="space-y-3 text-center animate-fade-in">
+                    <span class="text-4xl">🏆</span>
+                    <p class="text-sm sm:text-base font-extrabold text-slate-800">Sesi Selesai!</p>
+                    <p class="text-xs text-slate-500 max-w-sm leading-relaxed mx-auto">${evaluationMsg}</p>
+                    <button onclick="startGame()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl font-bold text-xs shadow-md transition-all">Main Lagi</button>
+                </div>
+            `;
+        }
+
+        // Window Onload Trigger
+        window.onload = function () {
+            // Start on Prologue chapter
+            switchChapter('prolog');
+        }
+    </script>
+</body>
+</html>
