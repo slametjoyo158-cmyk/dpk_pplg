@@ -1,0 +1,954 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Interaktif & Lembar Refleksi 4F</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome untuk Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .tab-active {
+            border-bottom: 3px solid #4f46e5;
+            color: #4f46e5;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Header / Navbar -->
+    <header class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-indigo-600 text-white p-2.5 rounded-xl shadow-md shadow-indigo-100">
+                    <i class="fa-solid :fa-book-open text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-xl sm:text-2xl text-slate-900 tracking-tight">LKPD Digital & Refleksi</h1>
+                    <p class="text-xs text-slate-500 font-medium">Pengembangan Perangkat Lunak dan Gim (PPLG)</p>
+                </div>
+            </div>
+            <!-- Identitas Siswa -->
+            <div class="flex flex-wrap gap-2 w-full sm:w-auto justify-end">
+                <input type="text" id="studentName" placeholder="Nama Siswa..." class="px-3 py-1.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 w-full sm:w-40" />
+                <select id="studentClass" class="px-3 py-1.5 text-sm rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-slate-50 w-full sm:w-32">
+                    <option value="">Pilih Kelas</option>
+                    <option value="X-PPLG-1">X PPLG 1</option>
+                    <option value="X-PPLG-2">X PPLG 2</option>
+                    <option value="XI-PPLG-1">XI PPLG 1</option>
+                    <option value="XI-PPLG-2">XI PPLG 2</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6">
+        
+        <!-- Navigation Tabs -->
+        <div class="flex border-b border-slate-200 mb-6 overflow-x-auto whitespace-nowrap bg-white rounded-xl p-1 shadow-sm gap-1">
+            <button onclick="switchTab('petunjuk')" id="tab-petunjuk" class="px-4 py-2.5 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-circle-info"></i> Petunjuk LKPD
+            </button>
+            <button onclick="switchTab('kelompok')" id="tab-kelompok" class="px-4 py-2.5 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-users"></i> Tugas Kelompok (1-5)
+            </button>
+            <button onclick="switchTab('refleksi')" id="tab-refleksi" class="px-4 py-2.5 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-heart-pulse"></i> Jurnal Refleksi 4F
+            </button>
+            <button onclick="switchTab('evaluasi')" id="tab-evaluasi" class="px-4 py-2.5 text-sm font-medium rounded-lg text-slate-600 hover:bg-slate-50 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-square-poll-vertical"></i> Kuis Evaluasi (20 Soal)
+            </button>
+        </div>
+
+        <!-- SECTION 1: PETUNJUK -->
+        <div id="content-petunjuk" class="tab-content space-y-6">
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl p-6 sm:p-8 text-white shadow-lg relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div class="relative z-10 max-w-3xl">
+                    <span class="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Aktivitas Kelas PPLG</span>
+                    <h2 class="text-2xl sm:text-4xl font-extrabold mt-3 tracking-tight">Selamat Datang di LKPD Digital!</h2>
+                    <p class="mt-2 text-indigo-100 text-sm sm:text-base leading-relaxed">
+                        Gunakan aplikasi interaktif ini untuk mempermudah proses pencarian informasi kelompok, menulis jurnal refleksi personal, dan menguji pemahaman materi melalui kuis pilihan ganda secara langsung.
+                    </p>
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <button onclick="switchTab('kelompok')" class="bg-white text-indigo-600 hover:bg-indigo-50 font-semibold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">
+                            Mulai Tugas Kelompok <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Petunjuk Penggunaan -->
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
+                <h3 class="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-indigo-500"></i> Langkah-langkah Pembelajaran
+                </h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="flex gap-4 items-start p-4 bg-slate-50 rounded-xl">
+                        <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">1</div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 text-sm">Diskusi Kelompok</h4>
+                            <p class="text-xs text-slate-500 mt-1">Sesuai pembagian kelompok Anda, carilah literatur dan informasi di internet mengenai topik yang telah ditentukan.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start p-4 bg-slate-50 rounded-xl">
+                        <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">2</div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 text-sm">Tulis Jurnal 4F</h4>
+                            <p class="text-xs text-slate-500 mt-1">Setiap anggota wajib mengisi lembar refleksi 4F (Facts, Feelings, Findings, Future) yang tersedia di tab refleksi.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 items-start p-4 bg-slate-50 rounded-xl">
+                        <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-sm shrink-0">3</div>
+                        <div>
+                            <h4 class="font-semibold text-slate-800 text-sm">Evaluasi Mandiri</h4>
+                            <p class="text-xs text-slate-500 mt-1">Kerjakan 20 soal kuis pilihan ganda berbasis web untuk mendapatkan hasil dan skor pemahaman Anda secara langsung.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: TUGAS KELOMPOK -->
+        <div id="content-kelompok" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto py-4">
+                <h2 class="text-2xl font-extrabold text-slate-900">Pembagian Topik LKPD Kelompok</h2>
+                <p class="text-sm text-slate-500 mt-1">Silakan pilih kelompok Anda di bawah ini untuk melihat detail tugas instruksi.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Kel 1 & 2 Card -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-1 rounded-md">Kelompok 1 & 2</span>
+                            <span class="text-slate-400 text-xl"><i class="fa-solid fa-gamepad"></i></span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Game Mobile & Tantangan PPLG</h3>
+                        <p class="text-xs text-slate-500 mb-4">Menganalisis sejarah dan kesuksesan game pasar global serta tantangan ke depan dalam rekayasa perangkat lunak.</p>
+                        
+                        <div class="border-t border-slate-100 pt-4 space-y-3">
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Sejarah Free Fire & Mobile Legends.</span>
+                            </div>
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Faktor penentu sukses di pasar global.</span>
+                            </div>
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Tantangan teknis/perangkat lunak di masa depan.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-b-2xl border-t border-slate-100">
+                        <button onclick="openForm('kel12')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition">
+                            Tulis Lembar Kerja Kelompok <i class="fa-solid fa-pen-to-square ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kel 3 & 4 Card -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-1 rounded-md">Kelompok 3 & 4</span>
+                            <span class="text-slate-400 text-xl"><i class="fa-solid fa-store"></i></span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Platform Digital, UMKM & Masyarakat</h3>
+                        <p class="text-xs text-slate-500 mb-4">Menganalisis sejarah berdirinya startup unicorn Indonesia, pola adopsi teknologi oleh masyarakat, dan dampaknya bagi UMKM.</p>
+                        
+                        <div class="border-t border-slate-100 pt-4 space-y-3">
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Sejarah berdirinya Gojek & Tokopedia.</span>
+                            </div>
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Alasan kenapa digemari/banyak dipakai masyarakat.</span>
+                            </div>
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Analisis dampak positif dan negatif bagi UMKM.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-b-2xl border-t border-slate-100">
+                        <button onclick="openForm('kel34')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition">
+                            Tulis Lembar Kerja Kelompok <i class="fa-solid fa-pen-to-square ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kel 5 Card -->
+                <div class="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col">
+                    <div class="p-6 flex-grow">
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-purple-100 text-purple-800 text-xs font-bold px-2.5 py-1 rounded-md">Kelompok 5</span>
+                            <span class="text-slate-400 text-xl"><i class="fa-solid fa-brain"></i></span>
+                        </div>
+                        <h3 class="font-bold text-slate-900 text-lg mb-2">Kecerdasan Buatan (AI) di PPLG</h3>
+                        <p class="text-xs text-slate-500 mb-4">Mencari tahu bagaimana implementasi AI dalam menunjang pembuatan aplikasi modern dan game development hari ini.</p>
+                        
+                        <div class="border-t border-slate-100 pt-4 space-y-3">
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Peran AI dalam penulisan kode (AI coding assistants).</span>
+                            </div>
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Pengembangan AI dalam game (NPC, procedur generation).</span>
+                            </div>
+                            <div class="flex gap-2 items-start text-xs text-slate-600">
+                                <i class="fa-solid fa-circle-dot text-indigo-500 mt-0.5 shrink-0"></i>
+                                <span>Masa depan pekerjaan software developer dengan adanya AI.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-b-2xl border-t border-slate-100">
+                        <button onclick="openForm('kel5')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-4 rounded-xl text-xs transition">
+                            Tulis Lembar Kerja Kelompok <i class="fa-solid fa-pen-to-square ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODAL FORM PEMBAHASAN LKPD KELOMPOK -->
+            <div id="modal-lkpd" class="hidden fixed inset-0 bg-slate-900/60 flex items-center justify-center p-4 z-50 overflow-y-auto">
+                <div class="bg-white rounded-2xl max-w-2xl w-full p-6 shadow-xl relative my-8">
+                    <button onclick="closeForm()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 text-xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div id="modal-content">
+                        <!-- Konten dinamis sesuai kelompok yang diklik -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: LEMBAR REFLEKSI 4F -->
+        <div id="content-refleksi" class="tab-content hidden space-y-6">
+            <div class="text-center max-w-2xl mx-auto py-4">
+                <h2 class="text-2xl font-extrabold text-slate-900">Lembar Refleksi Diri (Metode 4F)</h2>
+                <p class="text-sm text-slate-500 mt-1">Refleksikan proses pembelajaran hari ini dengan menjawab poin-poin 4F di bawah ini secara jujur.</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 space-y-6">
+                <!-- Facts (Fakta) -->
+                <div class="space-y-2">
+                    <label class="block font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-xs font-bold">1</span>
+                        Facts (Fakta Peristiwa)
+                    </label>
+                    <p class="text-xs text-slate-500 pl-9">Apa saja hal baru yang saya pelajari hari ini terkait sejarah industri game, platform digital, atau peran kecerdasan buatan (AI)?</p>
+                    <textarea id="refleksiFacts" rows="3" placeholder="Tuliskan peristiwa nyata atau fakta-fakta yang Anda dapatkan..." class="w-full mt-2 p-3 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-slate-50"></textarea>
+                </div>
+
+                <!-- Feelings (Perasaan) -->
+                <div class="space-y-2">
+                    <label class="block font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-pink-100 text-pink-600 flex items-center justify-center text-xs font-bold">2</span>
+                        Feelings (Perasaan)
+                    </label>
+                    <p class="text-xs text-slate-500 pl-9">Bagaimana perasaan saya selama melakukan proses pencarian informasi dan diskusi kelompok di kelas?</p>
+                    <textarea id="refleksiFeelings" rows="3" placeholder="Bagikan perasaan Anda (senang, tertantang, bingung, atau termotivasi) dan alasannya..." class="w-full mt-2 p-3 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-slate-50"></textarea>
+                </div>
+
+                <!-- Findings (Pembelajaran/Temuan) -->
+                <div class="space-y-2">
+                    <label class="block font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center text-xs font-bold">3</span>
+                        Findings (Pembelajaran Baru)
+                    </label>
+                    <p class="text-xs text-slate-500 pl-9">Pelajaran berharga apa yang dapat saya petik dari pola kesuksesan game/aplikasi, kontribusi UMKM, ataupun perkembangan teknologi AI?</p>
+                    <textarea id="refleksiFindings" rows="3" placeholder="Apa kesimpulan ilmu baru yang paling mengubah sudut pandang Anda hari ini..." class="w-full mt-2 p-3 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-slate-50"></textarea>
+                </div>
+
+                <!-- Future (Penerapan ke Depan) -->
+                <div class="space-y-2">
+                    <label class="block font-bold text-slate-800 text-sm flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs font-bold">4</span>
+                        Future (Penerapan Masa Depan)
+                    </label>
+                    <p class="text-xs text-slate-500 pl-9">Apa tindakan nyata yang ingin saya lakukan ke depan sebagai calon pengembang perangkat lunak (software developer) setelah mempelajari materi hari ini?</p>
+                    <textarea id="refleksiFuture" rows="3" placeholder="Rencana aksi nyata apa yang akan Anda lakukan di kelas atau karir mendatang..." class="w-full mt-2 p-3 text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:outline-none bg-slate-50"></textarea>
+                </div>
+
+                <!-- Tombol simpan refleksi secara offline/unduh -->
+                <div class="pt-4 border-t border-slate-100 flex flex-wrap gap-2 justify-end">
+                    <button onclick="downloadRefleksi()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 px-6 rounded-xl text-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-download"></i> Simpan & Unduh Refleksi (.txt)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: KUIS EVALUASI (20 SOAL) -->
+        <div id="content-evaluasi" class="tab-content hidden space-y-6">
+            <div class="bg-slate-900 text-white p-6 rounded-2xl flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="font-extrabold text-xl">Uji Pemahaman Materi (PPLG)</h3>
+                    <p class="text-xs text-slate-400 mt-1">20 Soal Pilihan Ganda mencakup sejarah game, platform digital, ekonomi sirkular, dan peran AI.</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div id="quizTimer" class="bg-slate-800 border border-slate-700 px-4 py-2 rounded-xl text-sm font-semibold text-amber-400 flex items-center gap-2">
+                        <i class="fa-regular fa-clock"></i> <span id="timerDisplay">Waktu berjalan...</span>
+                    </div>
+                    <div class="bg-indigo-600 text-white px-4 py-2 rounded-xl text-sm font-semibold">
+                        Progress: <span id="quizProgress">0</span>/20
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Container -->
+            <div id="quiz-area" class="max-w-3xl mx-auto space-y-6">
+                <!-- Soal akan di-render menggunakan JavaScript -->
+            </div>
+
+            <!-- Quiz Submit -->
+            <div class="max-w-3xl mx-auto flex justify-between items-center bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                <p class="text-xs text-slate-500 font-medium">Periksa kembali jawaban Anda sebelum mengirim!</p>
+                <button onclick="submitQuiz()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition">
+                    Kirim & Lihat Hasil <i class="fa-solid fa-paper-plane ml-1"></i>
+                </button>
+            </div>
+
+            <!-- HASIL KUIS (Akan tampil setelah submit) -->
+            <div id="quiz-result" class="hidden max-w-3xl mx-auto bg-white rounded-2xl border border-slate-200 shadow-lg p-6 text-center space-y-6">
+                <div class="w-24 h-24 rounded-full bg-indigo-50 border-4 border-indigo-500 text-indigo-600 flex items-center justify-center font-black text-3xl mx-auto shadow-inner" id="resultScore">
+                    0
+                </div>
+                <div>
+                    <h4 class="text-xl font-bold text-slate-900" id="resultTitle">Luar Biasa!</h4>
+                    <p class="text-sm text-slate-500 mt-1" id="resultDesc">Jawaban Anda sudah kami periksa. Teruslah belajar untuk memahami rekayasa perangkat lunak lebih baik.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-4 max-w-md mx-auto pt-4 border-t border-slate-100">
+                    <div class="bg-emerald-50 text-emerald-800 p-3 rounded-xl">
+                        <span class="block text-xs font-semibold uppercase text-emerald-600">Jawaban Benar</span>
+                        <span class="text-xl font-bold" id="resultCorrect">0</span>
+                    </div>
+                    <div class="bg-rose-50 text-rose-800 p-3 rounded-xl">
+                        <span class="block text-xs font-semibold uppercase text-rose-600">Jawaban Salah</span>
+                        <span class="text-xl font-bold" id="resultWrong">0</span>
+                    </div>
+                </div>
+                <div class="pt-2">
+                    <button onclick="resetQuiz()" class="text-indigo-600 hover:text-indigo-800 font-bold text-sm">
+                        <i class="fa-solid fa-arrow-rotate-right"></i> Kerjakan Ulang Kuis
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            <p>&copy; 2026 Pembelajaran Interaktif PPLG - Kurikulum Merdeka SMK.</p>
+        </div>
+    </footer>
+
+    <!-- LOGIK & DATA JAVASCRIPT -->
+    <script>
+        // Data Soal 20 Soal Pilihan Ganda
+        const questions = [
+            {
+                q: "Siapakah perusahaan pengembang (developer) utama di balik game Free Fire yang dirilis di pasar global?",
+                options: [
+                    "Moonton Games",
+                    "Garena (111dots Studio)",
+                    "Tencent Games",
+                    "Epic Games"
+                ],
+                correct: 1
+            },
+            {
+                q: "Faktor utama rekayasa perangkat lunak yang membuat Free Fire sangat sukses di pasar negara berkembang adalah...",
+                options: [
+                    "Kebutuhan spesifikasi RAM dan perangkat keras yang rendah (ramah HP kentang)",
+                    "Grafik ultra-realistis setara game konsol",
+                    "Ukurannya yang mencapai puluhan gigabyte",
+                    "Harus menggunakan koneksi internet berkecepatan serat optik tinggi"
+                ],
+                correct: 0
+            },
+            {
+                q: "Mobile Legends: Bang Bang dikembangkan oleh Moonton dan dirilis secara resmi pada tahun...",
+                options: [
+                    "2014",
+                    "2016",
+                    "2018",
+                    "2020"
+                ],
+                correct: 1
+            },
+            {
+                q: "Tantangan rekayasa perangkat lunak masa depan bagi game multiplayer online berkapasitas besar adalah...",
+                options: [
+                    "Mengurangi kecepatan framerate agar ponsel cepat panas",
+                    "Skalabilitas server demi menekan latensi (ping) sekecil mungkin ketika jutaan pengguna online",
+                    "Meniadakan fitur update konten secara berkala",
+                    "Membuat game hanya bisa dimainkan di satu wilayah negara saja"
+                ],
+                correct: 1
+            },
+            {
+                q: "Siapakah tokoh pendiri utama layanan ojek online Gojek di Indonesia?",
+                options: [
+                    "William Tanuwidjaya",
+                    "Nadiem Makarim",
+                    "Achmad Zaky",
+                    "Ferry Unardi"
+                ],
+                correct: 1
+            },
+            {
+                q: "Tokopedia didirikan pada tahun 2009 oleh duo founder yaitu...",
+                options: [
+                    "Nadiem Makarim dan Kevin Aluwi",
+                    "William Tanuwidjaya dan Leontinus Alpha Edison",
+                    "Ferry Unardi dan Albert Zhang",
+                    "Jason Lamuda dan Shinta Witoyo"
+                ],
+                correct: 1
+            },
+            {
+                q: "Salah satu pemicu utama masyarakat sangat cepat mengadopsi Gojek dan Tokopedia di kehidupan sehari-hari adalah...",
+                options: [
+                    "Harganya yang sangat mahal dan eksklusif",
+                    "Kemudahan, efisiensi waktu, serta integrasi metode pembayaran cashless (non-tunai)",
+                    "Hanya bisa diakses menggunakan komputer desktop spesifikasi tinggi",
+                    "Tidak memiliki sistem customer service sama sekali"
+                ],
+                correct: 1
+            },
+            {
+                q: "Apa dampak paling nyata dari kehadiran Tokopedia bagi perkembangan Usaha Mikro, Kecil, dan Menengah (UMKM)?",
+                options: [
+                    "Mempersempit jangkauan pasar penjualan produk lokal",
+                    "Meningkatkan biaya sewa toko fisik berkali-kali lipat",
+                    "Mendigitalisasi UMKM agar bisa menjangkau pembeli di seluruh penjuru Indonesia tanpa batas wilayah",
+                    "Memaksa UMKM untuk berhenti memproduksi barang lokal"
+                ],
+                correct: 2
+            },
+            {
+                q: "Gojek dan Tokopedia resmi melakukan merger (penggabungan bisnis) membentuk entitas baru yang dinamakan...",
+                options: [
+                    "GrabTok",
+                    "GoTo Group",
+                    "JekPedia",
+                    "IndoDigital Group"
+                ],
+                correct: 1
+            },
+            {
+                q: "Di bawah ini yang merupakan contoh peran kecerdasan buatan (AI) dalam mempermudah penulisan kode program (coding) bagi developer adalah...",
+                options: [
+                    "Mesin pemotong kertas otomatis",
+                    "GitHub Copilot dan ChatGPT sebagai AI assistant coding",
+                    "Aplikasi edit video berbasis filter",
+                    "Sistem kasir manual di swalayan"
+                ],
+                correct: 1
+            },
+            {
+                q: "Dalam pengembangan game, AI sering digunakan untuk mengontrol NPC. Singkatan dari apakah NPC tersebut?",
+                options: [
+                    "New Player Center",
+                    "Non-Player Character",
+                    "Network Physical Control",
+                    "National Programmer Club"
+                ],
+                correct: 1
+            },
+            {
+                q: "Apa kegunaan teknologi Machine Learning (ML) sebagai bagian dari AI pada aplikasi e-commerce seperti Tokopedia?",
+                options: [
+                    "Memberikan rekomendasi produk yang relevan berdasarkan riwayat pencarian pengguna",
+                    "Mencuri pulsa pengguna secara otomatis",
+                    "Menghapus database barang milik kompetitor secara sepihak",
+                    "Mengurangi kecepatan internet pembeli"
+                ],
+                correct: 0
+            },
+            {
+                q: "Bagaimana cara pengembang game mendeteksi kecurangan (cheat) secara real-time menggunakan bantuan teknologi AI?",
+                options: [
+                    "Dengan mempekerjakan jutaan admin untuk memantau layar pemain",
+                    "Menerapkan algoritma AI deteksi anomali perilaku/pola input tombol yang tidak wajar",
+                    "Mematikan server game secara acak",
+                    "Membatasi waktu bermain hanya 15 menit sehari"
+                ],
+                correct: 1
+            },
+            {
+                q: "Perangkat lunak yang dikembangkan dengan integrasi AI asisten memiliki keunggulan utama dalam hal...",
+                options: [
+                    "Meningkatkan bug secara masif",
+                    "Mempercepat waktu produksi (time to market) dengan otomatisasi debugging dan boilerplate code",
+                    "Membuat software menjadi tidak kompatibel di smartphone",
+                    "Menghilangkan fungsi database penyimpanan"
+                ],
+                correct: 1
+            },
+            {
+                q: "Sikap bijak seorang siswa jurusan PPLG dalam menghadapi perkembangan pesat AI di masa depan adalah...",
+                options: [
+                    "Berhenti belajar pemrograman karena menganggap AI akan menggantikan semua manusia",
+                    "Mempelajari cara kerja AI (prompt engineering) untuk meningkatkan efisiensi dan kualitas coding kita",
+                    "Melarang sekolah menggunakan teknologi komputer sama sekali",
+                    "Mengandalkan AI sepenuhnya untuk mengerjakan tugas tanpa memahaminya sendiri"
+                ],
+                correct: 1
+            },
+            {
+                q: "Apa nama teknik pembuatan aset visual game (seperti map, pohon, tekstur) secara otomatis oleh algoritma komputer tanpa harus mendesain satu per satu secara manual?",
+                options: [
+                    "Manual Drafting",
+                    "Procedural Generation",
+                    "Rasterization",
+                    "Hand-drawn Animation"
+                ],
+                correct: 1
+            },
+            {
+                q: "Mengapa model AI generatif memerlukan 'dataset' dalam jumlah sangat besar saat fase pelatihan?",
+                options: [
+                    "Agar memori server cepat penuh",
+                    "Supaya AI dapat mengenali pola bahasa, visual, atau logika kode dengan akurasi yang baik",
+                    "Sebagai hiasan sistem semata",
+                    "Agar biaya pembuatan software menjadi murah"
+                ],
+                correct: 1
+            },
+            {
+                q: "Sistem pengenalan rute tercepat dan estimasi waktu tiba (ETA) pada aplikasi Gojek didukung oleh pemanfaatan algoritma...",
+                options: [
+                    "AI pencarian jalur terbaik (pathfinding) berbasis data spasial/GPS",
+                    "Generative Adversarial Network (GAN)",
+                    "Natural Language Processing (NLP)",
+                    "Enkripsi blockchain"
+                ],
+                correct: 0
+            },
+            {
+                q: "Berikut ini tantangan etis pemanfaatan AI dalam dunia perangkat lunak adalah...",
+                options: [
+                    "Ketersediaan lisensi kode sumber yang plagiat dan isu keamanan privasi data",
+                    "Komputer menjadi lebih hemat energi listrik",
+                    "Hasil kode menjadi terlalu rapi dan mudah dibaca",
+                    "Aplikasi berjalan lebih cepat dari biasanya"
+                ],
+                correct: 0
+            },
+            {
+                q: "Kombinasi antara keahlian logika manusia dan otomatisasi AI melahirkan konsep kolaborasi baru bernama...",
+                options: [
+                    "No-Code Development",
+                    "AI-Augmented Development",
+                    "Hardware Crafting",
+                    "Manual Assembly"
+                ],
+                correct: 1
+            }
+        ];
+
+        // Ganti Tab Aktif
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+
+            document.querySelectorAll('[id^="tab-"]').forEach(btn => {
+                btn.classList.remove('tab-active', 'bg-indigo-50', 'text-indigo-600');
+                btn.classList.add('text-slate-600');
+            });
+            
+            const activeBtn = document.getElementById('tab-' + tabName);
+            activeBtn.classList.add('tab-active', 'bg-indigo-50', 'text-indigo-600');
+        }
+
+        // Set Tab default ke petunjuk saat load awal
+        window.onload = function() {
+            switchTab('petunjuk');
+            renderQuiz();
+            startTimer();
+        };
+
+        // Form LKPD dinamis kelompok
+        function openForm(kel) {
+            const modal = document.getElementById('modal-lkpd');
+            const content = document.getElementById('modal-content');
+            modal.classList.remove('hidden');
+
+            if (kel === 'kel12') {
+                content.innerHTML = `
+                    <h3 class="font-bold text-slate-900 text-xl mb-2 flex items-center gap-2 text-indigo-600">
+                        <i class="fa-solid fa-gamepad"></i> Lembar Jawaban Kelompok 1 & 2
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Topik: Sejarah, Keberhasilan, dan Tantangan Perangkat Lunak Game Free Fire & Mobile Legends.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Anggota Kelompok:</label>
+                            <input type="text" id="ansKel12_names" placeholder="Nama-nama anggota kelompok..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">1. Bagaimana sejarah singkat berdirinya Free Fire dan Mobile Legends?</label>
+                            <textarea id="ansKel12_q1" rows="3" placeholder="Tuliskan hasil diskusi kelompok tentang pencipta, tahun rilis, dan latar belakang..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">2. Mengapa kedua game tersebut bisa sangat sukses di pasar global?</label>
+                            <textarea id="ansKel12_q2" rows="3" placeholder="Faktor spesifikasi RAM, kemudahan gameplay, strategi pemasaran, dsb..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">3. Apa saja tantangan teknis perangkat lunak (software development) game tersebut di masa depan?</label>
+                            <textarea id="ansKel12_q3" rows="3" placeholder="Isu server, optimasi grafis, cheat detector, interoperabilitas perangkat, dsb..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button onclick="closeForm()" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700">Batal</button>
+                            <button onclick="downloadJawabanKelompok('Kelompok_1_2_Game')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition">Unduh Hasil Diskusi (.txt)</button>
+                        </div>
+                    </div>
+                `;
+            } else if (kel === 'kel34') {
+                content.innerHTML = `
+                    <h3 class="font-bold text-slate-900 text-xl mb-2 flex items-center gap-2 text-amber-600">
+                        <i class="fa-solid fa-store"></i> Lembar Jawaban Kelompok 3 & 4
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Topik: Sejarah Gojek & Tokopedia, Adopsi Sosial, dan Pengaruh Terhadap UMKM.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Anggota Kelompok:</label>
+                            <input type="text" id="ansKel34_names" placeholder="Nama-nama anggota kelompok..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">1. Bagaimana sejarah singkat berdirinya Gojek dan Tokopedia di Indonesia?</label>
+                            <textarea id="ansKel34_q1" rows="3" placeholder="Sejarah berdirinya, founder masing-masing startup, tahun rilis..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">2. Mengapa aplikasi tersebut sangat banyak dipakai dan dicintai masyarakat?</label>
+                            <textarea id="ansKel34_q2" rows="3" placeholder="Faktor kepraktisan, fitur unggulan seperti pengiriman cepat, GoPay, promo..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">3. Apa dampak positif dan negatif kehadiran platform ini bagi para pelaku UMKM lokal?</label>
+                            <textarea id="ansKel34_q3" rows="3" placeholder="Digitalisasi pasar, efisiensi logistik, tantangan persaingan harga ketat..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button onclick="closeForm()" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700">Batal</button>
+                            <button onclick="downloadJawabanKelompok('Kelompok_3_4_Startup')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition">Unduh Hasil Diskusi (.txt)</button>
+                        </div>
+                    </div>
+                `;
+            } else if (kel === 'kel5') {
+                content.innerHTML = `
+                    <h3 class="font-bold text-slate-900 text-xl mb-2 flex items-center gap-2 text-purple-600">
+                        <i class="fa-solid fa-brain"></i> Lembar Jawaban Kelompok 5
+                    </h3>
+                    <p class="text-xs text-slate-500 mb-4">Topik: Peran Kecerdasan Buatan (AI) dalam Pembuatan Aplikasi & Game.</p>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">Anggota Kelompok:</label>
+                            <input type="text" id="ansKel5_names" placeholder="Nama-nama anggota kelompok..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50" />
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">1. Bagaimana peran AI membantu developer dalam menulis dan merapikan kode program (software coding)?</label>
+                            <textarea id="ansKel5_q1" rows="3" placeholder="Pemanfaatan AI asisten seperti Copilot, ChatGPT, optimasi pencarian bug..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">2. Sebutkan dan jelaskan bagaimana AI diimplementasikan ke dalam elemen-elemen game modern!</label>
+                            <textarea id="ansKel5_q2" rows="3" placeholder="Penerapan pada kecerdasan NPC musuh, procedural generation map, deteksi cheat, dsb..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 mb-1">3. Bagaimana masa depan profesi software engineer/game dev di tengah masifnya teknologi AI?</label>
+                            <textarea id="ansKel5_q3" rows="3" placeholder="Apakah AI akan menggantikan manusia sepenuhnya atau berkolaborasi? Tuliskan opininya..." class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 bg-slate-50"></textarea>
+                        </div>
+                        <div class="flex justify-end gap-2 pt-2">
+                            <button onclick="closeForm()" class="px-4 py-2 text-xs font-bold text-slate-500 hover:text-slate-700">Batal</button>
+                            <button onclick="downloadJawabanKelompok('Kelompok_5_AI')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-4 py-2 rounded-lg text-xs transition">Unduh Hasil Diskusi (.txt)</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function closeForm() {
+            document.getElementById('modal-lkpd').classList.add('hidden');
+        }
+
+        // Fungsi Unduh Hasil Diskusi Kelompok
+        function downloadJawabanKelompok(filenamePrefix) {
+            const studentName = document.getElementById('studentName').value || "Siswa_Anonim";
+            const studentClass = document.getElementById('studentClass').value || "Tanpa_Kelas";
+            
+            let textData = `=== LKPD DIGITAL JAWABAN KELOMPOK ===\n`;
+            textData += `Siswa Pengunduh: ${studentName}\nKelas: ${studentClass}\nTanggal: ${new Date().toLocaleDateString('id-ID')}\n\n`;
+
+            if (filenamePrefix === 'Kelompok_1_2_Game') {
+                const members = document.getElementById('ansKel12_names').value;
+                const q1 = document.getElementById('ansKel12_q1').value;
+                const q2 = document.getElementById('ansKel12_q2').value;
+                const q3 = document.getElementById('ansKel12_q3').value;
+                textData += `Anggota Kelompok: ${members}\n\n`;
+                textData += `1. Sejarah Singkat Free Fire & Mobile Legends:\n${q1}\n\n`;
+                textData += `2. Faktor Kesuksesan Global:\n${q2}\n\n`;
+                textData += `3. Tantangan Rekayasa Perangkat Lunak ke Depan:\n${q3}\n`;
+            } else if (filenamePrefix === 'Kelompok_3_4_Startup') {
+                const members = document.getElementById('ansKel34_names').value;
+                const q1 = document.getElementById('ansKel34_q1').value;
+                const q2 = document.getElementById('ansKel34_q2').value;
+                const q3 = document.getElementById('ansKel34_q3').value;
+                textData += `Anggota Kelompok: ${members}\n\n`;
+                textData += `1. Sejarah Gojek & Tokopedia:\n${q1}\n\n`;
+                textData += `2. Faktor Adopsi di Masyarakat:\n${q2}\n\n`;
+                textData += `3. Dampak Positif/Negatif terhadap UMKM:\n${q3}\n`;
+            } else if (filenamePrefix === 'Kelompok_5_AI') {
+                const members = document.getElementById('ansKel5_names').value;
+                const q1 = document.getElementById('ansKel5_q1').value;
+                const q2 = document.getElementById('ansKel5_q2').value;
+                const q3 = document.getElementById('ansKel5_q3').value;
+                textData += `Anggota Kelompok: ${members}\n\n`;
+                textData += `1. Peran AI dalam Coding Asisten:\n${q1}\n\n`;
+                textData += `2. Implementasi AI dalam Game Modern:\n${q2}\n\n`;
+                textData += `3. Masa Depan Profesi Developer:\n${q3}\n`;
+            }
+
+            const blob = new Blob([textData], { type: "text/plain;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `${filenamePrefix}_${studentClass}.txt`;
+            link.click();
+            closeForm();
+        }
+
+        // Fungsi Unduh Refleksi Pribadi (4F)
+        function downloadRefleksi() {
+            const studentName = document.getElementById('studentName').value || "Siswa_Anonim";
+            const studentClass = document.getElementById('studentClass').value || "Tanpa_Kelas";
+            const facts = document.getElementById('refleksiFacts').value;
+            const feelings = document.getElementById('refleksiFeelings').value;
+            const findings = document.getElementById('refleksiFindings').value;
+            const future = document.getElementById('refleksiFuture').value;
+
+            if (!studentName || studentName === "Siswa_Anonim") {
+                showToast("Mohon isi Nama Siswa di pojok kanan atas sebelum menyimpan!");
+                return;
+            }
+
+            let textData = `=== LEMBAR REFLEKSI SISWA 4F (KURIKULUM MERDEKA) ===\n`;
+            textData += `Nama Lengkap : ${studentName}\n`;
+            textData += `Kelas        : ${studentClass}\n`;
+            textData += `Tanggal      : ${new Date().toLocaleDateString('id-ID')}\n`;
+            textData += `====================================================\n\n`;
+            textData += `1. FACTS (Fakta Peristiwa):\n${facts || '-'}\n\n`;
+            textData += `2. FEELINGS (Perasaan):\n${feelings || '-'}\n\n`;
+            textData += `3. FINDINGS (Pembelajaran/Temuan Baru):\n${findings || '-'}\n\n`;
+            textData += `4. FUTURE (Penerapan Masa Depan):\n${future || '-'}\n\n`;
+            textData += `====================================================\n`;
+
+            const blob = new Blob([textData], { type: "text/plain;charset=utf-8" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `Refleksi_4F_${studentName.replace(/\s+/g, '_')}.txt`;
+            link.click();
+        }
+
+        // Render Kuis Evaluasi
+        let userAnswers = {};
+        function renderQuiz() {
+            const container = document.getElementById('quiz-area');
+            container.innerHTML = "";
+
+            questions.forEach((qItem, qIndex) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-3";
+                card.id = `q-card-${qIndex}`;
+
+                const questionText = document.createElement('h4');
+                questionText.className = "font-bold text-slate-800 text-sm";
+                questionText.innerHTML = `<span class="text-indigo-600 mr-1">${qIndex + 1}.</span> ${qItem.q}`;
+                card.appendChild(questionText);
+
+                const optionsContainer = document.createElement('div');
+                optionsContainer.className = "grid gap-2";
+
+                qItem.options.forEach((opt, optIndex) => {
+                    const label = document.createElement('label');
+                    label.className = `flex items-center gap-3 p-3 rounded-xl border border-slate-100 hover:border-slate-300 bg-slate-50 hover:bg-slate-100/50 cursor-pointer text-xs font-medium transition duration-200`;
+                    label.id = `label-${qIndex}-${optIndex}`;
+
+                    const radio = document.createElement('input');
+                    radio.type = "radio";
+                    radio.name = `question-${qIndex}`;
+                    radio.value = optIndex;
+                    radio.className = "accent-indigo-600 h-4 w-4 shrink-0";
+                    radio.onchange = () => handleSelectAnswer(qIndex, optIndex);
+
+                    label.appendChild(radio);
+                    label.appendChild(document.createTextNode(opt));
+                    optionsContainer.appendChild(label);
+                });
+
+                card.appendChild(optionsContainer);
+                container.appendChild(card);
+            });
+        }
+
+        function handleSelectAnswer(qIndex, optIndex) {
+            userAnswers[qIndex] = optIndex;
+            
+            // Highlight opsi terpilih
+            questions[qIndex].options.forEach((_, idx) => {
+                const lbl = document.getElementById(`label-${qIndex}-${idx}`);
+                if (idx === optIndex) {
+                    lbl.classList.remove('bg-slate-50', 'border-slate-100');
+                    lbl.classList.add('bg-indigo-50', 'border-indigo-200', 'text-indigo-900');
+                } else {
+                    lbl.classList.remove('bg-indigo-50', 'border-indigo-200', 'text-indigo-900');
+                    lbl.classList.add('bg-slate-50', 'border-slate-100');
+                }
+            });
+
+            // Update Progress
+            const answeredCount = Object.keys(userAnswers).length;
+            document.getElementById('quizProgress').innerText = answeredCount;
+        }
+
+        // Timer Kuis
+        let secondsElapsed = 0;
+        let timerInterval;
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                secondsElapsed++;
+                const mins = Math.floor(secondsElapsed / 60);
+                const secs = secondsElapsed % 60;
+                document.getElementById('timerDisplay').innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Submit Kuis
+        function submitQuiz() {
+            const studentName = document.getElementById('studentName').value;
+            if (!studentName) {
+                showToast("Silakan isi nama lengkap Anda di bagian atas halaman terlebih dahulu!");
+                switchTab('petunjuk');
+                document.getElementById('studentName').focus();
+                return;
+            }
+
+            const unanswered = [];
+            questions.forEach((_, idx) => {
+                if (userAnswers[idx] === undefined) {
+                    unanswered.push(idx + 1);
+                }
+            });
+
+            if (unanswered.length > 0) {
+                showToast(`Ups! Masih ada soal yang belum dijawab: Nomor ${unanswered.join(', ')}`);
+                return;
+            }
+
+            clearInterval(timerInterval);
+            let correctCount = 0;
+            let wrongCount = 0;
+
+            questions.forEach((qItem, qIndex) => {
+                const userAns = userAnswers[qIndex];
+                const card = document.getElementById(`q-card-${qIndex}`);
+                
+                // Reset styling agar warna benar/salah jelas
+                qItem.options.forEach((_, optIndex) => {
+                    const lbl = document.getElementById(`label-${qIndex}-${optIndex}`);
+                    lbl.className = "flex items-center gap-3 p-3 rounded-xl border text-xs font-medium transition duration-200 cursor-not-allowed";
+                    // Disable radio
+                    lbl.querySelector('input').disabled = true;
+
+                    if (optIndex === qItem.correct) {
+                        lbl.classList.add('bg-emerald-50', 'border-emerald-300', 'text-emerald-900', 'font-semibold');
+                    } else if (optIndex === userAns) {
+                        lbl.classList.add('bg-rose-50', 'border-rose-300', 'text-rose-900');
+                    } else {
+                        lbl.classList.add('bg-slate-50', 'border-slate-100', 'text-slate-400');
+                    }
+                });
+
+                if (userAns === qItem.correct) {
+                    correctCount++;
+                } else {
+                    wrongCount++;
+                }
+            });
+
+            // Tampilkan Hasil Evaluasi
+            const finalScore = Math.round((correctCount / questions.length) * 100);
+            document.getElementById('resultScore').innerText = finalScore;
+            document.getElementById('resultCorrect').innerText = correctCount;
+            document.getElementById('resultWrong').innerText = wrongCount;
+
+            const rTitle = document.getElementById('resultTitle');
+            const rDesc = document.getElementById('resultDesc');
+            if (finalScore >= 80) {
+                rTitle.innerText = "Luar Biasa! Kompeten Sekali";
+                rDesc.innerText = "Kamu telah memahami sejarah, konsep teknologi, dan peranan AI dengan sangat komprehensif.";
+            } else if (finalScore >= 60) {
+                rTitle.innerText = "Cukup Kompeten!";
+                rDesc.innerText = "Pemahaman kamu sudah bagus. Pelajari lagi poin-poin yang masih salah agar semakin mahir.";
+            } else {
+                rTitle.innerText = "Perlu Belajar Lagi!";
+                rDesc.innerText = "Jangan berkecil hati. Bacalah referensi literatur LKPD kembali dan lakukan pengerjaan ulang.";
+            }
+
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Reset Kuis
+        function resetQuiz() {
+            userAnswers = {};
+            document.getElementById('quizProgress').innerText = "0";
+            document.getElementById('quiz-result').classList.add('hidden');
+            secondsElapsed = 0;
+            clearInterval(timerInterval);
+            renderQuiz();
+            startTimer();
+        }
+
+        // Custom Toast Notification (Pengganti alert)
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = "fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-xl shadow-lg z-50 text-xs font-semibold flex items-center gap-2 transform translate-y-2 opacity-0 transition-all duration-300";
+            toast.innerHTML = `<i class="fa-solid fa-circle-exclamation text-amber-400"></i> ${message}`;
+            document.body.appendChild(toast);
+            
+            // Animate In
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            // Animate Out
+            setTimeout(() => {
+                toast.classList.add('translate-y-2', 'opacity-0');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+    </script>
+</body>
+</html>
+
+```
+
