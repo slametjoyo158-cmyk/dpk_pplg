@@ -1,848 +1,2123 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kisah Penyelamat Kantin - Interactive Storytelling</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Evolusi & Pengembangan Perangkat Lunak - Media Pembelajaran Interaktif PPLG</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Slate 50 base */
+            transition: background-color 0.3s, color 0.3s;
         }
-        h1, h2, h3, .font-display {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.05);
         }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(241, 245, 249, 0.8);
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(99, 102, 241, 0.2);
+        ::-webkit-scrollbar-thumb {
+            background: rgba(14, 165, 233, 0.3);
             border-radius: 4px;
         }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(99, 102, 241, 0.4);
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(14, 165, 233, 0.6);
         }
-        
-        /* Animasi kustom untuk interaksi yang lebih menarik */
+        /* Glassmorphism custom styles */
+        .glass {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+        .dark .glass {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        /* Shake Animation for bugs */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
+            25% { transform: translateX(-6px); }
+            75% { transform: translateX(6px); }
         }
         .animate-shake {
             animation: shake 0.2s ease-in-out infinite;
         }
-        
-        @keyframes printIn {
-            from { transform: translateY(-100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .animate-print {
-            animation: printIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
     </style>
 </head>
-<body class="text-slate-800 min-h-screen flex flex-col justify-between overflow-x-hidden antialiased">
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-300">
 
-    <!-- Navigation / Header -->
-    <header class="bg-white/80 backdrop-blur-md border-b border-slate-200/85 sticky top-0 z-40 px-6 py-4 shadow-sm">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-4">
-                <div class="p-3 bg-gradient-to-tr from-indigo-500 via-indigo-600 to-violet-600 rounded-2xl shadow-lg shadow-indigo-500/20 transform hover:rotate-3 transition-transform duration-300">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 glass shadow-sm transition-all duration-300 border-b border-slate-200/50 dark:border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-brand-500 to-indigo-600 p-2.5 rounded-xl text-white shadow-md shadow-brand-500/20">
+                    <i class="fa-solid fa-laptop-code text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-extrabold tracking-tight text-slate-900 flex flex-wrap items-center gap-2">
-                        Kisah Penyelamat Kantin Bu Minah
-                        <span class="text-[10px] bg-indigo-50 text-indigo-600 border border-indigo-200 px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider">DPK PPLG Kelas X</span>
-                    </h1>
-                    <p class="text-xs text-slate-500 mt-0.5">Media Pembelajaran Storytelling & Simulasi Interaktif Peran Industri Perangkat Lunak & Gim</p>
+                    <h1 class="font-bold text-lg tracking-tight bg-gradient-to-r from-brand-600 to-indigo-500 bg-clip-text text-transparent dark:from-brand-400 dark:to-indigo-300">PPLG Interactive Storytelling</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 font-medium">Materi: Perkembangan Perangkat Lunak v2.0</p>
                 </div>
             </div>
-            
-            <!-- Quick Soundboard Indicators -->
-            <div class="flex items-center gap-2 bg-slate-100/80 border border-slate-200/60 rounded-2xl p-1.5 shadow-inner">
-                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-2.5">Soundboard:</span>
-                <button onclick="playSound('bell')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Bel Sekolah">🔔</button>
-                <button onclick="playSound('printer')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Printer Tiket">🖨️</button>
-                <button onclick="playSound('coin')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Koin Berhasil">🪙</button>
-                <button onclick="playSound('error')" class="p-2.5 bg-white hover:bg-indigo-50 hover:text-indigo-600 hover:border-indigo-300 active:scale-95 rounded-xl transition-all border border-slate-200 shadow-sm" title="Koneksi Error">⚠️</button>
+
+            <!-- Controls and Badges Overview -->
+            <div class="flex items-center space-x-4">
+                <!-- Theme Toggle -->
+                <button id="themeToggle" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Dark/Light Mode">
+                    <i id="themeIcon" class="fa-solid fa-moon text-slate-600 dark:text-yellow-400"></i>
+                </button>
+                <!-- Sound Toggle -->
+                <button id="soundToggle" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition" title="Toggle Sound FX">
+                    <i id="soundIcon" class="fa-solid fa-volume-high text-slate-600 dark:text-slate-300"></i>
+                </button>
+                <!-- Badge Quick Preview Button -->
+                <button onclick="toggleBadgeModal()" class="relative p-2 rounded-xl bg-indigo-50 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 transition">
+                    <i class="fa-solid fa-award text-lg"></i>
+                    <span id="badgeCounter" class="absolute -top-1 -right-1 bg-rose-500 text-white text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">0</span>
+                </button>
             </div>
+        </div>
+
+        <!-- Learning Progress Bar -->
+        <div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 relative overflow-hidden">
+            <div id="progressBar" class="bg-gradient-to-r from-brand-500 via-indigo-500 to-purple-500 h-full w-0 transition-all duration-500"></div>
         </div>
     </header>
 
-    <!-- Main Interactive Dashboard -->
-    <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8 flex-grow w-full">
-        
-        <!-- Left Side: Interactive Chapters Navigation & Teacher Script -->
-        <section class="lg:col-span-7 flex flex-col gap-6">
-            
-            <!-- Chapter Tab Selector -->
-            <div class="flex flex-wrap gap-2 p-2 bg-slate-200/60 border border-slate-200/80 rounded-2xl">
-                <button onclick="switchChapter('prolog')" id="tab-prolog" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
-                    🎬 Prolog
-                </button>
-                <button onclick="switchChapter('budi')" id="tab-budi" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
-                    🕵️ Budi (Rookie)
-                </button>
-                <button onclick="switchChapter('citra')" id="tab-citra" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
-                    🎨 Citra (Explorer)
-                </button>
-                <button onclick="switchChapter('aris')" id="tab-aris" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
-                    ⚙️ Aris (Pioneer)
-                </button>
-                <button onclick="switchChapter('epilog')" id="tab-epilog" class="flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200">
-                    🏆 Epilog
-                </button>
-            </div>
 
-            <!-- Storytelling Card with Teacher Prompts -->
-            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 shadow-xl shadow-slate-100 flex flex-col justify-between h-[520px] transition-all hover:shadow-2xl hover:shadow-slate-100/80">
+    <!-- Secondary Navigation/Timeline Tracker Bar -->
+    <div class="bg-white dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800 py-2 overflow-x-auto whitespace-nowrap">
+        <div class="max-w-7xl mx-auto px-4 flex space-x-2 text-xs md:text-sm">
+            <button onclick="StoryEngine.goToSection('babak0')" id="nav-babak0" class="px-3 py-1 rounded-full bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300 font-medium">Babak 0: Evolusi</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('prolog')" id="nav-prolog" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">Prolog: Kantin</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('babak1')" id="nav-babak1" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">Babak 1: Tim PPLG</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('babak2')" id="nav-babak2" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">Babak 2: Spek & Desain</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('babak3')" id="nav-babak3" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">Babak 3: Coding</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('babak4')" id="nav-babak4" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">Babak 4: QA & Rilis</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('babak5')" id="nav-babak5" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">Babak 5: Iterasi Sukses</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('minigame')" id="nav-minigame" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">Mini Game</button>
+            <i class="fa-solid fa-chevron-right text-slate-300 dark:text-slate-700 self-center"></i>
+            <button onclick="StoryEngine.goToSection('lkpd')" id="nav-lkpd" class="px-3 py-1 rounded-full text-slate-400 dark:text-slate-500 font-medium">LKPD Kelompok</button>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+
+        <!-- Section 1: Babak 0 - Evolusi Perangkat Lunak -->
+        <section id="sec-babak0" class="active-screen space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-2xl"></div>
                 
-                <!-- Story Content Area (Scrollable) -->
-                <div class="overflow-y-auto custom-scrollbar flex-grow pr-2" id="story-body">
-                    <!-- Dynamic Chapter Text will be loaded here via JavaScript -->
+                <div class="flex items-center space-x-2 text-indigo-600 dark:text-indigo-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/50">Babak 0</span>
+                    <span class="font-medium text-sm">Perjalanan Evolusi Perangkat Lunak</span>
                 </div>
 
-                <!-- Footer Navigation inside Card -->
-                <div class="mt-6 pt-5 border-t border-slate-100 flex justify-between items-center gap-4 shrink-0">
-                    <button id="prev-btn" onclick="navigateChapter(-1)" class="px-5 py-3 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 border border-slate-200/60 shadow-sm">
-                        ← Babak Sebelumnya
-                    </button>
-                    <button id="next-btn" onclick="navigateChapter(1)" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-2xl font-bold text-xs sm:text-sm transition-all flex items-center gap-2 shadow-lg shadow-indigo-600/20">
-                        Lanjut Cerita →
+                <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-2">Mengapa Teknologi Harus Berubah?</h2>
+                <p class="text-slate-600 dark:text-slate-300 max-w-3xl mb-8">
+                    Sebelum masuk ke dunia rekayasa, mari kita saksikan bagaimana perangkat lunak berevolusi dari sekadar mesin pengetik digital hingga era kecerdasan buatan (AI) yang kita nikmati saat ini.
+                </p>
+
+                <!-- Interactive Timeline Simulator Container -->
+                <div class="bg-slate-100 dark:bg-slate-950 p-6 rounded-2xl border border-slate-200 dark:border-slate-800">
+                    <h3 class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-6"><i class="fa-solid fa-timeline mr-2"></i> Timeline Interaktif (Klik tahun untuk belajar)</h3>
+                    
+                    <!-- Timeline Nodes -->
+                    <div class="grid grid-cols-5 gap-2 md:gap-4 mb-8 relative">
+                        <div class="absolute top-1/2 left-0 right-0 h-1 bg-slate-300 dark:bg-slate-800 -translate-y-1/2 z-0 rounded"></div>
+                        <div id="timelineProgress" class="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-brand-500 to-indigo-500 -translate-y-1/2 z-0 rounded transition-all duration-500" style="width: 20%"></div>
+                        
+                        <!-- 1980 Node -->
+                        <button onclick="SimulatorEngine.setTimelineYear(1980)" id="btn-yr-1980" class="z-10 bg-white dark:bg-slate-900 border-2 border-brand-500 rounded-xl p-3 text-center transition hover:scale-105">
+                            <span class="block font-bold text-sm md:text-lg text-brand-600 dark:text-brand-400">1980</span>
+                            <span class="text-[10px] text-slate-400 hidden md:block">Era Desktop & Mengetik</span>
+                        </button>
+                        <!-- 1990 Node -->
+                        <button onclick="SimulatorEngine.setTimelineYear(1990)" id="btn-yr-1990" class="z-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-center transition hover:scale-105">
+                            <span class="block font-bold text-sm md:text-lg text-slate-500">1990</span>
+                            <span class="text-[10px] text-slate-400 hidden md:block">Awal Game Sederhana</span>
+                        </button>
+                        <!-- 2000 Node -->
+                        <button onclick="SimulatorEngine.setTimelineYear(2000)" id="btn-yr-2000" class="z-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-center transition hover:scale-105">
+                            <span class="block font-bold text-sm md:text-lg text-slate-500">2000</span>
+                            <span class="text-[10px] text-slate-400 hidden md:block">Internet Berkembang</span>
+                        </button>
+                        <!-- 2010 Node -->
+                        <button onclick="SimulatorEngine.setTimelineYear(2010)" id="btn-yr-2010" class="z-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-center transition hover:scale-105">
+                            <span class="block font-bold text-sm md:text-lg text-slate-500">2010</span>
+                            <span class="text-[10px] text-slate-400 hidden md:block">Smartphone Era</span>
+                        </button>
+                        <!-- Now Node -->
+                        <button onclick="SimulatorEngine.setTimelineYear('now')" id="btn-yr-now" class="z-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-center transition hover:scale-105">
+                            <span class="block font-bold text-sm md:text-lg text-slate-500">Now</span>
+                            <span class="text-[10px] text-slate-400 hidden md:block">AI, IoT, Cloud, MMO</span>
+                        </button>
+                    </div>
+
+                    <!-- Year Info Panel -->
+                    <div id="timelineYearCard" class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-slate-200 dark:border-slate-800 flex flex-col md:flex-row md:items-center space-y-4 md:space-y-0 md:space-x-6">
+                        <div class="text-4xl text-brand-500 w-16 h-16 flex items-center justify-center bg-brand-50 dark:bg-brand-950/40 rounded-2xl shrink-0">
+                            <i id="timelineIcon" class="fa-solid fa-keyboard"></i>
+                        </div>
+                        <div>
+                            <h4 id="timelineYearTitle" class="text-lg font-bold">Tahun 1980: Era Mengetik Elektronik</h4>
+                            <p id="timelineYearDesc" class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-1">Komputer sangat lambat dan mahal. Perangkat lunak hanya digunakan untuk pengolah kata sederhana (Word Processor) dan perhitungan spreadsheet murni oleh akuntan profesional.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Virtual Teacher Question Sandbox -->
+                <div class="bg-indigo-50 dark:bg-indigo-950/30 p-6 rounded-2xl border border-indigo-100 dark:border-indigo-900/50 mt-6 flex flex-col md:flex-row items-start space-y-4 md:space-y-0 md:space-x-6">
+                    <div class="w-16 h-16 rounded-full overflow-hidden bg-brand-100 dark:bg-brand-900 flex items-center justify-center shrink-0 border-2 border-indigo-400">
+                        <span class="text-3xl">👨‍🏫</span>
+                    </div>
+                    <div class="flex-grow space-y-3">
+                        <h4 class="font-bold text-indigo-950 dark:text-indigo-300">Pertanyaan Interaktif Guru Virtual:</h4>
+                        <p id="teacherQuestion" class="text-sm text-indigo-900 dark:text-indigo-200 font-semibold italic">"Mengapa Mobile Legends tidak dibuat di tahun 1980?"</p>
+                        
+                        <div id="teacherChoices" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4">
+                            <!-- Injected dynamically by SimulatorEngine.setTimelineYear() -->
+                        </div>
+                        <div id="teacherFeedback" class="hidden p-3 rounded-lg text-sm font-medium mt-3"></div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <span class="text-xs text-slate-400 font-semibold">Pastikan semua tahun telah dieksplorasi!</span>
+                    <button onclick="StoryEngine.goToSection('prolog')" id="btnNextBabak0" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-indigo-600 hover:from-brand-600 hover:to-indigo-700 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Lanjut ke Prolog Cerita</span>
+                        <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- Right Side: Live Sandbox Simulators & Mini Games -->
-        <section class="lg:col-span-5 flex flex-col gap-6">
-            
-            <!-- Dynamic Simulator Box (Updates based on active chapter) -->
-            <div id="sim-container" class="bg-gradient-to-b from-white to-slate-50/50 rounded-3xl border border-slate-200/80 p-6 shadow-xl shadow-slate-100/50 relative overflow-hidden min-h-[390px] flex flex-col justify-between transition-all hover:shadow-2xl">
-                <!-- Sandbox Simulator and Interactive Visualizers load dynamically -->
-            </div>
 
-            <!-- Mini-Game Panel: "Siapa Pahlawannya?" -->
-            <div class="bg-white rounded-3xl border border-slate-200/80 p-6 shadow-xl shadow-slate-100/50 transition-all hover:shadow-2xl">
-                <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
-                    <h3 class="font-extrabold text-slate-800 text-sm sm:text-base tracking-wide flex items-center gap-2">
-                        🎮 Game Penguat: "Siapa Pahlawannya?"
-                        <span class="text-[9px] bg-emerald-50 text-emerald-600 border border-emerald-200 px-2 py-0.5 rounded-full font-bold uppercase">Uji Fokus</span>
-                    </h3>
-                    <span id="game-score" class="text-xs font-bold text-indigo-600 bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-xl shadow-sm">Skor: 0</span>
+        <!-- Section 2: Prolog - Masalah di Kantin Bu Minah -->
+        <section id="sec-prolog" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative">
+                <div class="flex items-center space-x-2 text-rose-500 dark:text-rose-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100 dark:bg-rose-900/50">Prolog</span>
+                    <span class="font-medium text-sm">Kekacauan di Kantin Bu Minah</span>
                 </div>
 
-                <!-- Game Screen Area -->
-                <div id="game-area" class="bg-slate-50/80 rounded-2xl p-4 border border-slate-200/60 text-center min-h-[140px] flex flex-col justify-center items-center gap-4 shadow-inner">
-                    <p id="game-question" class="text-xs sm:text-sm font-medium text-slate-600 leading-relaxed max-w-sm">"Klik tombol Mulai Game untuk menguji pemahaman kelas pasca storytelling!"</p>
-                    <div id="game-actions" class="flex flex-wrap justify-center gap-2.5 w-full">
-                        <button onclick="startGame()" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white rounded-xl font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/10 transition-all">Mulai Main</button>
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Dialogue/Narrative Box -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Kantin "Maju Makmur" Terancam Bangkrut!</h2>
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Bu Minah adalah pengelola kantin sekolah yang sangat populer. Namun belakangan ini, seiring bertambahnya jumlah siswa, masalah operasional mulai menumpuk secara berantai!
+                        </p>
+                        
+                        <!-- Stages of Problems Tracker -->
+                        <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Evolusi Masalah Lapangan</span>
+                            <div class="mt-3 space-y-3">
+                                <div id="prob-stage-1" class="flex items-center space-x-3 p-2 rounded-lg bg-red-50 dark:bg-red-950/30 border border-red-100 dark:border-red-900/40">
+                                    <span class="w-7 h-7 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-xs">1</span>
+                                    <span class="text-xs md:text-sm font-semibold">Siswa mengantre panjang tak terkontrol</span>
+                                </div>
+                                <div id="prob-stage-2" class="flex items-center space-x-3 p-2 rounded-lg opacity-40">
+                                    <span class="w-7 h-7 rounded-full bg-slate-500 text-white flex items-center justify-center font-bold text-xs">2</span>
+                                    <span class="text-xs md:text-sm font-medium">Bu Minah sering salah membuat pesanan</span>
+                                </div>
+                                <div id="prob-stage-3" class="flex items-center space-x-3 p-2 rounded-lg opacity-40">
+                                    <span class="w-7 h-7 rounded-full bg-slate-500 text-white flex items-center justify-center font-bold text-xs">3</span>
+                                    <span class="text-xs md:text-sm font-medium">Uang kembalian hilang atau kurang</span>
+                                </div>
+                                <div id="prob-stage-4" class="flex items-center space-x-3 p-2 rounded-lg opacity-40">
+                                    <span class="w-7 h-7 rounded-full bg-slate-500 text-white flex items-center justify-center font-bold text-xs">4</span>
+                                    <span class="text-xs md:text-sm font-medium">Kehabisan bahan karena stok tidak tercatat</span>
+                                </div>
+                                <div id="prob-stage-5" class="flex items-center space-x-3 p-2 rounded-lg opacity-40">
+                                    <span class="w-7 h-7 rounded-full bg-slate-500 text-white flex items-center justify-center font-bold text-xs">5</span>
+                                    <span class="text-xs md:text-sm font-medium">Laporan keuangan berantakan di buku basah</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current Dialogue Box -->
+                        <div class="p-4 bg-brand-50 dark:bg-brand-950/20 border-l-4 border-brand-500 rounded-r-xl flex space-x-4 items-start">
+                            <span class="text-3xl">👵</span>
+                            <div>
+                                <h4 class="font-bold text-brand-900 dark:text-brand-300">Bu Minah berkata:</h4>
+                                <p id="canteenSpeechBubble" class="text-sm italic text-brand-800 dark:text-brand-200 mt-1">
+                                    "Aduh le! Ibu pusing sekali. Siswa-siswa mengantre sangat panjang dan ricuh di depan kasir! Bisakah kalian bantu ibu menertibkannya?"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Live Simulator Side Card -->
+                    <div class="lg:col-span-5 flex flex-col justify-between bg-slate-100 dark:bg-slate-950 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 min-h-[350px]">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-sm tracking-wide text-slate-500">Live Simulator Tantangan</h3>
+                                <span id="simActiveLevel" class="px-2 py-0.5 rounded text-[10px] bg-red-100 text-red-700 font-bold uppercase">Tahap 1: Queue</span>
+                            </div>
+                            <!-- Simulation View Container -->
+                            <div id="canteenSimulatorView" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4 min-h-[220px] flex flex-col justify-center items-center relative overflow-hidden">
+                                <!-- Simulator dynamic elements injected by JS -->
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <!-- Simulator Action Button -->
+                            <button id="btnCanteenSimulator" onclick="SimulatorEngine.runCanteenSimulationStep()" class="w-full py-3 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-play"></i>
+                                <span id="btnCanteenSimulatorText">Mulai Ambil Tindakan</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="StoryEngine.goToSection('babak0')" class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs md:text-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali ke Babak 0</span>
+                    </button>
+                    <button onclick="StoryEngine.goToSection('babak1')" id="btnNextProlog" class="hidden px-6 py-3 bg-gradient-to-r from-brand-500 to-indigo-600 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Lanjut & Bentuk Tim Pengembang</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 3: Babak 1 - Pembentukan Tim Software House (SDLC Roles) -->
+        <section id="sec-babak1" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative">
+                <div class="flex items-center space-x-2 text-teal-500 dark:text-teal-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-teal-100 dark:bg-teal-900/50">Babak 1</span>
+                    <span class="font-medium text-sm">Pembentukan Tim Software House</span>
+                </div>
+
+                <div class="space-y-4 max-w-3xl mb-8">
+                    <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Menyusun Tim Ahli Rekayasa Perangkat Lunak</h2>
+                    <p class="text-slate-600 dark:text-slate-300">
+                        Untuk memecahkan masalah kompleks Bu Minah, siswa kelas X PPLG tidak bisa bekerja sendirian. Perangkat lunak berkualitas hanya lahir dari kolaborasi hebat antar peranan spesifik berikut!
+                    </p>
+                </div>
+
+                <!-- Meet the Team: Role Interactive Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <!-- PM Card -->
+                    <div onclick="StoryEngine.selectCharacter('pm')" class="cursor-pointer border-2 border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-400 bg-white dark:bg-slate-900 rounded-2xl p-4 transition-all hover:-translate-y-1 shadow-sm text-center">
+                        <span class="text-4xl block mb-2">👩‍💼</span>
+                        <h4 class="font-bold text-sm">Rina</h4>
+                        <span class="text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-full inline-block mt-1">Project Manager</span>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">Mengatur timeline, komunikasi klien, & memastikan proyek selesai on-time.</p>
+                    </div>
+                    <!-- Researcher Card -->
+                    <div onclick="StoryEngine.selectCharacter('researcher')" class="cursor-pointer border-2 border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-400 bg-white dark:bg-slate-900 rounded-2xl p-4 transition-all hover:-translate-y-1 shadow-sm text-center">
+                        <span class="text-4xl block mb-2">👨‍💻</span>
+                        <h4 class="font-bold text-sm">Budi</h4>
+                        <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full inline-block mt-1">User Research</span>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">Menganalisis kebutuhan pengguna nyata dan memetakan masalah.</p>
+                    </div>
+                    <!-- UI/UX Designer Card -->
+                    <div onclick="StoryEngine.selectCharacter('designer')" class="cursor-pointer border-2 border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-400 bg-white dark:bg-slate-900 rounded-2xl p-4 transition-all hover:-translate-y-1 shadow-sm text-center">
+                        <span class="text-4xl block mb-2">🎨</span>
+                        <h4 class="font-bold text-sm">Citra</h4>
+                        <span class="text-[10px] bg-purple-100 text-purple-700 font-bold px-2 py-0.5 rounded-full inline-block mt-1">UI/UX Designer</span>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">Mendesain rancangan visual tombol, warna, & alur aplikasi.</p>
+                    </div>
+                    <!-- Developer Card -->
+                    <div onclick="StoryEngine.selectCharacter('developer')" class="cursor-pointer border-2 border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-400 bg-white dark:bg-slate-900 rounded-2xl p-4 transition-all hover:-translate-y-1 shadow-sm text-center">
+                        <span class="text-4xl block mb-2">💻</span>
+                        <h4 class="font-bold text-sm">Aris</h4>
+                        <span class="text-[10px] bg-emerald-100 text-emerald-700 font-bold px-2 py-0.5 rounded-full inline-block mt-1">Lead Programmer</span>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">Menulis kode logika, merancang arsitektur data, & sistem pembayaran.</p>
+                    </div>
+                    <!-- QA Card -->
+                    <div onclick="StoryEngine.selectCharacter('qa')" class="cursor-pointer border-2 border-slate-200 dark:border-slate-800 hover:border-teal-500 dark:hover:border-teal-400 bg-white dark:bg-slate-900 rounded-2xl p-4 transition-all hover:-translate-y-1 shadow-sm text-center">
+                        <span class="text-4xl block mb-2">🕵️‍♀️</span>
+                        <h4 class="font-bold text-sm">Dina</h4>
+                        <span class="text-[10px] bg-rose-100 text-rose-700 font-bold px-2 py-0.5 rounded-full inline-block mt-1">QA Tester</span>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-2 line-clamp-2">Mencari error/bug, mencoba tombol-tombol rusak, & uji coba ketahanan.</p>
+                    </div>
+                </div>
+
+                <!-- Deep-dive Role Explanation Modal/Card -->
+                <div id="characterDetailBox" class="bg-teal-50 dark:bg-teal-950/30 p-6 rounded-2xl border border-teal-100 dark:border-teal-900/40 mt-6 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                    <span class="text-6xl text-center">💡</span>
+                    <div>
+                        <h4 class="font-bold text-teal-950 dark:text-teal-300 text-lg">Pilih salah satu karakter di atas!</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-1">Eksplorasi tanggung jawab masing-masing personil dalam siklus pengembangan perangkat lunak terstandar industri.</p>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="StoryEngine.goToSection('prolog')" class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs md:text-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+                    <button onclick="StoryEngine.goToSection('babak2')" id="btnNextBabak1" class="hidden px-6 py-3 bg-gradient-to-r from-brand-500 to-indigo-600 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Lanjut ke Riset & Desain</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 4: Babak 2 - Riset & Desain (Budi & Citra) -->
+        <section id="sec-babak2" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative">
+                <div class="flex items-center space-x-2 text-purple-500 dark:text-purple-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-100 dark:bg-purple-900/50">Babak 2</span>
+                    <span class="font-medium text-sm">Fase Riset Kebutuhan & Desain Antarmuka</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Left: User Research Simulator (Budi) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="text-4xl">👨‍💻</span>
+                            <div>
+                                <h3 class="font-bold text-lg">Budi: User Research Simulator</h3>
+                                <p class="text-xs text-slate-500">Pilihlah pertanyaan wawancara terbaik untuk diajukan ke Bu Minah agar menemukan akar masalah!</p>
+                            </div>
+                        </div>
+
+                        <!-- Question Grid -->
+                        <div class="space-y-2">
+                            <button id="res-q1" onclick="SimulatorEngine.chooseResearchQuestion(1)" class="w-full text-left p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 bg-white dark:bg-slate-900 text-xs md:text-sm font-medium transition flex items-start space-x-2">
+                                <span class="bg-brand-100 text-brand-700 px-2 py-0.5 rounded text-xs font-bold">A</span>
+                                <span>"Bu, apakah Ibu mau kami buatkan aplikasi dengan warna ungu mengkilap?"</span>
+                            </button>
+                            <button id="res-q2" onclick="SimulatorEngine.chooseResearchQuestion(2)" class="w-full text-left p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 bg-white dark:bg-slate-900 text-xs md:text-sm font-medium transition flex items-start space-x-2">
+                                <span class="bg-brand-100 text-brand-700 px-2 py-0.5 rounded text-xs font-bold">B</span>
+                                <span>"Bisa Ibu ceritakan, di bagian mana saja transaksi kantin paling sering mengalami selisih atau kesalahan hitung?"</span>
+                            </button>
+                            <button id="res-q3" onclick="SimulatorEngine.chooseResearchQuestion(3)" class="w-full text-left p-3 rounded-xl border border-slate-200 dark:border-slate-800 hover:border-brand-500 dark:hover:border-brand-500 bg-white dark:bg-slate-900 text-xs md:text-sm font-medium transition flex items-start space-x-2">
+                                <span class="bg-brand-100 text-brand-700 px-2 py-0.5 rounded text-xs font-bold">C</span>
+                                <span>"Bagaimana alur pembayaran saat ini, dan apakah siswa pernah protes tentang uang kembalian yang kurang?"</span>
+                            </button>
+                        </div>
+
+                        <!-- Research Output Feedback -->
+                        <div id="researchFeedbackCard" class="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800 text-xs leading-relaxed min-h-[100px]">
+                            <span class="font-bold text-slate-400 block uppercase mb-1">Hasil Analisis Riset Pengguna:</span>
+                            <p id="researchFeedbackText" class="text-slate-500">Pilih salah satu pertanyaan wawancara di atas untuk memulai riset terstruktur.</p>
+                        </div>
+                    </div>
+
+                    <!-- Right: UI/UX Design Simulator (Citra) -->
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3 mb-2">
+                            <span class="text-4xl">🎨</span>
+                            <div>
+                                <h3 class="font-bold text-lg">Citra: UI Design Simulator</h3>
+                                <p class="text-xs text-slate-500">Sesuaikan ukuran, warna, dan struktur visual agar aplikasi mudah dipakai siswa & Bu Minah.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-100 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Sliders & Selectors -->
+                            <div class="space-y-3 bg-white dark:bg-slate-900 p-3 rounded-xl border border-slate-150 dark:border-slate-850">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase">Ukuran Tombol Order</label>
+                                    <input type="range" id="ui-btn-size" min="12" max="28" value="16" oninput="SimulatorEngine.updateUIDesign()" class="w-full accent-indigo-500 mt-1">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase">Kelengkungan Sudut (Rounded)</label>
+                                    <input type="range" id="ui-btn-rounded" min="0" max="24" value="12" oninput="SimulatorEngine.updateUIDesign()" class="w-full accent-indigo-500 mt-1">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase">Warna Tombol Utama</label>
+                                    <select id="ui-btn-color" onchange="SimulatorEngine.updateUIDesign()" class="w-full p-2 text-xs bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none">
+                                        <option value="indigo-600">Indigo (Elegan)</option>
+                                        <option value="rose-500">Rose Red (Mencolok)</option>
+                                        <option value="emerald-500">Emerald Green (Sejuk)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Live App Preview Frame -->
+                            <div class="border border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-3 flex flex-col justify-between bg-white dark:bg-slate-900">
+                                <div class="text-[10px] text-center border-b pb-1 mb-2 text-slate-400 font-bold flex justify-between items-center">
+                                    <span>📱 Live Preview App v1.0</span>
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                </div>
+                                
+                                <div class="space-y-2">
+                                    <div class="h-6 bg-slate-100 dark:bg-slate-850 rounded flex items-center px-2 text-[10px] justify-between">
+                                        <span>🍲 Nasi Goreng Kantin</span>
+                                        <span class="font-bold text-indigo-500">Rp 12.000</span>
+                                    </div>
+                                    <button id="uiMockBtn" class="w-full bg-indigo-600 text-white font-semibold transition-all">
+                                        Pesan Sekarang
+                                    </button>
+                                </div>
+
+                                <div class="mt-4 text-[9px] text-slate-400 leading-tight">
+                                    Citra berkata: "Tombol yang terlalu kecil menyulitkan Bu Minah yang matanya lelah. Sudut melengkung memberi kesan ramah."
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="StoryEngine.goToSection('babak1')" class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs md:text-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+                    <button onclick="StoryEngine.goToSection('babak3')" id="btnNextBabak2" class="hidden px-6 py-3 bg-gradient-to-r from-brand-500 to-indigo-600 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Lanjut ke Logic Coding</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 5: Babak 3 - Coding Logic (Aris & Rina) -->
+        <section id="sec-babak3" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative">
+                <div class="flex items-center space-x-2 text-emerald-500 dark:text-emerald-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/50">Babak 3</span>
+                    <span class="font-medium text-sm">Fase Menulis Kode Logika Aplikasi</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left Column: Coding Sandbox -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-4xl">💻</span>
+                            <div>
+                                <h3 class="font-bold text-lg">Aris: Coding Logic Simulator</h3>
+                                <p class="text-xs text-slate-500">Susun logika validasi kasir berikut agar transaksi kantin tidak merugi karena saldo minus!</p>
+                            </div>
+                        </div>
+
+                        <!-- Logic block container (Visual blocks) -->
+                        <div class="bg-slate-900 text-slate-200 p-4 rounded-2xl border border-slate-800 font-mono text-xs md:text-sm space-y-3">
+                            <div class="text-slate-500">// Program Transaksi Kantin Digital v1.0</div>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-indigo-400 font-bold">function</span> <span>prosesPembayaran(saldoSiswa, hargaMakanan) {</span>
+                            </div>
+                            
+                            <!-- Variable Block Slot -->
+                            <div class="pl-6 py-2 bg-slate-950 rounded-lg border border-dashed border-slate-700 flex flex-wrap items-center gap-2">
+                                <span class="text-purple-400 font-bold">if</span> <span>(</span>
+                                <select id="code-cond-left" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-1.5 py-0.5 outline-none">
+                                    <option value="wrong">hargaMakanan</option>
+                                    <option value="correct">saldoSiswa</option>
+                                </select>
+                                <select id="code-operator" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-1.5 py-0.5 outline-none">
+                                    <option value="wrong-op">&lt;</option>
+                                    <option value="correct-op">&gt;=</option>
+                                </select>
+                                <select id="code-cond-right" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-1.5 py-0.5 outline-none">
+                                    <option value="wrong-val">0</option>
+                                    <option value="correct-val">hargaMakanan</option>
+                                </select>
+                                <span>) {</span>
+                            </div>
+
+                            <!-- Success Action Block Slot -->
+                            <div class="pl-12 py-2 bg-slate-950 rounded-lg border border-dashed border-slate-700 flex items-center gap-2">
+                                <select id="code-success-action" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-1.5 py-0.5 outline-none">
+                                    <option value="wrong-act">saldoSiswa = hargaMakanan;</option>
+                                    <option value="correct-act">saldoSiswa = saldoSiswa - hargaMakanan;</option>
+                                </select>
+                                <span class="text-slate-400">// kurangi saldo</span>
+                            </div>
+
+                            <div class="pl-6 text-purple-400 font-bold">} else {</div>
+                            
+                            <!-- Failed Action Block Slot -->
+                            <div class="pl-12 py-2 bg-slate-950 rounded-lg border border-dashed border-slate-700 flex items-center gap-2">
+                                <select id="code-fail-action" class="bg-slate-800 text-slate-200 border border-slate-700 rounded px-1.5 py-0.5 outline-none">
+                                    <option value="correct-fail">return "Transaksi Gagal, Saldo Kurang!";</option>
+                                    <option value="wrong-fail">return "Saldo Gratis untuk Semua!";</option>
+                                </select>
+                            </div>
+
+                            <div class="pl-6 text-purple-400 font-bold">}</div>
+                            <div>}</div>
+                        </div>
+
+                        <!-- Check Logic Button -->
+                        <button onclick="SimulatorEngine.testCodingLogic()" class="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-md transition flex items-center space-x-2 text-sm">
+                            <i class="fa-solid fa-play-circle"></i>
+                            <span>Kompilasi & Jalankan Kode</span>
+                        </button>
+                    </div>
+
+                    <!-- Right Column: Project Timeline Manager (Rina) -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-4xl">👩‍💼</span>
+                            <div>
+                                <h3 class="font-bold text-lg">Rina: Project Manager</h3>
+                                <p class="text-xs text-slate-500">Urutkan fase pengembangan berikut agar aplikasi tidak mengalami kekacauan pasca-rilis!</p>
+                            </div>
+                        </div>
+
+                        <!-- Drag/Sequence List -->
+                        <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-2">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Urutan Tahapan SDLC:</span>
+                            <div id="pm-stages-container" class="space-y-1.5">
+                                <!-- Generated Dynamically with buttons to re-order easily -->
+                            </div>
+                        </div>
+
+                        <!-- Verify Order PM Button -->
+                        <button onclick="SimulatorEngine.verifyPMStages()" class="w-full py-2.5 bg-indigo-500 hover:bg-indigo-600 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>Verifikasi Jadwal Rilis</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="StoryEngine.goToSection('babak2')" class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs md:text-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+                    <button onclick="StoryEngine.goToSection('babak4')" id="btnNextBabak3" class="hidden px-6 py-3 bg-gradient-to-r from-brand-500 to-indigo-600 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Lanjut ke QA & Rilis</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 6: Babak 4 - QA Testing & Insiden Rilis v1.0 (Dina) -->
+        <section id="sec-babak4" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative">
+                <div class="flex items-center space-x-2 text-rose-500 dark:text-rose-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100 dark:bg-rose-900/50">Babak 4</span>
+                    <span class="font-medium text-sm">Fase Pengujian Bug & Kegagalan Sistem</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Narrative Description -->
+                    <div class="lg:col-span-6 space-y-4">
+                        <h2 class="text-2xl md:text-3xl font-bold tracking-tight">Kekacauan Peluncuran Aplikasi Versi 1.0!</h2>
+                        <p class="text-slate-600 dark:text-slate-300 leading-relaxed">
+                            Aplikasi berhasil dideploy ke server lokal sekolah! Namun, ketika jam istirahat tiba, ratusan siswa langsung membuka aplikasi secara bersamaan. <strong class="text-red-500 font-bold">BOOM! Server Down, saldo minus, dan bug bermunculan!</strong>
+                        </p>
+                        
+                        <div class="p-4 bg-rose-50 dark:bg-rose-950/30 border-l-4 border-rose-500 rounded-r-xl flex space-x-3">
+                            <span class="text-3xl">🕵️‍♀️</span>
+                            <div>
+                                <h4 class="font-bold text-rose-900 dark:text-rose-300">Dina (QA Tester) Berteriak:</h4>
+                                <p class="text-sm italic text-rose-800 dark:text-rose-200 mt-1">
+                                    "Aplikasi ini memiliki 3 bug kritis di antarmuka kasir! Kita tidak boleh merilis patch sebelum bug ini saya temukan dan Aris memperbaikinya!"
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Live QA Bug Finder Simulator Container -->
+                        <div class="bg-slate-100 dark:bg-slate-950 p-4 rounded-xl border border-slate-200 dark:border-slate-800">
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2">Bantuan Dina Menemukan 3 Bug (Klik elemen aneh di kanan):</span>
+                            <div class="flex items-center space-x-3 text-sm">
+                                <span class="font-semibold text-slate-600 dark:text-slate-400">Status Penemuan Bug:</span>
+                                <span id="bugCounterDisplay" class="bg-rose-100 text-rose-700 px-2 py-0.5 rounded font-bold">0 / 3 Terdeteksi</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mock Client Interface loaded with bugs -->
+                    <div class="lg:col-span-6 bg-slate-950 p-5 rounded-3xl border border-slate-800 flex flex-col min-h-[380px]">
+                        <div class="border-b border-slate-800 pb-3 mb-4 flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                                <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                            </div>
+                            <span class="text-xs text-red-400 font-mono font-bold animate-pulse"><i class="fa-solid fa-triangle-exclamation"></i> SERVER v1.0 STATUS: CRITICAL ERROR</span>
+                        </div>
+
+                        <!-- Mock Bug App Interface -->
+                        <div class="flex-grow bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
+                            <!-- Header Info -->
+                            <div class="flex justify-between items-center text-xs">
+                                <span>Kasir Kantin Bu Minah</span>
+                                <span class="text-slate-500">Saldo: Rp 50.000</span>
+                            </div>
+
+                            <!-- Bug 1: NAN Price Bug (Clickable target) -->
+                            <div onclick="SimulatorEngine.detectBug('nanPrice')" id="bug-nanPrice" class="cursor-pointer p-3 bg-slate-950 rounded-xl border border-rose-900/30 hover:border-rose-500/50 flex justify-between items-center transition">
+                                <span class="text-xs font-semibold">1x Bakso Pedas Gila</span>
+                                <span id="text-nanPrice" class="text-rose-500 font-bold animate-pulse">Rp NaN</span>
+                            </div>
+
+                            <!-- Bug 2: Overflowing Text Box Bug (Clickable target) -->
+                            <div onclick="SimulatorEngine.detectBug('overflowText')" id="bug-overflowText" class="cursor-pointer p-3 bg-slate-950 rounded-xl border border-rose-900/30 hover:border-rose-500/50 relative overflow-hidden transition" style="height: 48px;">
+                                <div id="text-overflow" class="text-[10px] text-slate-400 whitespace-nowrap absolute">CATATAN PEMBELI: Jangan pakai sambel ya bu karena perut saya sedang agak mulas habis minum jamu kemarin malam dan tolong juga kuahnya dipisah kalau bisa mangkoknya dibersihkan dulu ya bu terima kasih...</div>
+                            </div>
+
+                            <!-- Bug 3: Negative checkout balance action (Clickable target) -->
+                            <div onclick="SimulatorEngine.detectBug('negCheck')" id="bug-negCheck" class="cursor-pointer p-3 bg-slate-950 rounded-xl border border-rose-900/30 hover:border-rose-500/50 flex justify-between items-center transition">
+                                <span class="text-xs font-bold text-rose-400"><i class="fa-solid fa-bug"></i> Checkout Bypass</span>
+                                <span class="px-2 py-0.5 bg-rose-500/20 text-rose-400 text-[10px] font-mono rounded">Bayar: -Rp 99.000.000</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-center text-xs text-slate-500 italic">
+                            Petunjuk: Cari dan klik 3 keganjilan teknis di atas yang berpotensi merusak sistem!
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="StoryEngine.goToSection('babak3')" class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs md:text-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+                    <button onclick="StoryEngine.goToSection('babak5')" id="btnNextBabak4" class="hidden px-6 py-3 bg-gradient-to-r from-emerald-500 to-indigo-600 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Luncurkan Patch v2.0</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 7: Babak 5 - Rilis Sukses & Pembelajaran Akhir -->
+        <section id="sec-babak5" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative overflow-hidden">
+                <div class="absolute -top-12 -left-12 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl"></div>
+                <div class="absolute -bottom-12 -right-12 w-48 h-48 bg-brand-500/10 rounded-full blur-3xl"></div>
+
+                <div class="flex items-center space-x-2 text-emerald-500 dark:text-emerald-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/50">Babak 5</span>
+                    <span class="font-medium text-sm">Kesuksesan & Refleksi Rekayasa</span>
+                </div>
+
+                <div class="max-w-4xl mx-auto text-center space-y-6 my-4">
+                    <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-emerald-100 dark:bg-emerald-950/50 text-emerald-500 text-4xl mb-2 shadow-inner">
+                        <i class="fa-solid fa-circle-check animate-bounce"></i>
+                    </div>
+                    
+                    <h2 class="text-3xl font-extrabold tracking-tight">Kantin Bu Minah Sukses Bertransformasi Digital!</h2>
+                    <p class="text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+                        Kerja keras kolaboratif <strong class="text-brand-500">Rina, Budi, Citra, Aris, dan Dina</strong> membuahkan hasil luar biasa! Versi 2.0 dirilis dengan server stabil, pembayaran otomatis, stok termonitor, dan antrean yang tertata rapi.
+                    </p>
+
+                    <!-- Big Realization Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left max-w-3xl mx-auto pt-4">
+                        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-start space-x-4">
+                            <span class="text-3xl">⚙️</span>
+                            <div>
+                                <h4 class="font-bold text-slate-900 dark:text-slate-100 text-sm">Perangkat Lunak Berkelanjutan</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Perangkat lunak tidak pernah benar-benar "selesai". Ia selalu beradaptasi seiring ditemukannya bug baru dan tuntutan pengguna yang meluas.</p>
+                            </div>
+                        </div>
+                        <div class="p-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex items-start space-x-4">
+                            <span class="text-3xl">🤝</span>
+                            <div>
+                                <h4 class="font-bold text-slate-900 dark:text-slate-100 text-sm">Pentingnya Kolaborasi Tim</h4>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Tanpa desainer UI, program akan membingungkan. Tanpa QA, program akan rusak parah. Seluruh tim saling membutuhkan.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Golden Takeaway Box -->
+                    <div class="p-5 bg-gradient-to-tr from-brand-500/10 to-indigo-500/10 border border-brand-500/20 rounded-2xl max-w-2xl mx-auto">
+                        <p class="text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-widest mb-1">Kesimpulan Inti Pembelajaran</p>
+                        <p class="text-sm md:text-base font-bold italic text-slate-800 dark:text-slate-200">
+                            "Perangkat lunak terus berkembang karena teknologi terus maju dan kebutuhan manusia selalu berubah secara dinamis."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="StoryEngine.goToSection('babak4')" class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs md:text-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+                    <button onclick="StoryEngine.goToSection('minigame')" class="px-6 py-3 bg-gradient-to-r from-brand-500 to-indigo-600 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Masuk ke Uji Pemahaman (Mini Game)</span>
+                        <i class="fa-solid fa-gamepad"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 8: Mini Game Uji Pemahaman Realistis (15 Soal Acak) -->
+        <section id="sec-minigame" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative">
+                <div class="flex items-center justify-between border-b pb-4 mb-4">
+                    <div class="flex items-center space-x-2 text-indigo-500 dark:text-indigo-400">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/50">Mini Game</span>
+                        <span class="font-medium text-sm">Evaluasi "Langkah Berikutnya?"</span>
+                    </div>
+                    <div class="flex items-center space-x-4 text-xs md:text-sm">
+                        <div class="font-semibold text-slate-600 dark:text-slate-400">Skor: <span id="gameScore" class="text-brand-500 font-bold">0</span> / 150</div>
+                        <div class="font-semibold text-slate-600 dark:text-slate-400">Progress: <span id="gameQuestIndex" class="text-brand-500 font-bold">1</span>/15</div>
+                    </div>
+                </div>
+
+                <!-- Mini Game Area -->
+                <div id="gamePlayArea" class="max-w-3xl mx-auto space-y-6">
+                    <div class="bg-indigo-50 dark:bg-indigo-950/20 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-900/40">
+                        <span id="gameRoleBadge" class="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded bg-indigo-200 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300">Studi Kasus Perangkat Lunak</span>
+                        <h3 id="gameQuestionText" class="text-base md:text-lg font-bold text-slate-800 dark:text-slate-100 mt-3 leading-relaxed">
+                            Bu Minah berkata: "Siswa sering mengeluh karena salah mendapatkan kembalian saat transaksi manual." Apakah langkah awal yang benar?
+                        </h3>
+                    </div>
+
+                    <!-- Answers Grid -->
+                    <div id="gameChoicesArea" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Choices injected dynamically by GameEngine -->
+                    </div>
+
+                    <!-- Interactive Evaluation Result Card -->
+                    <div id="gameFeedbackCard" class="hidden p-4 rounded-xl text-sm font-medium"></div>
+                </div>
+
+                <!-- Finished Game Banner -->
+                <div id="gameFinishedScreen" class="hidden text-center max-w-xl mx-auto space-y-4 py-8">
+                    <span class="text-5xl block">🎉</span>
+                    <h3 class="text-2xl font-bold">Luar Biasa! Evaluasi Selesai</h3>
+                    <p id="gameFinalMessage" class="text-sm text-slate-600 dark:text-slate-300">Kamu mendapatkan nilai 150/150 dan berhasil membuktikan pemahaman rekayasa perangkat lunak.</p>
+                    <button onclick="GameEngine.resetGame()" class="px-5 py-2.5 border border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950 text-indigo-600 dark:text-indigo-400 font-bold rounded-xl text-sm transition">
+                        <i class="fa-solid fa-rotate-left mr-1"></i> Ulangi Kuis
+                    </button>
+                </div>
+
+                <!-- Footer Navigation inside screen -->
+                <div class="flex justify-between items-center mt-8 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
+                    <button onclick="StoryEngine.goToSection('babak5')" class="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-xs md:text-sm transition flex items-center space-x-2">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>Kembali</span>
+                    </button>
+                    <button onclick="StoryEngine.goToSection('lkpd')" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold rounded-xl transition shadow-lg shadow-indigo-500/20 flex items-center space-x-2">
+                        <span>Unduh Lembar Kerja Siswa (LKPD)</span>
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Section 9: LKPD Kelompok Mandiri & Export Simulator -->
+        <section id="sec-lkpd" class="active-screen hidden space-y-6">
+            <div class="glass rounded-3xl p-6 md:p-8 shadow-xl relative">
+                <div class="flex items-center space-x-2 text-purple-500 dark:text-purple-400 mb-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-purple-100 dark:bg-purple-900/50">Lembar Kerja Kelompok</span>
+                    <span class="font-medium text-sm">Lembar Kerja Peserta Didik (LKPD) PPLG</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <!-- Left inputs form -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <h2 class="text-2xl font-bold tracking-tight">Kembangkan Solusi Perangkat Lunak Sekolahmu!</h2>
+                        <p class="text-xs md:text-sm text-slate-500">
+                            Isi formulir di bawah bersama kelompok belajarmu untuk merancang solusi digital berbasis SDLC (Software Development Life Cycle).
+                        </p>
+
+                        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase">Nama Anggota Kelompok / Kelas</label>
+                                <input id="lkpd-team-name" type="text" placeholder="Budi, Citra, dkk / X PPLG 1" oninput="SimulatorEngine.updateLKPDView()" class="w-full p-2.5 text-sm bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none focus:border-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-400 uppercase">Pilih Lokasi Masalah Sekolah</label>
+                                <select id="lkpd-location" onchange="SimulatorEngine.updateLKPDView()" class="w-full p-2.5 text-sm bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none focus:border-indigo-500">
+                                    <option value="Perpustakaan">Perpustakaan Sekolah (Buku telat dikembalikan)</option>
+                                    <option value="Kantin">Kantin Kejujuran (Sering selisih barang & uang)</option>
+                                    <option value="UKS">UKS (Ketersediaan obat darurat tak termonitor)</option>
+                                    <option value="Parkir">Sistem Parkir Motor (Kartu manual sering hilang)</option>
+                                    <option value="Peminjaman Bola">Peminjaman Alat Olahraga / Bola (Alat sering hilang)</option>
+                                    <option value="Absensi">Absensi Siswa (Siswa memanipulasi kehadiran)</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-slate-400 uppercase">Apa Masalah Spesifiknya & Siapa Penggunanya?</label>
+                                <textarea id="lkpd-problem-desc" placeholder="Siswa sering telat mengembalikan buku karena lupa tanggal batas pengembalian. Penggunanya: Petugas Perpus & Siswa." oninput="SimulatorEngine.updateLKPDView()" class="w-full p-2.5 text-sm bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none h-16 focus:border-indigo-500"></textarea>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-bold text-slate-400 uppercase">Apa Solusi Perangkat Lunak yang Digagas?</label>
+                                <textarea id="lkpd-sol-desc" placeholder="Aplikasi web peringatan otomatis berbasis WA (WhatsApp Gateway) yang dikirim 1 hari sebelum tenggat waktu." oninput="SimulatorEngine.updateLKPDView()" class="w-full p-2.5 text-sm bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none h-16 focus:border-indigo-500"></textarea>
+                            </div>
+
+                            <!-- Roles assignment -->
+                            <div class="md:col-span-2 border-t pt-3 mt-1 grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase">User Research (Budi)</label>
+                                    <input id="lkpd-role-res" type="text" placeholder="Siapa yang mencari masalah?" oninput="SimulatorEngine.updateLKPDView()" class="w-full p-2 text-xs bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase">UI/UX Designer (Citra)</label>
+                                    <input id="lkpd-role-des" type="text" placeholder="Siapa yang membuat mockup?" oninput="SimulatorEngine.updateLKPDView()" class="w-full p-2 text-xs bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase">Programmer (Aris)</label>
+                                    <input id="lkpd-role-dev" type="text" placeholder="Siapa yang mengetik coding logika?" oninput="SimulatorEngine.updateLKPDView()" class="w-full p-2 text-xs bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none focus:border-indigo-500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase">QA Tester & PM (Dina & Rina)</label>
+                                    <input id="lkpd-role-qa" type="text" placeholder="Siapa yang menguji bug & mengelola jadwal?" oninput="SimulatorEngine.updateLKPDView()" class="w-full p-2 text-xs bg-slate-50 dark:bg-slate-800 border rounded-lg mt-1 outline-none focus:border-indigo-500">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right dynamic print preview card -->
+                    <div class="lg:col-span-5 bg-white dark:bg-slate-950 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 flex flex-col justify-between min-h-[420px] shadow-sm">
+                        <div id="lkpdPrintArea" class="space-y-4 font-mono text-xs text-slate-700 dark:text-slate-300">
+                            <div class="text-center border-b pb-2">
+                                <h3 class="font-bold text-sm uppercase">LAPORAN PROYEK PPLG KELAS X</h3>
+                                <p class="text-[10px] text-slate-400">Dibuat menggunakan Media Interaktif v2.0</p>
+                            </div>
+                            
+                            <div>
+                                <strong class="text-indigo-500">KELOMPOK / KELAS:</strong>
+                                <p id="print-team" class="border-b italic">Nama kelompok belum diisi</p>
+                            </div>
+                            <div>
+                                <strong class="text-indigo-500">STUDI KASUS:</strong>
+                                <p id="print-location" class="border-b font-semibold">Perpustakaan</p>
+                            </div>
+                            <div>
+                                <strong class="text-indigo-500">ANALISIS MASALAH:</strong>
+                                <p id="print-problem" class="border-b leading-relaxed">Penjelasan masalah belum diisi oleh siswa...</p>
+                            </div>
+                            <div>
+                                <strong class="text-indigo-500">RANCANGAN SOFTWARE:</strong>
+                                <p id="print-solution" class="border-b leading-relaxed">Rencana solusi belum diisi oleh siswa...</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                <div>
+                                    <strong class="text-indigo-500">UX RESEARCH:</strong>
+                                    <p id="print-res" class="border-b italic">-</p>
+                                </div>
+                                <div>
+                                    <strong class="text-indigo-500">UI DESIGNER:</strong>
+                                    <p id="print-des" class="border-b italic">-</p>
+                                </div>
+                                <div>
+                                    <strong class="text-indigo-500">PROGRAMMER:</strong>
+                                    <p id="print-dev" class="border-b italic">-</p>
+                                </div>
+                                <div>
+                                    <strong class="text-indigo-500">QA & PM:</strong>
+                                    <p id="print-qa" class="border-b italic">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Export action button -->
+                        <div class="mt-6">
+                            <button onclick="SimulatorEngine.copyLKPDToClipboard()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-md transition flex items-center justify-center space-x-2 text-sm">
+                                <i class="fa-solid fa-copy"></i>
+                                <span>Salin Laporan (Copy to Clipboard)</span>
+                            </button>
+                            <p class="text-[10px] text-center text-slate-400 mt-2">Salin lalu tempelkan laporannya ke Ms. Word / Google Docs kelompok kalian!</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
 
+
+    <!-- Badge Showcase Modal -->
+    <div id="badgeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 max-w-xl w-full shadow-2xl relative">
+            <button onclick="toggleBadgeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xl">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            
+            <div class="flex items-center space-x-3 border-b pb-4 mb-4">
+                <div class="p-2 bg-indigo-50 dark:bg-indigo-950/40 rounded-xl text-indigo-600 dark:text-indigo-400">
+                    <i class="fa-solid fa-award text-2xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg">Koleksi Lencana Pencapaian PPLG</h3>
+                    <p class="text-xs text-slate-500">Selesaikan setiap babak untuk otomatis membuka lencana prestasimu!</p>
+                </div>
+            </div>
+
+            <!-- Badge grid -->
+            <div id="badgesGrid" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <!-- Badge Explorer -->
+                <div id="badge-explorer" class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col items-center text-center opacity-40">
+                    <span class="text-3xl">🧭</span>
+                    <h4 class="font-bold text-xs mt-2">Explorer</h4>
+                    <p class="text-[9px] text-slate-400 mt-0.5 leading-tight">Menjelajahi babak evolusi awal</p>
+                </div>
+                <!-- Badge Researcher -->
+                <div id="badge-researcher" class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col items-center text-center opacity-40">
+                    <span class="text-3xl">🔎</span>
+                    <h4 class="font-bold text-xs mt-2">Researcher</h4>
+                    <p class="text-[9px] text-slate-400 mt-0.5 leading-tight">Melakukan wawancara pengguna</p>
+                </div>
+                <!-- Badge Designer -->
+                <div id="badge-designer" class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col items-center text-center opacity-40">
+                    <span class="text-3xl">🎨</span>
+                    <h4 class="font-bold text-xs mt-2">Designer</h4>
+                    <p class="text-[9px] text-slate-400 mt-0.5 leading-tight">Mendesain tombol ramah pengguna</p>
+                </div>
+                <!-- Badge Programmer -->
+                <div id="badge-programmer" class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col items-center text-center opacity-40">
+                    <span class="text-3xl">👨‍💻</span>
+                    <h4 class="font-bold text-xs mt-2">Programmer</h4>
+                    <p class="text-[9px] text-slate-400 mt-0.5 leading-tight">Menyusun logika kasir aman</p>
+                </div>
+                <!-- Badge QA Tester -->
+                <div id="badge-qa" class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col items-center text-center opacity-40">
+                    <span class="text-3xl">🕵️‍♀️</span>
+                    <h4 class="font-bold text-xs mt-2">QA Tester</h4>
+                    <p class="text-[9px] text-slate-400 mt-0.5 leading-tight">Menemukan bugs tersembunyi</p>
+                </div>
+                <!-- Badge PM -->
+                <div id="badge-pm" class="p-3 border border-slate-200 dark:border-slate-800 rounded-xl flex flex-col items-center text-center opacity-40">
+                    <span class="text-3xl">👩‍💼</span>
+                    <h4 class="font-bold text-xs mt-2">Project Manager</h4>
+                    <p class="text-[9px] text-slate-400 mt-0.5 leading-tight">Merencanakan rilis SDLC</p>
+                </div>
+            </div>
+
+            <!-- Engineer Golden Badge -->
+            <div id="badge-engineer" class="mt-4 p-3 border-2 border-dashed border-amber-400/50 bg-amber-500/5 dark:bg-amber-950/20 rounded-2xl flex items-center space-x-3 opacity-40">
+                <span class="text-4xl">🏆</span>
+                <div>
+                    <h4 class="font-bold text-xs text-amber-700 dark:text-amber-400">Software Engineer Profesional</h4>
+                    <p class="text-[10px] text-slate-500">Mencapai pemahaman 100% dan menyelesaikan seluruh lembar LKPD kelompok.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert / Toast Toast Notification Box -->
+    <div id="toastNotification" class="fixed bottom-6 right-6 glass border-l-4 border-emerald-500 p-4 rounded-r-xl shadow-lg z-50 flex items-center space-x-3 translate-y-20 opacity-0 pointer-events-none transition-all duration-300 max-w-sm">
+        <div class="text-emerald-500 text-xl"><i class="fa-solid fa-circle-check"></i></div>
+        <div>
+            <h4 id="toastTitle" class="font-bold text-xs">Pemberitahuan</h4>
+            <p id="toastMessage" class="text-[11px] text-slate-500 mt-0.5">Sesuatu hal yang hebat telah terjadi!</p>
+        </div>
+    </div>
+
     <!-- Footer -->
-    <footer class="bg-white/80 border-t border-slate-200 py-4 text-center text-[10px] sm:text-xs text-slate-400 font-medium">
-        &copy; 2026 Program Keahlian PPLG. Skenario Penyelamat Kantin Bu Minah - Dirancang untuk Pembelajaran Kolaboratif Berdiferensiasi.
+    <footer class="bg-white dark:bg-slate-950 py-4 border-t border-slate-100 dark:border-slate-800 text-center text-xs text-slate-400">
+        <p>&copy; 2026 Program Keahlian PPLG SMK - Belajar Mandiri Interaktif Berbasis Industri.</p>
     </footer>
 
+
     <script>
-        // Web Audio API Synthesizer Soundboard
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        // --- AUDIO ENGINE (Synthesizer via Web Audio API) ---
+        const AudioEngine = {
+            audioCtx: null,
+            enabled: true,
 
-        function playSound(type) {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            const now = audioCtx.currentTime;
-
-            if (type === 'bell') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(587.33, now); // D5
-                gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.4, now + 0.05);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-                osc.start(now);
-                osc.stop(now + 1.2);
-
-                const osc2 = audioCtx.createOscillator();
-                const gain2 = audioCtx.createGain();
-                osc2.connect(gain2);
-                gain2.connect(audioCtx.destination);
-                osc2.type = 'sine';
-                osc2.frequency.setValueAtTime(880, now); // A5
-                gain2.gain.setValueAtTime(0, now);
-                gain2.gain.linearRampToValueAtTime(0.3, now + 0.05);
-                gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-                osc2.start(now);
-                osc2.stop(now + 1.2);
-
-            } else if (type === 'printer') {
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(1200, now);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-                osc.start(now);
-                osc.stop(now + 0.4);
-
-                for (let i = 0; i < 6; i++) {
-                    const clickOsc = audioCtx.createOscillator();
-                    const clickGain = audioCtx.createGain();
-                    clickOsc.connect(clickGain);
-                    clickGain.connect(audioCtx.destination);
-                    clickOsc.type = 'sawtooth';
-                    clickOsc.frequency.setValueAtTime(150, now + 0.15 + (i * 0.08));
-                    clickGain.gain.setValueAtTime(0.08, now + 0.15 + (i * 0.08));
-                    clickGain.gain.exponentialRampToValueAtTime(0.001, now + 0.22 + (i * 0.08));
-                    clickOsc.start(now + 0.15 + (i * 0.08));
-                    clickOsc.stop(now + 0.22 + (i * 0.08));
+            init() {
+                if (!this.audioCtx) {
+                    this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 }
+            },
 
-            } else if (type === 'coin') {
+            playClick() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
                 osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, now); // C5
-                osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
-                osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
-                osc.frequency.setValueAtTime(1046.50, now + 0.24); // C6
-                gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.3, now + 0.05);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
-                osc.start(now);
-                osc.stop(now + 0.6);
+                osc.frequency.setValueAtTime(440, this.audioCtx.currentTime); // A4
+                osc.frequency.exponentialRampToValueAtTime(880, this.audioCtx.currentTime + 0.05);
+                gain.gain.setValueAtTime(0.1, this.audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(this.audioCtx.destination);
+                osc.start();
+                osc.stop(this.audioCtx.currentTime + 0.08);
+            },
 
-            } else if (type === 'error') {
+            playSuccess() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.audioCtx.currentTime;
+                // Arpeggio
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                notes.forEach((freq, idx) => {
+                    const osc = this.audioCtx.createOscillator();
+                    const gain = this.audioCtx.createGain();
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+                    gain.gain.setValueAtTime(0.15, now + idx * 0.1);
+                    gain.gain.linearRampToValueAtTime(0, now + idx * 0.1 + 0.25);
+                    osc.connect(gain);
+                    gain.connect(this.audioCtx.destination);
+                    osc.start(now + idx * 0.1);
+                    osc.stop(now + idx * 0.1 + 0.25);
+                });
+            },
+
+            playError() {
+                if (!this.enabled) return;
+                this.init();
+                const osc = this.audioCtx.createOscillator();
+                const gain = this.audioCtx.createGain();
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(110, now); // A2
-                gain.gain.setValueAtTime(0, now);
-                gain.gain.linearRampToValueAtTime(0.4, now + 0.05);
-                gain.gain.setValueAtTime(0.4, now + 0.3);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
-                osc.start(now);
-                osc.stop(now + 0.6);
-            }
-        }
+                osc.frequency.setValueAtTime(180, this.audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(80, this.audioCtx.currentTime + 0.3);
+                gain.gain.setValueAtTime(0.15, this.audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0, this.audioCtx.currentTime + 0.3);
+                osc.connect(gain);
+                gain.connect(this.audioCtx.destination);
+                osc.start();
+                osc.stop(this.audioCtx.currentTime + 0.3);
+            },
 
-        const storyChapters = {
-            prolog: {
-                title: "🎬 PROLOG: Membangun Keresahan Bersama",
-                roleName: "Narasumber",
-                theme: "indigo",
-                teatrikal: "Guru berjalan ke tengah kelas, memasang wajah lapar/lemas secara dramatis.",
-                skrip: `
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Teman-teman sekalian... Bapak/Ibu mau tanya jujur. Pernah tidak kalian mengalami situasi di mana bel istirahat berbunyi, perut kalian sudah berbunyi keroncongan seperti konser musik rock, lalu kalian berlari kencang ke kantin... tapi setibanya di sana... <strong>Zonk!</strong>"</p>
-                    <p class="mb-4 text-indigo-600 font-semibold leading-relaxed text-base italic">[Pura-pura menunjuk keputusasaan di wajah siswa]</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Antrean di warung bakso Bu Minah sudah sepanjang ular naga! Jam istirahat kita cuma 30 menit. Kalian harus mengantre 25 menit hanya untuk semangkuk bakso. Pas bakso di tangan, bel masuk kelas sudah berbunyi."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Alhasil, kalian lari ke kelas sambil makan bakso panas-panas, lidah melepuh, dan sampai kelas kalian malah kembung karena kepedasan. Menyedihkan, bukan? Bu Minah di kantin juga pusing setengah mati mengurus transaksi secara manual ditiup angin."</p>
-                `,
-                cue: "Ketuk tombol bel sekolah di soundboard atas untuk memulai pementasan!"
-            },
-            budi: {
-                title: "🕵️‍♂️ BABAK 1: Sang Detektif Empati (User Researcher)",
-                roleName: "Budi (Rookie)",
-                theme: "amber",
-                teatrikal: "Guru mengambil buku catatan kecil, berjalan mengendap-endap seperti detektif.",
-                skrip: `
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Dalam dunia industri Software House, masalah antrean Bu Minah ini adalah <strong>tambang emas</strong>! Kita butuh pahlawan pertama kita sebut saja <strong>Budi</strong>. Di dalam tim, Budi memegang peran sebagai <strong>User Researcher (Rookie)</strong>."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Tugas Budi tidak langsung mengetik coding di laptop canggih. Tugas pertama Budi sangat sederhana tapi krusial: <strong>Mendengar dan Mengamati</strong>."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Budi bertanya ke siswa: <em>'Kenapa antreannya lama bro?'</em> Siswa menjawab: <em>'Bu Minah kelamaan nyari kembalian receh!'</em> Budi mencatat itu. Budi adalah <strong>Suara Pengguna</strong>."</p>
-                `,
-                cue: "Minta salah satu siswa memegang buku catatan seolah-olah menjadi Budi!"
-            },
-            citra: {
-                title: "🎨 BABAK 2: Sang Perancang Kenyamanan (UI/UX Designer)",
-                roleName: "Citra (Explorer)",
-                theme: "teal",
-                teatrikal: "Guru berjalan ke papan tulis, menggambar layout ponsel fiktif dengan spidol.",
-                skrip: `
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Catatan rahasia dari Budi si User Researcher kemudian dibawa ke meja pahlawan kedua kita. Sebut saja namanya <strong>Citra</strong>. Citra memegang peran sebagai <strong>UI/UX Designer (Explorer)</strong>."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Citra bertugas merancang keindahan dan kenyamanan aplikasi. Citra berpikir bagaimana caranya supaya siswa bisa memesan bakso Bu Minah dengan cepat tanpa perlu teriak-teriak."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Citra menggambar tombol pesanan baksonya <strong>Besar Sekali</strong> tepat di tengah layar. Mengapa? Karena Citra tahu, anak sekolah kalau lapar jempolnya suka gemetaran! Tapi ingat... gambar ini belum punya mesin penggerak di belakangnya."</p>
-                `,
-                cue: "Tunjukkan simulasi tombol Citra di panel kanan pada siswa!"
-            },
-            aris: {
-                title: "⚙️ BABAK 3: Sang Arsitek Logika (System Architect)",
-                roleName: "Aris (Pioneer)",
-                theme: "sky",
-                teatrikal: "Guru merapatkan kedua tangan, memperagakan gerakan aliran pipa air yang mengalir.",
-                skrip: `
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Gambar desain Citra tadi dibawa ke pahlawan ketiga kita yang bernama <strong>Aris</strong>. Aris memegang peran sebagai <strong>System Architect atau Lead Programmer (Pioneer)</strong>."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Aris bertugas membuat aliran logika pintar di belakang layar agar tombol yang digambar Citra benar-benar 'hidup' dan mengirimkan data."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Aris menyusun aturan logika: <em>Jika saldo digital cukup</em>, kurangi saldo otomatis, lalu kirimkan sinyal pesanan instan ke printer HP Bu Minah di dapur. <em>Jika saldo kurang</em>, tampilkan peringatan."</p>
-                `,
-                cue: "Gunakan logika saldo simulator di sebelah kanan untuk memperagakan proses ini!"
-            },
-            epilog: {
-                title: "🏆 EPILOG: Harmoni Hasil Kolaborasi",
-                roleName: "Seluruh Tim",
-                theme: "emerald",
-                teatrikal: "Guru tersenyum lebar dan melipat tangan di dada dengan penuh kebanggaan.",
-                skrip: `
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Aplikasi <strong>'Kantin-Go'</strong> buatan Studio kita akhirnya dirilis di sekolah. 5 menit sebelum bel istirahat berbunyi, kalian yang sudah lapar tinggal membuka HP, klik tombol 'Bakso Urat' buatan Citra, saldo e-wallet terpotong otomatis lewat sistemnya Aris, dan printer dapur Bu Minah langsung mencetak pesanan."</p>
-                    <p class="mb-4 text-slate-600 leading-relaxed text-base">"Kalian tinggal berjalan santai ke kantin, mengambil mangkuk bakso yang sudah matang tanpa antre. Itulah keajaiban dunia PPLG. Kita tidak dididik jadi penonton pasif, tapi jadi <strong>Kreator Masa Depan</strong>!"</p>
-                `,
-                cue: "Kombinasikan semua simulator di panel kanan untuk mendemonstrasikan software house seutuhnya!"
+            playAlert() {
+                if (!this.enabled) return;
+                this.init();
+                const now = this.audioCtx.currentTime;
+                // Dual siren wave
+                for(let i=0; i<3; i++) {
+                    const osc = this.audioCtx.createOscillator();
+                    const gain = this.audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(800, now + i*0.25);
+                    osc.frequency.linearRampToValueAtTime(600, now + i*0.25 + 0.2);
+                    gain.gain.setValueAtTime(0.08, now + i*0.25);
+                    gain.gain.linearRampToValueAtTime(0, now + i*0.25 + 0.2);
+                    osc.connect(gain);
+                    gain.connect(this.audioCtx.destination);
+                    osc.start(now + i*0.25);
+                    osc.stop(now + i*0.25 + 0.2);
+                }
             }
         };
 
-        let currentChapterKey = 'prolog';
-        const chapterOrder = ['prolog', 'budi', 'citra', 'aris', 'epilog'];
 
-        function switchChapter(chapterKey) {
-            currentChapterKey = chapterKey;
-            const ch = storyChapters[chapterKey];
-            
-            // Highlight active tab with elegant Tailwind classes
-            chapterOrder.forEach(key => {
-                const tab = document.getElementById(`tab-${key}`);
-                if (key === chapterKey) {
-                    tab.className = "flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 bg-indigo-600 text-white shadow-md shadow-indigo-600/10";
-                } else {
-                    tab.className = "flex-grow text-center py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-200 text-slate-600 hover:text-slate-900 hover:bg-slate-100";
+        // --- BADGE ENGINE ---
+        const BadgeEngine = {
+            unlockedBadges: new Set(),
+
+            unlock(badgeId, badgeTitle) {
+                if (this.unlockedBadges.has(badgeId)) return;
+                this.unlockedBadges.add(badgeId);
+                AudioEngine.playSuccess();
+                
+                // Update UI state
+                const element = document.getElementById(`badge-${badgeId}`);
+                if (element) {
+                    element.classList.remove('opacity-40');
+                    element.classList.add('border-indigo-500', 'bg-indigo-50/50', 'dark:bg-indigo-950/20');
                 }
-            });
+                
+                // Toast notification
+                showToast(`Lencana Dibuka!`, `Selamat! Kamu meraih lencana ${badgeTitle}.`);
+                
+                // Update Counter
+                document.getElementById('badgeCounter').innerText = this.unlockedBadges.size;
+            }
+        };
 
-            // Set contextual colors for badge
-            let themeBg = "bg-indigo-50 border-indigo-200 text-indigo-700";
-            if (chapterKey === 'budi') { themeBg = "bg-amber-50 border-amber-200 text-amber-700"; }
-            else if (chapterKey === 'citra') { themeBg = "bg-teal-50 border-teal-200 text-teal-700"; }
-            else if (chapterKey === 'aris') { themeBg = "bg-sky-50 border-sky-200 text-sky-700"; }
-            else if (chapterKey === 'epilog') { themeBg = "bg-emerald-50 border-emerald-200 text-emerald-700"; }
-
-            // Render Story
-            const storyHtml = `
-                <div class="space-y-4 animate-fade-in">
-                    <span class="inline-block px-3 py-1 rounded-full text-xs font-bold ${themeBg} border uppercase tracking-wider">Peran: ${ch.roleName}</span>
-                    <h2 class="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">${ch.title}</h2>
+        // --- PROGRESS ENGINE ---
+        const ProgressEngine = {
+            sections: ['babak0', 'prolog', 'babak1', 'babak2', 'babak3', 'babak4', 'babak5', 'minigame', 'lkpd'],
+            
+            update(activeId) {
+                const idx = this.sections.indexOf(activeId);
+                if (idx !== -1) {
+                    const pct = ((idx + 1) / this.sections.length) * 100;
+                    document.getElementById('progressBar').style.width = `${pct}%`;
                     
-                    <!-- Teatrikal Banner -->
-                    <div class="bg-indigo-50/50 border border-indigo-100 rounded-2xl p-4 flex items-start gap-3 text-xs text-indigo-900 shadow-sm">
-                        <span class="text-base select-none">🎭</span>
-                        <div>
-                            <strong class="text-slate-900 block mb-0.5">Panduan Teatrikal Guru:</strong>
-                            <p>${ch.teatrikal}</p>
-                        </div>
-                    </div>
-
-                    <!-- Story Text -->
-                    <div class="prose max-w-none text-slate-700 mt-4 leading-relaxed">
-                        ${ch.skrip}
-                    </div>
-
-                    <!-- Teacher Tip/Cue -->
-                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-xs text-slate-600 mt-6 flex items-center gap-2">
-                        <span class="text-indigo-600 font-bold shrink-0">💡 TIPS GURU:</span>
-                        <span>${ch.cue}</span>
-                    </div>
-                </div>
-            `;
-            document.getElementById('story-body').innerHTML = storyHtml;
-
-            // Update Navigation Buttons state
-            const currentIdx = chapterOrder.indexOf(chapterKey);
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-
-            if (currentIdx === 0) {
-                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                prevBtn.disabled = true;
-            } else {
-                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                prevBtn.disabled = false;
-            }
-
-            if (currentIdx === chapterOrder.length - 1) {
-                nextBtn.innerText = "Selesai Bercerita 🎉";
-            } else {
-                nextBtn.innerText = "Lanjut Cerita →";
-            }
-
-            // Render matching simulator panel on the right side
-            renderSimulator(chapterKey);
-        }
-
-        function navigateChapter(direction) {
-            const currentIdx = chapterOrder.indexOf(currentChapterKey);
-            let nextIdx = currentIdx + direction;
-            if (nextIdx >= 0 && nextIdx < chapterOrder.length) {
-                switchChapter(chapterOrder[nextIdx]);
-            } else if (nextIdx >= chapterOrder.length) {
-                showToast("Sesi storytelling selesai! Lakukan game penguat bersama kelas.");
-            }
-        }
-
-        function renderSimulator(chapterKey) {
-            const container = document.getElementById('sim-container');
-            container.innerHTML = ''; // Clear container
-
-            if (chapterKey === 'prolog') {
-                container.innerHTML = `
-                    <div class="space-y-4 flex flex-col justify-between h-full">
-                        <div>
-                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
-                                🏫 Keresahan Antrean Kantin
-                                <span class="text-[10px] bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full border border-indigo-200">Kondisi Awal</span>
-                            </h3>
-                            <p class="text-xs text-slate-500">Gunakan simulator ini untuk memvisualisasikan situasi kacau di sekolah sebelum dibantu oleh tim PPLG.</p>
-                        </div>
-                        
-                        <div class="bg-slate-100 p-6 rounded-2xl border border-slate-200 text-center space-y-4 py-8 shadow-inner">
-                            <div class="text-5xl animate-bounce select-none">🏃‍♂️💨 🌭🍟 🔔</div>
-                            <p class="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">"Anak-anak berlarian saling dorong, pesanan berisik tidak teratur, dan Bu Minah kelabakan mencari uang kembalian kertas..."</p>
-                        </div>
-
-                        <button onclick="playSound('bell')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-3.5 rounded-2xl font-bold text-sm shadow-md shadow-indigo-600/10 active:scale-95 transition-all flex items-center justify-center gap-2">
-                            🔔 Bunyikan Bel Sekolah
-                        </button>
-                    </div>
-                `;
-            } 
-            else if (chapterKey === 'budi') {
-                container.innerHTML = `
-                    <div class="space-y-4 flex flex-col justify-between h-full">
-                        <div>
-                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
-                                🕵️ Buku Catatan Empati Budi
-                                <span class="text-[10px] bg-amber-50 text-amber-700 px-2.5 py-0.5 rounded-full border border-amber-200">User Researcher</span>
-                            </h3>
-                            <p class="text-xs text-slate-500">Ketuk pada narasumber di bawah untuk mengumpulkan data keluhan asli di lapangan!</p>
-                        </div>
-
-                        <div class="grid grid-cols-2 gap-3 my-2">
-                            <button onclick="revealEmpathy('siswa')" class="p-3 bg-white border border-slate-200 hover:border-amber-400 hover:bg-amber-50/30 text-left rounded-2xl transition-all shadow-sm active:scale-95">
-                                <div class="text-3xl mb-1.5 select-none">🙋‍♂️</div>
-                                <span class="text-xs font-bold text-slate-800 block">Siswa Sekolah</span>
-                                <span class="text-[9px] text-slate-400">Curhat pembeli...</span>
-                            </button>
-                            <button onclick="revealEmpathy('buminah')" class="p-3 bg-white border border-slate-200 hover:border-amber-400 hover:bg-amber-50/30 text-left rounded-2xl transition-all shadow-sm active:scale-95">
-                                <div class="text-3xl mb-1.5 select-none">👵</div>
-                                <span class="text-xs font-bold text-slate-800 block">Bu Minah (Kantin)</span>
-                                <span class="text-[9px] text-slate-400">Keluhan penjual...</span>
-                            </button>
-                        </div>
-
-                        <div id="empathy-bubble" class="bg-amber-50/80 border border-amber-200/60 p-4 rounded-2xl min-h-[90px] flex items-center justify-center text-center text-xs text-amber-900 shadow-sm">
-                            "Silakan pilih salah satu narasumber di atas untuk digali keluhannya!"
-                        </div>
-                    </div>
-                `;
-            } 
-            else if (chapterKey === 'citra') {
-                container.innerHTML = `
-                    <div class="space-y-4 flex flex-col justify-between h-full">
-                        <div>
-                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
-                                🎨 Kanvas Gambar Citra
-                                <span class="text-[10px] bg-teal-50 text-teal-700 px-2.5 py-0.5 rounded-full border border-teal-200">UI/UX Designer</span>
-                            </h3>
-                            <p class="text-xs text-slate-500">Sesuaikan ukuran tombol dan uji skema warna visual untuk membandingkan tingkat kenyamanan penggunaan (usability).</p>
-                        </div>
-
-                        <!-- Canvas Mockup Simulator -->
-                        <div id="canvas-mockup" class="bg-slate-100 p-4 rounded-3xl border border-slate-200 flex flex-col items-center justify-center min-h-[140px] gap-3 shadow-inner">
-                            <button id="bakso-btn" onclick="citraBtnClick()" class="bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black rounded-2xl shadow-md transition-all active:scale-95" style="padding: 14px 28px; font-size: 14px;">
-                                🍜 PESAN BAKSO URAT
-                            </button>
-                            <span id="click-feedback" class="text-[10px] text-slate-500">Silakan klik tombol di atas untuk tes antarmuka!</span>
-                        </div>
-
-                        <!-- Control Knobs -->
-                        <div class="space-y-3 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="text-slate-500 font-medium">Ukuran Tombol Citra:</span>
-                                <input type="range" min="1" max="3" value="2" oninput="adjustButtonSize(this.value)" class="w-32 accent-teal-600 cursor-pointer">
-                            </div>
-                            <div class="flex justify-between items-center text-xs">
-                                <span class="text-slate-500 font-medium">Skema Warna Visual:</span>
-                                <div class="flex gap-1.5">
-                                    <button onclick="setCitraTheme('elegant')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded-lg border border-slate-300 transition-all">Elegan</button>
-                                    <button onclick="setCitraTheme('blinking')" class="px-2.5 py-1 bg-rose-50 text-rose-700 hover:bg-rose-100 text-[10px] font-bold rounded-lg border border-rose-200 transition-all">Silau</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            } 
-            else if (chapterKey === 'aris') {
-                container.innerHTML = `
-                    <div class="space-y-4 flex flex-col justify-between h-full">
-                        <div>
-                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
-                                ⚙️ Penguji Alur Logika Aris
-                                <span class="text-[10px] bg-sky-50 text-sky-700 px-2.5 py-0.5 rounded-full border border-sky-200">System Architect</span>
-                            </h3>
-                            <p class="text-xs text-slate-500">Geser slider untuk mengubah saldo, lalu jalankan logika untuk melihat bagaimana Aris memvalidasi transaksi.</p>
-                        </div>
-
-                        <!-- Balance Panel -->
-                        <div class="bg-slate-100 p-4 rounded-2xl border border-slate-200 flex justify-between items-center shadow-inner">
-                            <div>
-                                <span class="text-[9px] text-slate-500 uppercase font-bold tracking-wider">Saldo Dompet Siswa:</span>
-                                <p id="siswa-balance" class="text-lg font-extrabold text-slate-800">Rp 15.000</p>
-                            </div>
-                            <input type="range" min="0" max="30000" step="5000" value="15000" oninput="adjustSiswaBalance(this.value)" class="w-32 accent-sky-600 cursor-pointer">
-                        </div>
-
-                        <!-- Flow State Display -->
-                        <div id="flow-display" class="bg-white p-4 rounded-2xl border border-slate-200 text-center text-xs space-y-1.5 min-h-[90px] flex flex-col justify-center shadow-sm">
-                            <span class="text-slate-400 uppercase tracking-widest text-[9px] font-bold">Kondisi Aliran Data:</span>
-                            <p id="flow-status" class="text-slate-600">"Sistem Aris menunggu input pesanan untuk memvalidasi saldo..."</p>
-                        </div>
-
-                        <button onclick="triggerArisValidation()" class="w-full bg-sky-600 hover:bg-sky-500 active:scale-95 text-white py-3.5 rounded-2xl font-bold text-sm shadow-md shadow-sky-500/10 transition-all flex items-center justify-center gap-2">
-                            ⚙️ Jalankan Logika Validasi (Harga: Rp 15.000)
-                        </button>
-                    </div>
-                `;
-            } 
-            else if (chapterKey === 'epilog') {
-                container.innerHTML = `
-                    <div class="space-y-4 flex flex-col justify-between h-full">
-                        <div>
-                            <h3 class="font-extrabold text-slate-800 text-base mb-2 flex items-center gap-2">
-                                🤝 Integrasi Studio: Kantin-Go
-                                <span class="text-[10px] bg-emerald-50 text-emerald-700 px-2.5 py-0.5 rounded-full border border-emerald-200">Hasil Sempurna</span>
-                            </h3>
-                            <p class="text-xs text-slate-500">Aplikasi siap uji! Padukan kinerja seluruh tim untuk mencetak pesanan di dapur Bu Minah secara otomatis.</p>
-                        </div>
-
-                        <!-- Full Studio Sandbox Panel -->
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="bg-slate-100 p-3 rounded-2xl border border-slate-200 text-center space-y-1 shadow-inner flex flex-col justify-center">
-                                <span class="text-[8px] text-slate-500 font-bold uppercase">Mockup HP Siswa</span>
-                                <div class="flex justify-center py-2">
-                                    <button id="sandbox-pesan-btn" onclick="triggerSandboxOrder()" class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 active:scale-95 text-white font-bold py-2.5 px-4 rounded-xl text-xs shadow-md transition-all">
-                                        🍜 PESAN BAKSO
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="bg-slate-100 p-3 rounded-2xl border border-slate-200 flex flex-col justify-center items-center shadow-inner relative overflow-hidden">
-                                <span class="text-[8px] text-slate-500 font-bold uppercase mb-1">Dapur Bu Minah</span>
-                                <div class="h-14 flex items-end">
-                                    <div id="printer-paper" class="w-16 h-12 bg-white text-slate-900 border border-slate-300 rounded-t-md p-1.5 text-[6px] font-mono leading-none flex flex-col justify-between overflow-hidden shadow-sm">
-                                        <span class="font-black border-b border-dashed border-slate-300 pb-0.5 block text-center">KANTIN-GO</span>
-                                        <span class="text-[5px]">1x Bakso Urat</span>
-                                        <span class="text-emerald-600 font-extrabold text-[5px] text-right block">LUNAS ✅</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sandbox Logs -->
-                        <div class="bg-white p-3 rounded-2xl border border-slate-200 text-[10px] space-y-1 shadow-sm">
-                            <div class="flex justify-between">
-                                <span class="text-slate-500">Desain Visual Citra:</span>
-                                <span class="text-emerald-600 font-bold">100% Usable (Mudah Diklik)</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-slate-500">Integrasi Server Aris:</span>
-                                <span class="text-sky-600 font-bold">Aktif & Terproteksi</span>
-                            </div>
-                        </div>
-
-                        <div class="text-[10px] text-center text-slate-400 italic">
-                            "Aplikasi sukses dibuat! Antrean selesai diurai."
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        // Budi's Empathy Notebook Reveal Logic
-        function revealEmpathy(target) {
-            playSound('bell');
-            const bubble = document.getElementById('empathy-bubble');
-            if (target === 'siswa') {
-                bubble.innerHTML = `
-                    <div class="text-left animate-fade-in">
-                        <strong class="text-amber-700 block mb-1">📝 Temuan Budi (Siswa):</strong>
-                        <p class="leading-relaxed text-[11px] text-slate-700">"Siswa mengeluhkan waktu istirahat yang habis hanya untuk mengantre. Masalah terbesar terletak pada lamanya proses kembalian uang pecahan kertas kecil."</p>
-                    </div>
-                `;
-            } else if (target === 'buminah') {
-                bubble.innerHTML = `
-                    <div class="text-left animate-fade-in">
-                        <strong class="text-amber-700 block mb-1">📝 Temuan Budi (Bu Minah):</strong>
-                        <p class="leading-relaxed text-[11px] text-slate-700">"Bu Minah pusing mendengar suara pesanan yang saling tumpang tindih. Beliau juga sering lupa urutan siswa yang memesan terlebih dahulu."</p>
-                    </div>
-                `;
-            }
-        }
-
-        // Citra's UI Canvas Logic
-        let currentBtnScale = 1;
-        function adjustButtonSize(val) {
-            const btn = document.getElementById('bakso-btn');
-            const sizeFeedback = document.getElementById('click-feedback');
-            
-            if (val == 1) {
-                btn.style.padding = "4px 8px";
-                btn.style.fontSize = "10px";
-                btn.style.borderRadius = "6px";
-                currentBtnScale = 0.5;
-                sizeFeedback.innerText = "Tombol terlalu kecil! Jempol gemetar saat lapar akan sulit menekannya (Usability Buruk).";
-                sizeFeedback.className = "text-[10px] text-rose-600 font-medium animate-pulse";
-            } else if (val == 2) {
-                btn.style.padding = "14px 28px";
-                btn.style.fontSize = "14px";
-                btn.style.borderRadius = "16px";
-                currentBtnScale = 1;
-                sizeFeedback.innerText = "Ukuran tombol ideal untuk ditekan jempol siswa secara instan.";
-                sizeFeedback.className = "text-[10px] text-teal-600 font-medium";
-            } else if (val == 3) {
-                btn.style.padding = "24px 48px";
-                btn.style.fontSize = "18px";
-                btn.style.borderRadius = "24px";
-                currentBtnScale = 1.5;
-                sizeFeedback.innerText = "Tombol sangat besar! Meminimalkan risiko meleset saat siswa terburu-buru.";
-                sizeFeedback.className = "text-[10px] text-emerald-600 font-bold";
-            }
-        }
-
-        function setCitraTheme(theme) {
-            const canvas = document.getElementById('canvas-mockup');
-            const btn = document.getElementById('bakso-btn');
-            const sizeFeedback = document.getElementById('click-feedback');
-
-            if (theme === 'elegant') {
-                canvas.className = "bg-slate-100 p-4 rounded-3xl border border-slate-200 flex flex-col items-center justify-center min-h-[140px] gap-3 shadow-inner";
-                btn.className = "bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white font-black rounded-2xl shadow-md transition-all active:scale-95";
-                sizeFeedback.innerText = "Palet warna elegan & kontras tinggi membantu navigasi visual yang nyaman.";
-                sizeFeedback.className = "text-[10px] text-teal-600 font-medium";
-                playSound('coin');
-            } else if (theme === 'blinking') {
-                canvas.className = "bg-purple-100 p-4 rounded-3xl border-4 border-rose-400 flex flex-col items-center justify-center min-h-[140px] gap-3 animate-pulse shadow-inner";
-                btn.className = "bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-black rounded-sm border-2 border-dashed border-rose-400 animate-bounce transition-all";
-                sizeFeedback.innerText = "Siswa pusing! Kontras yang terlalu mencolok menurunkan kenyamanan navigasi.";
-                sizeFeedback.className = "text-[10px] text-rose-600 font-extrabold";
-                playSound('error');
-            }
-        }
-
-        function citraBtnClick() {
-            const sizeFeedback = document.getElementById('click-feedback');
-            const canvas = document.getElementById('canvas-mockup');
-            
-            if (currentBtnScale < 1) {
-                if (Math.random() < 0.6) {
-                    playSound('error');
-                    canvas.classList.add('animate-shake');
-                    setTimeout(() => canvas.classList.remove('animate-shake'), 200);
-                    sizeFeedback.innerText = "❌ Meleset! Tombol terlalu kecil untuk dibidik dengan cepat.";
-                    sizeFeedback.className = "text-[10px] text-rose-600 font-bold";
-                } else {
-                    playSound('coin');
-                    sizeFeedback.innerText = "✔️ Berhasil ditekan! Namun memerlukan fokus ekstra.";
-                    sizeFeedback.className = "text-[10px] text-amber-600 font-bold";
+                    // Style nav nodes
+                    this.sections.forEach((id) => {
+                        const btn = document.getElementById(`nav-${id}`);
+                        if (btn) {
+                            if (id === activeId) {
+                                btn.className = 'px-3 py-1 rounded-full bg-brand-500 text-white font-bold transition';
+                            } else {
+                                btn.className = 'px-3 py-1 rounded-full text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 transition font-medium';
+                            }
+                        }
+                    });
                 }
-            } else {
-                playSound('coin');
-                sizeFeedback.innerText = "✔️ Sukses! Navigasi nyaman dan pesanan langsung terdaftar.";
-                sizeFeedback.className = "text-[10px] text-emerald-600 font-bold";
             }
-        }
+        };
 
-        // Aris's Logic Validation Simulator
-        let currentSiswaBalance = 15000;
-        function adjustSiswaBalance(val) {
-            currentSiswaBalance = parseInt(val);
-            document.getElementById('siswa-balance').innerText = `Rp ${currentSiswaBalance.toLocaleString('id-ID')}`;
-        }
 
-        function triggerArisValidation() {
-            const status = document.getElementById('flow-status');
-            const display = document.getElementById('flow-display');
+        // --- SIMULATOR ENGINE ---
+        const SimulatorEngine = {
+            // Babak 0 timeline states
+            exploredYears: new Set(['1980']),
+            currentTimelineYear: '1980',
 
-            if (currentSiswaBalance >= 15000) {
-                playSound('printer');
-                status.innerHTML = `
-                    <span class="text-emerald-600 font-extrabold block text-xs sm:text-sm">✅ TRANSAKSI DISETUJUI</span>
-                    <span class="text-slate-600 text-[11px] leading-relaxed block mt-0.5">Saldo memadai. Sistem mengurangi saldo Rp 15.000 secara otomatis & mencetak tiket pesanan di dapur Bu Minah!</span>
-                `;
-                display.className = "bg-emerald-50 border-2 border-emerald-300 p-4 rounded-2xl text-center text-xs space-y-1.5 min-h-[90px] flex flex-col justify-center transition-all shadow-sm";
-            } else {
-                playSound('error');
-                status.innerHTML = `
-                    <span class="text-rose-600 font-extrabold block text-xs sm:text-sm">❌ TRANSAKSI DITOLAK</span>
-                    <span class="text-slate-600 text-[11px] leading-relaxed block mt-0.5">Saldo kurang. Aliran data dihentikan agar penjual tidak mengalami kerugian transaksi.</span>
-                `;
-                display.className = "bg-rose-50 border-2 border-rose-300 p-4 rounded-2xl text-center text-xs space-y-1.5 min-h-[90px] flex flex-col justify-center transition-all shadow-sm";
-            }
-        }
+            // Canteen problem stages
+            canteenStage: 1, 
+            customerCount: 6,
+            queueSpeed: 1000,
+            simulationInterval: null,
 
-        // Epilog Sandbox Interaction
-        function triggerSandboxOrder() {
-            const paper = document.getElementById('printer-paper');
-            
-            // Apply animation class reset
-            paper.classList.remove('animate-print');
-            void paper.offsetWidth; // Trigger reflow
-            paper.classList.add('animate-print');
-            
-            playSound('printer');
-        }
+            // PM drag-and-drop elements state
+            pmStages: [
+                { id: 'res', text: 'Riset Kebutuhan Pengguna (Budi)', order: 1 },
+                { id: 'des', text: 'Desain UI / UX Aplikasi (Citra)', order: 2 },
+                { id: 'dev', text: 'Menulis Logika & Coding (Aris)', order: 3 },
+                { id: 'qa', text: 'Pengujian Bug (Dina)', order: 4 },
+                { id: 'rel', text: 'Peluncuran & Iterasi Server (Rina)', order: 5 }
+            ],
+            pmCurrentOrder: ['des', 'rel', 'res', 'dev', 'qa'], // randomized starting state
 
-        // Custom UI Toast Notification
-        function showToast(msg) {
-            const container = document.body;
-            const toast = document.createElement('div');
-            toast.className = "fixed bottom-5 right-5 z-50 bg-indigo-600 text-white font-bold px-6 py-3 rounded-2xl shadow-xl border border-indigo-500 text-xs sm:text-sm transition-all";
-            toast.innerText = msg;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.remove();
-            }, 3000);
-        }
+            // QA Bugs state
+            detectedBugs: new Set(),
 
-        // Mini Game "Siapa Pahlawannya?" Logic
-        const gameQuestions = [
-            {
-                q: "Tulisan menu di layar HP Bu Minah kekecilan, tidak terbaca! Siapa pahlawan yang harus mendesain ulang antarmuka tersebut?",
-                options: ["Budi", "Citra", "Aris"],
-                ans: 1, // Citra
-                hint: "Tugasnya berfokus pada visual, penataan antarmuka, dan estetika warna."
+            init() {
+                this.setTimelineYear(1980);
+                this.initCanteenQueue();
+                this.randomizePMStages();
+                this.updateLKPDView();
             },
-            {
-                q: "Kita bingung, sebenarnya siswa sekolah lebih suka menggunakan dompet digital atau pembayaran tunai di kantin? Siapa yang harus melakukan survei langsung?",
-                options: ["Budi", "Citra", "Aris"],
-                ans: 0, // Budi
-                hint: "Tugasnya adalah menggali data lapangan dan mewawancarai pengguna nyata."
-            },
-            {
-                q: "Tombol 'Beli' diketuk berulang-ulang namun tidak merespon sama sekali! Siapa yang bertanggung jawab memeriksa kerusakan database aliran data?",
-                options: ["Budi", "Citra", "Aris"],
-                ans: 2, // Aris
-                hint: "Tugasnya merancang logika pemrosesan data dan integrasi server di belakang layar."
-            },
-            {
-                q: "Aplikasi Kantin-Go ingin ditambahkan fitur mode gelap (Dark Mode) agar ramah baterai di ponsel siswa. Siapa pahlawan perancangnya?",
-                options: ["Budi", "Citra", "Aris"],
-                ans: 1, // Citra
-                hint: "Berkaitan dengan keindahan tema visual dan palet warna antarmuka."
-            },
-            {
-                q: "Sistem mengalami error: Saldo siswa terpotong otomatis tetapi printer di dapur Bu Minah tidak mencetak nota pesanan. Masalah ini harus diselesaikan oleh siapa?",
-                options: ["Budi", "Citra", "Aris"],
-                ans: 2, // Aris
-                hint: "Berhubungan dengan sinkronisasi logika transfer data antar perangkat keras."
-            }
-        ];
 
-        let gameIdx = 0;
-        let score = 0;
+            // --- Timeline Simulator Logic ---
+            setTimelineYear(year) {
+                this.currentTimelineYear = String(year);
+                this.exploredYears.add(String(year));
 
-        function startGame() {
-            gameIdx = 0;
-            score = 0;
-            document.getElementById('game-score').innerText = `Skor: ${score}`;
-            loadQuestion();
-        }
+                // Audio
+                AudioEngine.playClick();
 
-        function loadQuestion() {
-            const q = gameQuestions[gameIdx];
-            const gameArea = document.getElementById('game-area');
-            
-            let optionsHtml = "";
-            q.options.forEach((opt, idx) => {
-                optionsHtml += `
-                    <button onclick="checkAnswer(${idx})" class="px-5 py-3 bg-white hover:bg-indigo-50 text-slate-800 border border-slate-200 hover:border-indigo-500 rounded-2xl font-bold text-xs transition-all active:scale-95 flex-grow sm:flex-grow-0 shadow-sm">
-                        ${opt.toUpperCase()}!
-                    </button>
-                `;
-            });
-
-            gameArea.innerHTML = `
-                <div class="space-y-3 w-full animate-fade-in">
-                    <span class="text-[9px] bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full border border-indigo-100 font-bold uppercase tracking-wider">Soal Ke ${gameIdx + 1} dari ${gameQuestions.length}</span>
-                    <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed max-w-sm mx-auto">${q.q}</p>
-                    <div class="flex flex-wrap justify-center gap-2.5 w-full mt-2">
-                        ${optionsHtml}
-                    </div>
-                </div>
-            `;
-        }
-
-        function checkAnswer(selectedIdx) {
-            const q = gameQuestions[gameIdx];
-            const gameArea = document.getElementById('game-area');
-
-            if (selectedIdx === q.ans) {
-                playSound('coin');
-                score += 20;
-                document.getElementById('game-score').innerText = `Skor: ${score}`;
-                gameArea.innerHTML = `
-                    <div class="space-y-2 text-center animate-fade-in">
-                        <span class="text-3xl">🎉</span>
-                        <p class="text-xs sm:text-sm font-black text-emerald-600">JAWABAN BENAR!</p>
-                        <p class="text-[10px] sm:text-xs text-slate-500 max-w-xs leading-relaxed mx-auto">Hebat! Pemahaman peran penyelamat sistem diidentifikasi secara tepat.</p>
-                    </div>
-                `;
-            } else {
-                playSound('error');
-                gameArea.innerHTML = `
-                    <div class="space-y-2 text-center animate-fade-in">
-                        <span class="text-3xl">😢</span>
-                        <p class="text-xs sm:text-sm font-black text-rose-600">JAWABAN KURANG TEPAT!</p>
-                        <p class="text-[10px] sm:text-xs text-slate-500 max-w-xs leading-relaxed mx-auto">Kunci jawaban yang benar adalah <strong>${q.options[q.ans].toUpperCase()}</strong>. ${q.hint}</p>
-                    </div>
-                `;
-            }
-
-            setTimeout(() => {
-                gameIdx++;
-                if (gameIdx < gameQuestions.length) {
-                    loadQuestion();
-                } else {
-                    endGame();
+                // Check Explorer Badge
+                if (this.exploredYears.size >= 5) {
+                    BadgeEngine.unlock('explorer', 'Explorer');
                 }
-            }, 3000);
-        }
 
-        function endGame() {
-            const gameArea = document.getElementById('game-area');
-            let evaluationMsg = "";
-            if (score >= 80) {
-                evaluationMsg = "Siswa fokus dengan luar biasa! Kelas siap berkolaborasi menyelesaikan LKPD tim heterogen.";
-            } else if (score >= 50) {
-                evaluationMsg = "Kerja bagus! Konsep dasar pembagian peran industri PPLG sudah mulai dipahami.";
-            } else {
-                evaluationMsg = "Diskusikan kembali materi dengan teman kelompokmu untuk memperkuat pemahaman.";
+                // Update UI Node selection highlights
+                const years = ['1980', '1990', '2000', '2010', 'now'];
+                years.forEach((yr) => {
+                    const btn = document.getElementById(`btn-yr-${yr}`);
+                    if (btn) {
+                        if (yr === String(year)) {
+                            btn.className = "z-10 bg-indigo-500 text-white rounded-xl p-3 text-center transition scale-105 shadow-lg shadow-indigo-500/20";
+                            btn.querySelector('span').className = "block font-bold text-sm md:text-lg text-white";
+                        } else {
+                            btn.className = "z-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 text-center transition hover:scale-105";
+                            btn.querySelector('span').className = "block font-bold text-sm md:text-lg text-slate-500";
+                        }
+                    }
+                });
+
+                // Update progress bar helper line
+                const progressWidths = { '1980': 20, '1990': 40, '2000': 60, '2010': 80, 'now': 100 };
+                document.getElementById('timelineProgress').style.width = `${progressWidths[year]}%`;
+
+                // Update Content Display
+                const cardTitle = document.getElementById('timelineYearTitle');
+                const cardDesc = document.getElementById('timelineYearDesc');
+                const cardIcon = document.getElementById('timelineIcon');
+
+                const data = {
+                    '1980': {
+                        title: 'Tahun 1980: Era Mengetik Elektronik & Desktop Statis',
+                        desc: 'Komputer sangat lambat dan sangat mahal. Perangkat lunak hanya digunakan untuk pengolah kata sederhana (Word Processor) dan perhitungan spreadsheet murni oleh akuntan profesional.',
+                        icon: 'fa-keyboard',
+                        question: '"Mengapa Mobile Legends tidak dibuat tahun 1980?"',
+                        choices: [
+                            { text: 'Karena anak-anak tahun 1980 malas bermain game', isCorrect: false },
+                            { text: 'Sebab belum ada hardware mobile, grafis 3D canggih, internet stabil, dan cloud server', isCorrect: true },
+                            { text: 'Sebab developer game belum lahir ke dunia', isCorrect: false }
+                        ]
+                    },
+                    '1990': {
+                        title: 'Tahun 1990: Awal Mula Game Offline Desktop Sederhana',
+                        desc: 'Komputer mulai menyasar pasar rumahan. Game legendaris seperti Solitaire dan Tetris mulai populer. Software masih dikemas menggunakan disket fisik tanpa integrasi internet.',
+                        icon: 'fa-gamepad',
+                        question: '"Mengapa game tahun 1990-an ukurannya sangat kecil dan sangat sederhana?"',
+                        choices: [
+                            { text: 'Karena pembuat game sengaja menyembunyikan fiturnya', isCorrect: false },
+                            { text: 'Karena keterbatasan ruang penyimpanan fisik disket (hanya 1.44 MB) dan RAM komputer', isCorrect: true },
+                            { text: 'Karena teknologi internet saat itu terlalu kencang', isCorrect: false }
+                        ]
+                    },
+                    '2000': {
+                        title: 'Tahun 2000: Ledakan Jaringan Web & Internet Global',
+                        desc: 'Peramban web (browser) mulai dikembangkan. Pengguna mulai dapat saling mengirim e-mail dan berbelanja secara daring dasar. Aplikasi web lahir.',
+                        icon: 'fa-globe',
+                        question: '"Mengapa Tokopedia atau Shopee terus mengalami perubahan fitur sejak awal rilis?"',
+                        choices: [
+                            { text: 'Menyesuaikan perkembangan jaringan internet yang makin cepat & tuntutan sistem pembayaran baru', isCorrect: true },
+                            { text: 'Karena programmer ingin merusak kenyamanan pengguna', isCorrect: false },
+                            { text: 'Karena domain hosting mereka kedaluwarsa', isCorrect: false }
+                        ]
+                    },
+                    '2010': {
+                        title: 'Tahun 2010: Era Emas Smartphone & Aplikasi On-Demand',
+                        desc: 'Evolusi dari desktop menuju genggaman tangan. Peluncuran App Store dan Google Play melahirkan raksasa on-demand seperti Uber, Gojek, dan e-commerce modern.',
+                        icon: 'fa-mobile-screen-button',
+                        question: '"Mengapa Gojek tidak langsung merilis puluhan fitur seperti GoFood, GoSend, dan GoMart secara bersamaan pada tahun 2010?"',
+                        choices: [
+                            { text: 'Karena internet belum ada di Indonesia', isCorrect: false },
+                            { text: 'Karena pada awal rilis, fokus utama diletakkan pada penyelesaian masalah utama (ojek pangkalan) terlebih dahulu, baru dikembangkan mengikuti feedback pasar', isCorrect: true },
+                            { text: 'Karena Bu Minah belum mengizinkan ojek masuk kantin', isCorrect: false }
+                        ]
+                    },
+                    'now': {
+                        title: 'Sekarang: Era Cloud, IoT, Multiplayer Massive & AI Integrasi',
+                        desc: 'Saat ini, software hidup secara dinamis di server cloud global, terintegrasi sensor pintar IoT, dan dipandu kecerdasan buatan (AI) yang terus belajar tanpa henti.',
+                        icon: 'fa-brain',
+                        question: '"Apa kesimpulan akhir dari perjalanan panjang evolusi software ini?"',
+                        choices: [
+                            { text: 'Software sudah sempurna dan tidak perlu dikembangkan lagi', isCorrect: false },
+                            { text: 'Software harus terus berkembang karena teknologi hardware maju dan kebutuhan manusia selalu berubah', isCorrect: true },
+                            { text: 'Software lama harus dihapus total dari muka bumi', isCorrect: false }
+                        ]
+                    }
+                };
+
+                const currentData = data[String(year)];
+                cardTitle.innerText = currentData.title;
+                cardDesc.innerText = currentData.desc;
+                cardIcon.className = `fa-solid ${currentData.icon}`;
+
+                // Inject Virtual Teacher Questions
+                document.getElementById('teacherQuestion').innerText = currentData.question;
+                const choicesContainer = document.getElementById('teacherChoices');
+                choicesContainer.innerHTML = '';
+                
+                // Reset feedback
+                const feedbackBox = document.getElementById('teacherFeedback');
+                feedbackBox.className = 'hidden';
+
+                currentData.choices.forEach((choice, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = "text-left p-3 text-xs font-semibold bg-white dark:bg-slate-900 border hover:border-indigo-400 rounded-xl transition duration-150";
+                    btn.innerText = choice.text;
+                    btn.onclick = () => {
+                        if (choice.isCorrect) {
+                            AudioEngine.playSuccess();
+                            feedbackBox.className = "p-3 rounded-lg text-xs font-semibold mt-3 bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300";
+                            feedbackBox.innerText = "✓ Benar! Jawaban yang sangat cerdas. Pengguna berkembang -> teknologi pun berkembang menyesuaikannya.";
+                        } else {
+                            AudioEngine.playError();
+                            feedbackBox.className = "p-3 rounded-lg text-xs font-semibold mt-3 bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-300";
+                            feedbackBox.innerText = "✗ Kurang tepat. Coba pikirkan kembali keterbatasan teknologi fisik di era tersebut.";
+                        }
+                    };
+                    choicesContainer.appendChild(btn);
+                });
+            },
+
+            // --- Prolog Canteen Game Simulator Logic ---
+            initCanteenQueue() {
+                const simView = document.getElementById('canteenSimulatorView');
+                simView.innerHTML = '';
+
+                if (this.canteenStage === 1) {
+                    document.getElementById('simActiveLevel').innerText = "Tahap 1: Antrean Panjang";
+                    document.getElementById('canteenSpeechBubble').innerText = "Aduh le! Ibu pusing sekali. Siswa-siswa mengantre sangat panjang dan ricuh di depan kasir! Bisakah kalian bantu ibu menertibkannya?";
+                    document.getElementById('btnCanteenSimulatorText').innerText = "Urai Antrean Siswa (Klik Cepat!)";
+
+                    // Render Queue
+                    const queueDiv = document.createElement('div');
+                    queueDiv.className = "flex space-x-2 items-center overflow-x-auto p-2 w-full justify-center";
+                    for(let i=0; i < this.customerCount; i++) {
+                        const person = document.createElement('div');
+                        person.className = "text-3xl animate-bounce";
+                        person.style.animationDelay = `${i * 0.1}s`;
+                        person.innerText = ["👦", "👧", "👨", "👩"][i % 4];
+                        queueDiv.appendChild(person);
+                    }
+                    simView.appendChild(queueDiv);
+                    
+                    const countBadge = document.createElement('span');
+                    countBadge.className = "mt-4 text-xs font-bold text-red-500";
+                    countBadge.innerText = `Siswa Tersisa di Antrean: ${this.customerCount}`;
+                    simView.appendChild(countBadge);
+
+                } else if (this.canteenStage === 2) {
+                    document.getElementById('simActiveLevel').innerText = "Tahap 2: Pesanan Salah";
+                    document.getElementById('canteenSpeechBubble').innerText = "Ya ampun, karena terlalu ramai, Ibu sampai salah memberikan mie goreng pesanan Joko! Bantu Ibu menyocokkan makanan dengan pelanggan!";
+                    document.getElementById('btnCanteenSimulatorText').innerText = "Pasangkan Pesanan Sesuai Pesanan";
+
+                    // Drag matching simulation mock
+                    simView.innerHTML = `
+                        <div class="space-y-3 w-full text-xs">
+                            <div class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 border rounded-lg">
+                                <span>👧 Citra memesan: <strong class="text-indigo-500">🍲 Soto Ayam</strong></span>
+                                <button onclick="SimulatorEngine.solveCanteenStage2(true)" class="px-2 py-1 bg-emerald-500 text-white rounded font-bold">Kirim Soto</button>
+                            </div>
+                            <div class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-800 border rounded-lg">
+                                <span>👦 Joko memesan: <strong class="text-indigo-500">🍹 Es Teh</strong></span>
+                                <button onclick="SimulatorEngine.solveCanteenStage2(false)" class="px-2 py-1 bg-rose-500 text-white rounded font-bold">Kirim Soto</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (this.canteenStage === 3) {
+                    document.getElementById('simActiveLevel').innerText = "Tahap 3: Uang Hilang";
+                    document.getElementById('canteenSpeechBubble').innerText = "Aduh, kasir kembalian berantakan sekali! Joko membayar dengan uang Rp 50.000 untuk soto Rp 12.000. Berapa kembaliannya?";
+                    document.getElementById('btnCanteenSimulatorText').innerText = "Gunakan Kalkulator Kembalian";
+
+                    simView.innerHTML = `
+                        <div class="space-y-3 w-full text-xs text-center">
+                            <div class="p-2 border bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 font-bold rounded">
+                                Total Belanja: Rp 12.000 | Bayar: Rp 50.000
+                            </div>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="SimulatorEngine.solveCanteenStage3(true)" class="p-2 border rounded hover:border-brand-500 font-bold bg-slate-50 dark:bg-slate-800">Rp 38.000</button>
+                                <button onclick="SimulatorEngine.solveCanteenStage3(false)" class="p-2 border rounded hover:border-brand-500 font-bold bg-slate-50 dark:bg-slate-800">Rp 28.000</button>
+                                <button onclick="SimulatorEngine.solveCanteenStage3(false)" class="p-2 border rounded hover:border-brand-500 font-bold bg-slate-50 dark:bg-slate-800">Rp 48.000</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (this.canteenStage === 4) {
+                    document.getElementById('simActiveLevel').innerText = "Tahap 4: Tidak Tahu Stok";
+                    document.getElementById('canteenSpeechBubble').innerText = "Bahan makanan habis di jam makan siang karena Ibu tidak memiliki data sisa stok! Klik tombol untuk mengecek!";
+                    document.getElementById('btnCanteenSimulatorText').innerText = "Perbarui Lembar Stok";
+
+                    simView.innerHTML = `
+                        <div class="w-full text-xs space-y-2">
+                            <div class="flex justify-between border-b pb-1 font-bold">
+                                <span>Bahan</span>
+                                <span>Status Fisik</span>
+                            </div>
+                            <div class="flex justify-between text-red-500">
+                                <span>Bahan Bakso</span>
+                                <span>HABIS TOTAL (0)</span>
+                            </div>
+                            <div class="flex justify-between text-yellow-500">
+                                <span>Bahan Soto</span>
+                                <span>Tersisa 1 porsi</span>
+                            </div>
+                        </div>
+                    `;
+                } else if (this.canteenStage === 5) {
+                    document.getElementById('simActiveLevel').innerText = "Tahap 5: Laporan Berantakan";
+                    document.getElementById('canteenSpeechBubble').innerText = "Semua buku kas basah kuyup terkena kuah sayur! Ibu tidak tahu berapa total keuntungan hari ini.";
+                    document.getElementById('btnCanteenSimulatorText').innerText = "Keringkan & Urutkan Catatan Kas";
+
+                    simView.innerHTML = `
+                        <div class="w-full text-center p-4">
+                            <span class="text-4xl animate-pulse">📚💧💸</span>
+                            <p class="text-xs text-slate-500 mt-2 font-semibold">Semua laporan tertulis hancur tak terbaca.</p>
+                        </div>
+                    `;
+                } else if (this.canteenStage === 6) {
+                    document.getElementById('simActiveLevel').className = "px-2 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-700 font-bold uppercase";
+                    document.getElementById('simActiveLevel').innerText = "Selesai: Butuh Aplikasi";
+                    document.getElementById('canteenSpeechBubble').innerText = "Ibu menyerah! Ibu tidak bisa berjualan manual lagi. Ibu butuh bantuan siswa PPLG untuk membuat aplikasi POS (Point of Sales) Kantin!";
+                    document.getElementById('btnCanteenSimulatorText').innerText = "Sambut & Bentuk Tim PPLG!";
+
+                    simView.innerHTML = `
+                        <div class="w-full text-center p-4 space-y-3">
+                            <span class="text-5xl">💡📲🚀</span>
+                            <p class="text-xs font-bold text-emerald-600">SOLUSI: DIGITALISASI KANTIN</p>
+                        </div>
+                    `;
+                }
+            },
+
+            runCanteenSimulationStep() {
+                AudioEngine.playClick();
+                if (this.canteenStage === 1) {
+                    if (this.customerCount > 1) {
+                        this.customerCount--;
+                        this.initCanteenQueue();
+                    } else {
+                        showToast("Antrean Berkurang!", "Kamu berhasil mengurai antrean tahap 1!");
+                        this.canteenStage = 2;
+                        this.initCanteenQueue();
+                    }
+                } else if (this.canteenStage === 4) {
+                    showToast("Stok Tercatat!", "Sistem stok manual memang melelahkan.");
+                    this.canteenStage = 5;
+                    this.initCanteenQueue();
+                } else if (this.canteenStage === 5) {
+                    showToast("Buku Rusak!", "Log kas manual hancur total.");
+                    this.canteenStage = 6;
+                    this.initCanteenQueue();
+                } else if (this.canteenStage === 6) {
+                    document.getElementById('btnNextProlog').classList.remove('hidden');
+                    document.getElementById('btnNextProlog').scrollIntoView({ behavior: 'smooth' });
+                    showToast("Tim Siap!", "Mari buat aplikasi POS!");
+                }
+            },
+
+            solveCanteenStage2(isCorrect) {
+                if (isCorrect) {
+                    AudioEngine.playSuccess();
+                    showToast("Soto Terkirim!", "Tepat sasaran ke Citra!");
+                    this.canteenStage = 3;
+                    this.initCanteenQueue();
+                } else {
+                    AudioEngine.playError();
+                    showToast("Salah Kirim!", "Joko marah soto malah diberikan ke dia!");
+                }
+            },
+
+            solveCanteenStage3(isCorrect) {
+                if (isCorrect) {
+                    AudioEngine.playSuccess();
+                    showToast("Kembalian Pas!", "Uang kas aman & Joko puas!");
+                    this.canteenStage = 4;
+                    this.initCanteenQueue();
+                } else {
+                    AudioEngine.playError();
+                    showToast("Salah Hitung!", "Siswa komplain karena kembalian kurang!");
+                }
+            },
+
+
+            // --- Budi Interview Simulator Logic ---
+            chooseResearchQuestion(id) {
+                AudioEngine.playClick();
+                const text = document.getElementById('researchFeedbackText');
+                
+                // Style selection
+                for(let i=1; i<=3; i++) {
+                    const btn = document.getElementById(`res-q${i}`);
+                    if (btn) btn.className = btn.className.replace('border-indigo-500', 'border-slate-200');
+                }
+                document.getElementById(`res-q${id}`).className += " border-indigo-500 bg-indigo-50/20";
+
+                if (id === 1) {
+                    text.innerText = "🚨 PERINGATAN BUDI: Pertanyaan ini terlalu mengarah ke preferensi visual subjektif tanpa menyentuh akar permasalahan transaksi. Bu Minah bingung menjawabnya.";
+                    text.className = "text-rose-500 text-xs font-semibold mt-2 leading-relaxed";
+                } else if (id === 2 || id === 3) {
+                    BadgeEngine.unlock('researcher', 'Researcher');
+                    text.innerText = "✓ BERHASIL: Bu Minah menjawab dengan antusias! Akar masalah terdeteksi: Kesalahan hitung di kasir, ketidaktahuan stok, dan pembukuan basah. Sekarang tim memiliki daftar kebutuhan spesifik (Spesifikasi Kebutuhan Perangkat Lunak).";
+                    text.className = "text-emerald-600 text-xs font-semibold mt-2 leading-relaxed";
+                    document.getElementById('btnNextBabak2').classList.remove('hidden');
+                }
+            },
+
+            // --- Citra UI Design Simulator ---
+            updateUIDesign() {
+                const btnSize = document.getElementById('ui-btn-size').value;
+                const btnRounded = document.getElementById('ui-btn-rounded').value;
+                const btnColor = document.getElementById('ui-btn-color').value;
+
+                const mockBtn = document.getElementById('uiMockBtn');
+                mockBtn.style.fontSize = `${btnSize}px`;
+                mockBtn.style.padding = `${btnSize / 2}px ${btnSize}px`;
+                mockBtn.style.borderRadius = `${btnRounded}px`;
+                
+                // Colors class mapper
+                mockBtn.className = `w-full text-white font-semibold transition-all ${
+                    btnColor === 'indigo-600' ? 'bg-indigo-600 hover:bg-indigo-700' :
+                    btnColor === 'rose-500' ? 'bg-rose-500 hover:bg-rose-600' : 'bg-emerald-500 hover:bg-emerald-600'
+                }`;
+
+                // Unlock Badge Designer
+                if (btnSize >= 18 && btnRounded >= 8) {
+                    BadgeEngine.unlock('designer', 'Designer');
+                    document.getElementById('btnNextBabak2').classList.remove('hidden');
+                }
+            },
+
+            // --- Aris Coding Logic Simulator ---
+            testCodingLogic() {
+                const condLeft = document.getElementById('code-cond-left').value;
+                const op = document.getElementById('code-operator').value;
+                const condRight = document.getElementById('code-cond-right').value;
+                const actSuccess = document.getElementById('code-success-action').value;
+                const actFail = document.getElementById('code-fail-action').value;
+
+                if (condLeft === 'correct' && op === 'correct-op' && condRight === 'correct-val' && actSuccess === 'correct-act' && actFail === 'correct-fail') {
+                    AudioEngine.playSuccess();
+                    BadgeEngine.unlock('programmer', 'Programmer');
+                    showToast("Kompilasi Sukses!", "Logika transaksi kasir divalidasi dengan aman!");
+                    document.getElementById('btnNextBabak3').classList.remove('hidden');
+                } else {
+                    AudioEngine.playError();
+                    showToast("Kompilasi Gagal!", "Sistem terancam bypass saldo minus! Coba periksa kembali kondisinya.");
+                }
+            },
+
+
+            // --- Rina Project Manager Simulator ---
+            randomizePMStages() {
+                // Fisher Yates Shuffle
+                for (let i = this.pmCurrentOrder.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.pmCurrentOrder[i], this.pmCurrentOrder[j]] = [this.pmCurrentOrder[j], this.pmCurrentOrder[i]];
+                }
+                this.renderPMStages();
+            },
+
+            renderPMStages() {
+                const container = document.getElementById('pm-stages-container');
+                container.innerHTML = '';
+
+                this.pmCurrentOrder.forEach((id, idx) => {
+                    const stageObj = this.pmStages.find(s => s.id === id);
+                    const div = document.createElement('div');
+                    div.className = "flex justify-between items-center p-2.5 bg-white dark:bg-slate-900 border rounded-xl text-xs font-semibold shadow-sm";
+                    
+                    div.innerHTML = `
+                        <div class="flex items-center space-x-2">
+                            <span class="w-5 h-5 bg-indigo-50 dark:bg-indigo-950 text-indigo-500 rounded-full flex items-center justify-center text-[10px]">${idx + 1}</span>
+                            <span>${stageObj.text}</span>
+                        </div>
+                        <div class="flex space-x-1">
+                            <button onclick="SimulatorEngine.movePMStage(${idx}, -1)" class="p-1 text-slate-400 hover:text-indigo-500 transition"><i class="fa-solid fa-chevron-up"></i></button>
+                            <button onclick="SimulatorEngine.movePMStage(${idx}, 1)" class="p-1 text-slate-400 hover:text-indigo-500 transition"><i class="fa-solid fa-chevron-down"></i></button>
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            },
+
+            movePMStage(index, direction) {
+                AudioEngine.playClick();
+                const targetIndex = index + direction;
+                if (targetIndex >= 0 && targetIndex < this.pmCurrentOrder.length) {
+                    // Swap elements
+                    const temp = this.pmCurrentOrder[index];
+                    this.pmCurrentOrder[index] = this.pmCurrentOrder[targetIndex];
+                    this.pmCurrentOrder[targetIndex] = temp;
+                    this.renderPMStages();
+                }
+            },
+
+            verifyPMStages() {
+                const correctOrder = ['res', 'des', 'dev', 'qa', 'rel'];
+                const isCorrect = this.pmCurrentOrder.every((val, idx) => val === correctOrder[idx]);
+
+                if (isCorrect) {
+                    AudioEngine.playSuccess();
+                    BadgeEngine.unlock('pm', 'Project Manager');
+                    showToast("Timeline Disetujui!", "Jadwal kerja tersusun rapi!");
+                    document.getElementById('btnNextBabak3').classList.remove('hidden');
+                } else {
+                    AudioEngine.playError();
+                    showToast("Verifikasi Gagal!", "Susunan tidak sesuai kaidah SDLC (Riset -> Desain -> Coding -> Testing -> Rilis)!");
+                }
+            },
+
+            // --- Dina QA Bug Hunting Simulator ---
+            detectBug(bugType) {
+                if (this.detectedBugs.has(bugType)) return;
+                this.detectedBugs.add(bugType);
+                AudioEngine.playSuccess();
+
+                // Highlight solved elements
+                const bugEl = document.getElementById(`bug-${bugType}`);
+                bugEl.className = bugEl.className.replace('border-rose-900/30', 'border-emerald-500/50 bg-emerald-500/10');
+                
+                if (bugType === 'nanPrice') {
+                    document.getElementById('text-nanPrice').innerText = 'Rp 15.000';
+                    document.getElementById('text-nanPrice').className = 'text-emerald-500 font-bold';
+                } else if (bugType === 'overflowText') {
+                    bugEl.style.height = 'auto';
+                    document.getElementById('text-overflow').className = 'text-[10px] text-emerald-400 break-words';
+                } else if (bugType === 'negCheck') {
+                    bugEl.innerHTML = `
+                        <span class="text-xs font-bold text-emerald-400"><i class="fa-solid fa-shield-halved"></i> Validasi Checkout</span>
+                        <span class="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[10px] font-mono rounded">Bayar: Rp 15.000</span>
+                    `;
+                }
+
+                // Update counter
+                const count = this.detectedBugs.size;
+                document.getElementById('bugCounterDisplay').innerText = `${count} / 3 Terdeteksi`;
+
+                if (count >= 3) {
+                    BadgeEngine.unlock('qa', 'QA Tester');
+                    showToast("Semua Bug Teratasi!", "Kualitas sistem terjamin. Siap meluncurkan patch!");
+                    document.getElementById('btnNextBabak4').classList.remove('hidden');
+                }
+            },
+
+            // --- LKPD Logic ---
+            updateLKPDView() {
+                const team = document.getElementById('lkpd-team-name').value || 'Nama kelompok belum diisi';
+                const loc = document.getElementById('lkpd-location').value;
+                const prob = document.getElementById('lkpd-problem-desc').value || 'Penjelasan masalah belum diisi oleh siswa...';
+                const sol = document.getElementById('lkpd-sol-desc').value || 'Rencana solusi belum diisi oleh siswa...';
+                
+                const roleRes = document.getElementById('lkpd-role-res').value || '-';
+                const roleDes = document.getElementById('lkpd-role-des').value || '-';
+                const roleDev = document.getElementById('lkpd-role-dev').value || '-';
+                const roleQa = document.getElementById('lkpd-role-qa').value || '-';
+
+                document.getElementById('print-team').innerText = team;
+                document.getElementById('print-location').innerText = loc;
+                document.getElementById('print-problem').innerText = prob;
+                document.getElementById('print-solution').innerText = sol;
+
+                document.getElementById('print-res').innerText = roleRes;
+                document.getElementById('print-des').innerText = roleDes;
+                document.getElementById('print-dev').innerText = roleDev;
+                document.getElementById('print-qa').innerText = roleQa;
+
+                // Unlock Final Golden Badge if all sections populated
+                if (team !== 'Nama kelompok belum diisi' && prob !== 'Penjelasan masalah belum diisi oleh siswa...' && sol !== 'Rencana solusi belum diisi oleh siswa...' && roleRes !== '-' && roleDes !== '-' && roleDev !== '-' && roleQa !== '-') {
+                    BadgeEngine.unlock('engineer', 'Software Engineer');
+                }
+            },
+
+            copyLKPDToClipboard() {
+                AudioEngine.playClick();
+                const textToCopy = `
+================ LAPORAN PROYEK PPLG KELAS X ================
+KELOMPOK / KELAS: ${document.getElementById('print-team').innerText}
+STUDI KASUS: ${document.getElementById('print-location').innerText}
+ANALISIS MASALAH: ${document.getElementById('print-problem').innerText}
+RANCANGAN SOFTWARE: ${document.getElementById('print-solution').innerText}
+
+TIM PENGEMBANG:
+- UX Research: ${document.getElementById('print-res').innerText}
+- UI Designer: ${document.getElementById('print-des').innerText}
+- Programmer: ${document.getElementById('print-dev').innerText}
+- QA & PM: ${document.getElementById('print-qa').innerText}
+============================================================
+`;
+                // Clipboard fallback simulation copy
+                const textarea = document.createElement('textarea');
+                textarea.value = textToCopy;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast("Disalin ke Clipboard!", "Tempel laporannya ke dokumen pengumpulan kalian!");
+                } catch(e) {
+                    showToast("Gagal Menyalin", "Silakan blok teks di preview dan salin manual.");
+                }
+                document.body.removeChild(textarea);
             }
+        };
 
-            gameArea.innerHTML = `
-                <div class="space-y-3 text-center animate-fade-in">
-                    <span class="text-4xl">🏆</span>
-                    <p class="text-sm sm:text-base font-extrabold text-slate-800">Sesi Selesai!</p>
-                    <p class="text-xs text-slate-500 max-w-sm leading-relaxed mx-auto">${evaluationMsg}</p>
-                    <button onclick="startGame()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white rounded-xl font-bold text-xs shadow-md transition-all">Main Lagi</button>
-                </div>
-            `;
+
+        // --- GAME ENGINE (15 Randomized Scenario Questions) ---
+        const GameEngine = {
+            questions: [
+                {
+                    q: "Bu Minah berkata: 'Ibu sering salah menghitung uang kembalian siswa saat ramai.' Langkah awal yang harus diambil tim adalah?",
+                    choices: [
+                        { text: "Budi melakukan User Research untuk mencari akar kendala transaksi", isCorrect: true },
+                        { text: "Aris langsung menulis ribuan baris kode program", isCorrect: false },
+                        { text: "Citra menggambar warna-warni logo aplikasi kantin", isCorrect: false },
+                        { text: "Dina melakukan uji coba ketahanan beban server", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Siswa mengeluhkan ukuran tombol aplikasi yang terlalu kecil saat diakses lewat HP Android jadul. Siapa yang bertanggung jawab memperbaikinya?",
+                    choices: [
+                        { text: "Dina sebagai QA Tester", isCorrect: false },
+                        { text: "Citra sebagai UI/UX Designer untuk merevisi desain tombol", isCorrect: true },
+                        { text: "Budi untuk mewawancarai siswa kembali", isCorrect: false },
+                        { text: "Rina untuk menunda timeline pengerjaan", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Setelah aplikasi dirilis, terjadi kendala fatal berupa saldo siswa berkurang tanpa melakukan pembelian makanan. Siapa yang harus menelusuri bug logika ini?",
+                    choices: [
+                        { text: "Rina (Project Manager)", isCorrect: false },
+                        { text: "Budi (User Research)", isCorrect: false },
+                        { text: "Aris (Lead Programmer) untuk meneliti baris validasi saldo", isCorrect: true },
+                        { text: "Semua salah", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Aplikasi kantin sudah selesai dicoding namun belum dirilis ke umum. Tindakan apa yang mutlak dilakukan terlebih dahulu?",
+                    choices: [
+                        { text: "Dina melakukan QA Testing untuk menyisir bug kritis", isCorrect: true },
+                        { text: "Rina mengadakan pesta perayaan rilis produk", isCorrect: false },
+                        { text: "Aris menghapus database utama", isCorrect: false },
+                        { text: "Budi membuat kuesioner baru", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Rina, sebagai Project Manager, mendapati server lokal sekolah down sehari sebelum tenggat waktu. Apa langkah terbaiknya?",
+                    choices: [
+                        { text: "Mengabaikan masalah dan membiarkan programmer stres sendiri", isCorrect: false },
+                        { text: "Melakukan koordinasi darurat bersama tim dan mengalihkan server sementara", isCorrect: true },
+                        { text: "Membatalkan seluruh pembuatan aplikasi secara sepihak", isCorrect: false },
+                        { text: "Mengganti seluruh anggota tim dengan orang baru", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Ketika melakukan wawancara, Bu Minah terus membagikan keluhan emosional di luar topik kantin. Peran Budi yang tepat adalah?",
+                    choices: [
+                        { text: "Membentak Bu Minah agar fokus", isCorrect: false },
+                        { text: "Mengarahkan percakapan kembali secara ramah agar fokus pada inti operasional kantin", isCorrect: true },
+                        { text: "Ikut mengeluhkan urusan pribadi Budi", isCorrect: false },
+                        { text: "Meninggalkan ruang wawancara seketika", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Mengapa desain mockup Citra harus dibuat dan disetujui Bu Minah sebelum Aris mulai coding?",
+                    choices: [
+                        { text: "Agar Aris memiliki panduan visual terarah dan menghindari buang waktu coding ulang", isCorrect: true },
+                        { text: "Agar Citra terlihat sibuk di hadapan guru", isCorrect: false },
+                        { text: "Karena program tidak memerlukan struktur logika", isCorrect: false },
+                        { text: "Hanya aturan formalitas belaka tanpa fungsi", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Uang modal kantin sering selisih karena catatan pengeluaran harian ditulis di kertas robek yang sering basah. Di SDLC, ini disebut?",
+                    choices: [
+                        { text: "Bugs antarmuka visual", isCorrect: false },
+                        { text: "Masalah operasional fisik (Akar Permasalahan Pengguna)", isCorrect: true },
+                        { text: "Kegagalan server cloud", isCorrect: false },
+                        { text: "Kelemahan framework Javascript", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Dina menemukan bahwa tombol 'Kembali' mengarahkan pengguna ke halaman eror 404. Apa yang harus Dina lakukan?",
+                    choices: [
+                        { text: "Membiarkannya karena siswa pasti tahu jalan pulang", isCorrect: false },
+                        { text: "Mencatat langkah reproduksi bug lalu melaporkannya ke Aris untuk dipatch", isCorrect: true },
+                        { text: "Memperbaiki kode database server sendiri tanpa melapor", isCorrect: false },
+                        { text: "Menghapus tombol tersebut dari sistem", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Apa fungsi utama dari pembuatan diagram alir (Flowchart) sebelum memulai menulis kode?",
+                    choices: [
+                        { text: "Mempermudah pemahaman logika jalannya program bagi seluruh tim", isCorrect: true },
+                        { text: "Mempersulit pekerjaan programmer", isCorrect: false },
+                        { text: "Menghias laporan LKPD agar berwarna", isCorrect: false },
+                        { text: "Menghabiskan jatah kertas sekolah", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Bu Minah mengusulkan fitur baru agar aplikasi bisa melacak kesehatan kalori siswa secara real-time. Siapa yang mengelola usulan ini?",
+                    choices: [
+                        { text: "Rina (PM) menilai kelayakan fitur terhadap batas waktu dan budget proyek", isCorrect: true },
+                        { text: "Aris langsung menginstal sensor kesehatan tanpa izin", isCorrect: false },
+                        { text: "Dina menolak karena malas menguji fitur baru", isCorrect: false },
+                        { text: "Budi memarahi Bu Minah karena menyusahkan", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Perangkat lunak yang handal dirancang untuk menangani kegagalan input dari pengguna. Ini disebut prinsip?",
+                    choices: [
+                        { text: "Sistem Terbuka", isCorrect: false },
+                        { text: "Error Handling & Input Validation", isCorrect: true },
+                        { text: "Bypass Keamanan", isCorrect: false },
+                        { text: "Dynamic Styling", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Mengapa aplikasi mobile seperti Mobile Legends, Gojek, dan Tokopedia terus-menerus meminta update berkala di HP kita?",
+                    choices: [
+                        { text: "Karena memori HP kita terlalu kosong", isCorrect: false },
+                        { text: "Karena pengembang melakukan perbaikan bug berkelanjutan dan menambah fitur baru mengikuti tren zaman", isCorrect: true },
+                        { text: "Karena aplikasi tersebut rusak parah dan tidak bisa diperbaiki lagi", isCorrect: false },
+                        { text: "Karena aturan pajak pemerintah", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Mengapa kolaborasi dalam rekayasa perangkat lunak (Software House) sangat krusial?",
+                    choices: [
+                        { text: "Sebab satu orang tidak mungkin menguasai seluruh aspek rekayasa, visual, pengujian, dan manajemen secara mendalam sekaligus", isCorrect: true },
+                        { text: "Hanya untuk memenuhi syarat tugas kelompok di sekolah", isCorrect: false },
+                        { text: "Agar biaya proyek bisa dibagi rata ke semua orang", isCorrect: false },
+                        { text: "Sebab programmer tidak bisa mengetik tanpa didampingi orang lain", isCorrect: false }
+                    ]
+                },
+                {
+                    q: "Apa makna dari kesimpulan 'Perangkat lunak tidak pernah benar-benar selesai'?",
+                    choices: [
+                        { text: "Menunjukkan bahwa semua aplikasi di dunia gagal dibuat", isCorrect: false },
+                        { text: "Software akan terus dipelihara (Maintenance) dan diiterasi selama masih ada pengguna aktif yang menggunakannya", isCorrect: true },
+                        { text: "Programmer tidak pernah digaji tepat waktu", isCorrect: false },
+                        { text: "Aplikasi hanya bisa bertahan selama satu bulan saja", isCorrect: false }
+                    ]
+                }
+            ],
+            
+            shuffledQuestions: [],
+            currentIndex: 0,
+            score: 0,
+
+            init() {
+                this.shuffledQuestions = [...this.questions];
+                // Shuffle questions
+                for (let i = this.shuffledQuestions.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.shuffledQuestions[i], this.shuffledQuestions[j]] = [this.shuffledQuestions[j], this.shuffledQuestions[i]];
+                }
+                this.currentIndex = 0;
+                this.score = 0;
+                
+                document.getElementById('gamePlayArea').classList.remove('hidden');
+                document.getElementById('gameFinishedScreen').classList.add('hidden');
+                
+                this.renderQuestion();
+            },
+
+            renderQuestion() {
+                if (this.currentIndex >= 15) {
+                    this.finishGame();
+                    return;
+                }
+
+                document.getElementById('gameScore').innerText = this.score;
+                document.getElementById('gameQuestIndex').innerText = this.currentIndex + 1;
+
+                const qData = this.shuffledQuestions[this.currentIndex];
+                document.getElementById('gameQuestionText').innerText = qData.q;
+                
+                const choicesContainer = document.getElementById('gameChoicesArea');
+                choicesContainer.innerHTML = '';
+
+                // Reset Feedback Card
+                const feedback = document.getElementById('gameFeedbackCard');
+                feedback.className = "hidden";
+
+                qData.choices.forEach((choice, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = "text-left p-4 rounded-2xl border-2 border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400 bg-white dark:bg-slate-900 font-medium text-xs md:text-sm transition duration-200 shadow-sm flex items-start space-x-3";
+                    
+                    const marker = ["A", "B", "C", "D"][index];
+                    btn.innerHTML = `
+                        <span class="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded font-bold text-xs shrink-0">${marker}</span>
+                        <span>${choice.text}</span>
+                    `;
+                    
+                    btn.onclick = () => this.handleAnswer(choice.isCorrect, btn);
+                    choicesContainer.appendChild(btn);
+                });
+            },
+
+            handleAnswer(isCorrect, element) {
+                // Disable all choices
+                const btns = document.getElementById('gameChoicesArea').getElementsByTagName('button');
+                for (let b of btns) {
+                    b.disabled = true;
+                }
+
+                const feedback = document.getElementById('gameFeedbackCard');
+                feedback.classList.remove('hidden');
+
+                if (isCorrect) {
+                    AudioEngine.playSuccess();
+                    this.score += 10;
+                    element.className = element.className.replace('border-slate-200', 'border-emerald-500 bg-emerald-500/10');
+                    feedback.className = "p-4 rounded-xl text-xs md:text-sm font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300";
+                    feedback.innerText = "✓ JAWABAN TEPAT! Analisis keputusan langkah berikutnya sangat akurat.";
+                } else {
+                    AudioEngine.playError();
+                    element.className = element.className.replace('border-slate-200', 'border-rose-500 bg-rose-500/10 animate-shake');
+                    feedback.className = "p-4 rounded-xl text-xs md:text-sm font-semibold bg-rose-100 text-rose-800 dark:bg-rose-950/40 dark:text-rose-300";
+                    feedback.innerText = "✗ JAWABAN KURANG TEPAT. Pelajari kembali tugas peran & siklus pengembangan perangkat lunak (SDLC).";
+                }
+
+                // Wait 1.8 seconds, then load next question
+                setTimeout(() => {
+                    this.currentIndex++;
+                    this.renderQuestion();
+                }, 1800);
+            },
+
+            finishGame() {
+                document.getElementById('gamePlayArea').classList.add('hidden');
+                const finished = document.getElementById('gameFinishedScreen');
+                finished.classList.remove('hidden');
+                
+                document.getElementById('gameFinalMessage').innerHTML = `
+                    Kamu berhasil menyelesaikan seluruh kuis tantangan kelas industri dengan total skor: 
+                    <strong class="text-brand-500 text-lg">${this.score} / 150</strong>. 
+                    <br><br>Kembali ke menu lencana atau lanjutkan untuk merancang proyek mandiri di form LKPD kelompok di bawah!
+                `;
+            },
+
+            resetGame() {
+                AudioEngine.playClick();
+                this.init();
+            }
+        };
+
+
+        // --- STORY ENGINE ---
+        const StoryEngine = {
+            activeSection: 'babak0',
+
+            init() {
+                // Set Theme Default
+                if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                    document.documentElement.classList.add('dark');
+                    document.getElementById('themeIcon').className = "fa-solid fa-sun text-yellow-400";
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    document.getElementById('themeIcon').className = "fa-solid fa-moon text-slate-600";
+                }
+
+                this.goToSection('babak0');
+            },
+
+            goToSection(sectionId) {
+                AudioEngine.playClick();
+                
+                // Hide all screens
+                const screens = document.querySelectorAll('.active-screen');
+                screens.forEach((screen) => {
+                    screen.classList.add('hidden');
+                });
+
+                // Show target screen
+                const target = document.getElementById(`sec-${sectionId}`);
+                if (target) {
+                    target.classList.remove('hidden');
+                    this.activeSection = sectionId;
+                    
+                    // Smooth transition scroll up
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+
+                // Update Progress Tracking UI & Navigation highlights
+                ProgressEngine.update(sectionId);
+            },
+
+            selectCharacter(roleId) {
+                AudioEngine.playClick();
+                const detailBox = document.getElementById('characterDetailBox');
+                
+                const roleData = {
+                    'pm': {
+                        emoji: '👩‍💼',
+                        name: 'Rina (Project Manager)',
+                        desc: 'Tanggung jawab: Mengatur timeline jadwal kerja, melakukan komunikasi dua arah dengan klien (Bu Minah), mengadakan koordinasi tim, membagi beban kerja secara adil, dan memastikan sistem dideploy tepat waktu sesuai target pasar.',
+                        badge: 'pm'
+                    },
+                    'researcher': {
+                        emoji: '👨‍💻',
+                        name: 'Budi (User Researcher)',
+                        desc: 'Tanggung jawab: Menemukan akar kendala pengguna melalui observasi langsung atau teknik wawancara terstruktur. Memastikan pengembang membuat produk yang benar-benar memecahkan masalah riil pengguna di lapangan.',
+                        badge: 'researcher'
+                    },
+                    'designer': {
+                        emoji: '🎨',
+                        name: 'Citra (UI/UX Designer)',
+                        desc: 'Tanggung jawab: Merancang sketsa visual antarmuka, tata letak tata tombol, pemilihan kontras warna yang nyaman di mata, dan peta alur navigasi dari menu utama hingga konfirmasi selesai agar aplikasi mudah dipahami.',
+                        badge: 'designer'
+                    },
+                    'developer': {
+                        emoji: '💻',
+                        name: 'Aris (Lead Programmer / Architect)',
+                        desc: 'Tanggung jawab: Menerjemahkan kebutuhan rancangan Citra ke dalam sintaks kode logis yang aman. Menangani algoritma perhitungan harga, kalkulasi saldo, sinkronisasi sisa stok, dan integritas transaksi database.',
+                        badge: 'programmer'
+                    },
+                    'qa': {
+                        emoji: '🕵️‍♀️',
+                        name: 'Dina (QA Tester)',
+                        desc: 'Tanggung jawab: Melakukan uji coba ekstrem sebelum produk dirilis. Mencari bug, mencoba tombol rusak, memasukkan masukan teks abnormal, dan memastikan program tidak mengalami crash fatal saat diakses pengguna massal.',
+                        badge: 'qa'
+                    }
+                };
+
+                const current = roleData[roleId];
+                detailBox.className = "p-6 rounded-2xl border flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6 bg-indigo-50 dark:bg-indigo-950/30 border-indigo-100 dark:border-indigo-900/40 mt-6";
+                detailBox.innerHTML = `
+                    <span class="text-6xl">${current.emoji}</span>
+                    <div>
+                        <h4 class="font-bold text-indigo-950 dark:text-indigo-300 text-lg">${current.name}</h4>
+                        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mt-1">${current.desc}</p>
+                    </div>
+                `;
+
+                // Show advance button inside Babak 1
+                document.getElementById('btnNextBabak1').classList.remove('hidden');
+            }
+        };
+
+
+        // --- GLOBAL INTERACTIONS SETUP ---
+        
+        // Theme Switcher Event
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            AudioEngine.playClick();
+            const isDark = document.documentElement.classList.toggle('dark');
+            const themeIcon = document.getElementById('themeIcon');
+            if (isDark) {
+                localStorage.theme = 'dark';
+                themeIcon.className = "fa-solid fa-sun text-yellow-400";
+            } else {
+                localStorage.theme = 'light';
+                themeIcon.className = "fa-solid fa-moon text-slate-600";
+            }
+        });
+
+        // Sound FX Toggle Event
+        document.getElementById('soundToggle').addEventListener('click', () => {
+            AudioEngine.enabled = !AudioEngine.enabled;
+            const soundIcon = document.getElementById('soundIcon');
+            if (AudioEngine.enabled) {
+                soundIcon.className = "fa-solid fa-volume-high text-slate-600 dark:text-slate-300";
+                AudioEngine.playClick();
+            } else {
+                soundIcon.className = "fa-solid fa-volume-xmark text-rose-500";
+            }
+        });
+
+        // Toggle Badge Modal
+        function toggleBadgeModal() {
+            AudioEngine.playClick();
+            const modal = document.getElementById('badgeModal');
+            modal.classList.toggle('hidden');
         }
 
-        // Window Onload Trigger
-        window.onload = function () {
-            // Start on Prologue chapter
-            switchChapter('prolog');
+        // Show Toast Notification Dynamic
+        function showToast(title, message) {
+            const toast = document.getElementById('toastNotification');
+            document.getElementById('toastTitle').innerText = title;
+            document.getElementById('toastMessage').innerText = message;
+            
+            toast.className = toast.className.replace('translate-y-20 opacity-0 pointer-events-none', 'translate-y-0 opacity-100 pointer-events-auto');
+            setTimeout(() => {
+                toast.className = toast.className.replace('translate-y-0 opacity-100 pointer-events-auto', 'translate-y-20 opacity-0 pointer-events-none');
+            }, 3500);
         }
+
+        // Window On-Load Engine Instantiation
+        window.onload = function() {
+            StoryEngine.init();
+            SimulatorEngine.init();
+            GameEngine.init();
+        };
     </script>
 </body>
 </html>
