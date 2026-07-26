@@ -25,11 +25,6 @@
                             600: '#0369a1',
                             700: '#075985',
                             900: '#0c4a6e',
-                        },
-                        tech: {
-                            agile: '#3b82f6',
-                            devops: '#8b5cf6',
-                            waterfall: '#f59e0b'
                         }
                     },
                     fontFamily: {
@@ -40,15 +35,6 @@
         }
     </script>
     <style>
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(229, 231, 235, 0.8);
-        }
-        .dark .glass-card {
-            background: rgba(17, 24, 39, 0.85);
-            border: 1px solid rgba(55, 65, 81, 0.5);
-        }
         .custom-scrollbar::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -69,13 +55,13 @@
         <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 lg:px-8 py-3.5 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="bg-gradient-to-tr from-brand-600 to-indigo-600 text-white p-2.5 rounded-xl shadow-md">
-                    <i class="fa-solid me-0 fa-diagram-project text-xl"></i>
+                    <i class="fa-solid fa-laptop-code text-xl"></i>
                 </div>
                 <div>
                     <h1 class="font-bold text-lg lg:text-xl leading-tight bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-indigo-600 dark:from-brand-400 dark:to-indigo-400">
-                        SDLC & Modern Software Engineering Explorer
+                        SDLC Explorer — Belajar Bikin Aplikasi Cara Tim Industri (Khusus Anak SMK RPL)
                     </h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Alur Praktik Pengembangan Perangkat Lunak Standar Industri Modern</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Panduan Mudah Langkah Demi Langkah Membuat Software Profesional</p>
                 </div>
             </div>
 
@@ -83,8 +69,8 @@
                 <!-- Navigation Tabs -->
                 <nav class="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs sm:text-sm font-medium">
                     <button @click="currentTab = 'workflow'" :class="currentTab === 'workflow' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
-                        <i class="fa-solid fa-arrows-split-up-and-left"></i>
-                        <span>Alur Utama</span>
+                        <i class="fa-solid fa-diagram-project"></i>
+                        <span>Alur 7 Tahap</span>
                     </button>
                     <button @click="switchTab('simulator')" :class="currentTab === 'simulator' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5 relative">
                         <i v-if="!isAllStagesCompleted" class="fa-solid fa-lock text-amber-500 mr-0.5 text-xs"></i>
@@ -93,7 +79,7 @@
                     </button>
                     <button @click="currentTab = 'tools'" :class="currentTab === 'tools' ? 'bg-white dark:bg-slate-700 text-brand-600 dark:text-brand-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200'" class="px-3 py-1.5 rounded-lg transition-all flex items-center gap-1.5">
                         <i class="fa-solid fa-toolbox"></i>
-                        <span>Katalog Tools</span>
+                        <span>Kamus Tool & Jabatan</span>
                     </button>
                 </nav>
 
@@ -113,20 +99,20 @@
                 <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white p-5 rounded-2xl shadow-lg border border-indigo-900/50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div class="space-y-1">
                         <div class="flex items-center space-x-2 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
-                            <span class="bg-indigo-500/20 px-2.5 py-0.5 rounded-full border border-indigo-500/30">Studi Kasus Kontekstual Interaktif</span>
-                            <span>• Aplikasi E-Commerce TokoKita</span>
+                            <span class="bg-indigo-500/20 px-2.5 py-0.5 rounded-full border border-indigo-500/30">Studi Kasus Kelas X RPL</span>
+                            <span>• Aplikasi E-Commerce "TokoKita"</span>
                         </div>
                         <h2 class="text-lg sm:text-xl font-bold flex items-center gap-2">
                             <i class="fa-solid fa-bolt text-amber-400"></i>
-                            Proyek: Fitur Diskon Flash Sale Real-Time
+                            Misi Proyek: Bikin Fitur Diskon "Flash Sale Kilat Real-Time"
                         </h2>
                         <p class="text-slate-300 text-xs sm:text-sm max-w-3xl">
-                            Selesaikan 3 soal Kuis Gerbang di setiap tahapan untuk melaju ke tahap berikutnya dan membuka sertifikat kelulusan SDLC!
+                            Bayangkan kamu dan timmu bekerja di toko online. Bos mau mengadakan Diskon 70% di jam 12 malam. Jawab 3 Soal Kuis Gerbang di tiap tahap untuk naik kelas dan membuka sertifikat!
                         </p>
                     </div>
 
                     <div class="flex items-center space-x-2 self-end md:self-auto bg-slate-800/80 p-2.5 rounded-xl border border-slate-700 text-xs">
-                        <span class="text-slate-400">Progres Pembelajaran:</span>
+                        <span class="text-slate-400">Progres Misi Kamu:</span>
                         <span class="font-bold text-emerald-400 flex items-center gap-1.5">
                             <i class="fa-solid fa-circle-check text-xs"></i> {{ completedStageCount }} / {{ stages.length }} Tahap Lulus
                         </span>
@@ -137,14 +123,14 @@
                 <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
                     <div class="flex items-center justify-between mb-3 px-1">
                         <h3 class="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                            Langkah Alur Pengembangan (Tahap {{ activeStepIndex + 1 }} dari {{ stages.length }})
+                            Alur Pengerjaan (Langkah Ke-{{ activeStepIndex + 1 }} dari {{ stages.length }})
                         </h3>
                         <div class="flex space-x-2">
                             <button @click="prevStep" :disabled="activeStepIndex === 0" class="px-3 py-1 rounded-lg border border-slate-300 dark:border-slate-700 text-xs font-medium disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-100 dark:hover:bg-slate-800 transition">
-                                <i class="fa-solid fa-chevron-left mr-1"></i> Sebelumnya
+                                <i class="fa-solid fa-chevron-left mr-1"></i> Langkah Sebelumnya
                             </button>
                             <button @click="nextStep" :disabled="activeStepIndex === stages.length - 1 || !isStageUnlocked(activeStepIndex + 1)" class="px-3 py-1 rounded-lg bg-brand-600 hover:bg-brand-700 text-white text-xs font-medium disabled:opacity-40 disabled:cursor-not-allowed transition">
-                                Selanjutnya <i class="fa-solid fa-chevron-right ml-1"></i>
+                                Langkah Selanjutnya <i class="fa-solid fa-chevron-right ml-1"></i>
                             </button>
                         </div>
                     </div>
@@ -179,10 +165,10 @@
                             <!-- Label -->
                             <span class="text-xs font-semibold text-center transition-colors line-clamp-1"
                                   :class="activeStepIndex === idx ? 'text-brand-600 dark:text-brand-400 font-bold' : 'text-slate-600 dark:text-slate-400'">
-                                {{ stage.title }}
+                                {{ stage.shortTitle }}
                             </span>
                             <span class="text-[10px] text-slate-400 dark:text-slate-500 text-center hidden sm:block">
-                                {{ isStageCompleted(idx) ? 'Lulus Gerbang ✓' : (isStageUnlocked(idx) ? 'Tersedia' : 'Terkunci') }}
+                                {{ isStageCompleted(idx) ? 'Lulus Kuis ✓' : (isStageUnlocked(idx) ? 'Terbuka' : 'Terkunci') }}
                             </span>
                         </div>
                     </div>
@@ -198,7 +184,7 @@
                 <!-- Active Stage Detailed View -->
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     
-                    <!-- Left Column: Overview, Key Activities & Roles (7 Cols) -->
+                    <!-- Left Column: Simple Explanations (7 Cols) -->
                     <div class="lg:col-span-7 space-y-6">
                         
                         <!-- Main Stage Card -->
@@ -214,13 +200,24 @@
                                     </div>
                                 </div>
                                 <span class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs px-3 py-1 rounded-full font-semibold border border-slate-200 dark:border-slate-700">
-                                    Estimasi Waktu: {{ currentStage.estimatedTime }}
+                                    Lama Pengerjaan: {{ currentStage.estimatedTime }}
                                 </span>
+                            </div>
+
+                            <!-- Easy Analogy Box -->
+                            <div class="bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800/60 rounded-xl p-4 space-y-1">
+                                <div class="text-xs font-bold text-blue-700 dark:text-blue-300 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                                    Ibarat Kehidupan Sehari-hari (Analogi Kelas X):
+                                </div>
+                                <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
+                                    "{{ currentStage.analogy }}"
+                                </p>
                             </div>
 
                             <!-- Objective -->
                             <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tujuan Utama Tahap Ini</h4>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Tujuan Tahap Ini</h4>
                                 <p class="text-slate-700 dark:text-slate-300 text-sm leading-relaxed">
                                     {{ currentStage.objective }}
                                 </p>
@@ -228,7 +225,7 @@
 
                             <!-- Key Activities List -->
                             <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Aktivitas Utama (*Key Activities*)</h4>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Apa Saja Yang Dilakukan Tim?</h4>
                                 <ul class="space-y-2">
                                     <li v-for="(act, aIdx) in currentStage.activities" :key="aIdx" class="flex items-start text-sm text-slate-700 dark:text-slate-300">
                                         <i class="fa-solid fa-circle-check text-emerald-500 mt-1 mr-2.5 text-xs flex-shrink-0"></i>
@@ -241,7 +238,7 @@
                             <div class="bg-slate-50 dark:bg-slate-800/60 p-4 rounded-xl border border-slate-200/60 dark:border-slate-700/60">
                                 <h4 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
                                     <i class="fa-solid fa-box-archive text-brand-500"></i>
-                                    Hasil Akhir (*Key Deliverables*)
+                                    Hasil Jadi Tahap Ini (Deliverable):
                                 </h4>
                                 <p class="text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium">
                                     {{ currentStage.deliverable }}
@@ -250,7 +247,7 @@
 
                             <!-- Roles Involved -->
                             <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Peran yang Terlibat (*Roles*)</h4>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Siapa Saja Kakak Tingkat / Pekerja Yang Bertugas?</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <span v-for="(role, rIdx) in currentStage.roles" :key="rIdx" 
                                           class="bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 text-xs px-3 py-1.5 rounded-lg border border-indigo-200/60 dark:border-indigo-800/60 font-medium flex items-center gap-1.5">
@@ -262,7 +259,7 @@
 
                             <!-- Tools Used -->
                             <div>
-                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Alat Industri (*Tools Standard*)</h4>
+                                <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Aplikasi / Software Yang Dipakai (Tools):</h4>
                                 <div class="flex flex-wrap gap-2">
                                     <span v-for="(tool, tIdx) in currentStage.tools" :key="tIdx"
                                           class="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 font-medium flex items-center gap-1.5">
@@ -274,7 +271,7 @@
                         </div>
                     </div>
 
-                    <!-- Right Column: Real-World Contextual Example & Code/Artifact Showcase (5 Cols) -->
+                    <!-- Right Column: Contextual Case Study & Artifact (5 Cols) -->
                     <div class="lg:col-span-5 space-y-6">
                         
                         <!-- Real-World Example Card -->
@@ -284,12 +281,12 @@
                                   <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
                                   <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
                                 </span>
-                                <h3 class="font-bold text-slate-900 dark:text-white text-base">Contoh Kontekstual Nyata</h3>
+                                <h3 class="font-bold text-slate-900 dark:text-white text-base">Contoh Kasus Nyata di TokoKita</h3>
                             </div>
 
                             <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3.5 text-xs text-amber-800 dark:text-amber-300 font-medium flex items-center gap-2">
-                                <i class="fa-solid fa-lightbulb text-amber-500 text-base"></i>
-                                <span>Skenario Proyek: {{ currentStage.exampleScenarioTitle }}</span>
+                                <i class="fa-solid fa-fire text-amber-500 text-base"></i>
+                                <span>Skenario: {{ currentStage.exampleScenarioTitle }}</span>
                             </div>
 
                             <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
@@ -299,13 +296,13 @@
                             <!-- Interactive Artifact / Mockup Box -->
                             <div class="space-y-2">
                                 <div class="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400">
-                                    <span><i class="fa-solid fa-code text-brand-500 mr-1"></i> {{ currentStage.artifactType }}</span>
-                                    <span class="text-[10px] text-slate-400">Sampel Output Nyata</span>
+                                    <span><i class="fa-solid fa-file-code text-brand-500 mr-1"></i> {{ currentStage.artifactType }}</span>
+                                    <span class="text-[10px] text-slate-400">Contoh Hasil Nyata</span>
                                 </div>
 
                                 <div class="bg-slate-950 text-slate-200 p-4 rounded-xl font-mono text-xs overflow-x-auto shadow-inner border border-slate-800 relative">
                                     <button @click="copyArtifactText(currentStage.artifactContent)" class="absolute top-2 right-2 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[10px] transition">
-                                        <i class="fa-regular fa-copy"></i> Copy
+                                        <i class="fa-regular fa-copy"></i> Salin
                                     </button>
                                     <pre class="leading-relaxed whitespace-pre-wrap">{{ currentStage.artifactContent }}</pre>
                                 </div>
@@ -314,8 +311,8 @@
                             <!-- Best Practice Tip -->
                             <div class="bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/50 p-3.5 rounded-xl text-xs text-emerald-800 dark:text-emerald-300">
                                 <span class="font-bold block mb-1 flex items-center gap-1.5">
-                                    <i class="fa-solid fa-shield-halved text-emerald-600 dark:text-emerald-400"></i>
-                                    Tips Praktik Terbaik Industri (*Best Practice*):
+                                    <i class="fa-solid fa-star text-emerald-600 dark:text-emerald-400"></i>
+                                    Tips Sukses Anak RPL:
                                 </span>
                                 {{ currentStage.bestPractice }}
                             </div>
@@ -334,15 +331,15 @@
                                 <span class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wider"
                                       :class="isStageCompleted(activeStepIndex) ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400' : 'bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400'">
                                     <i class="fa-solid" :class="isStageCompleted(activeStepIndex) ? 'fa-check-circle' : 'fa-key'"></i>
-                                    Gerbang Evaluasi Tahap {{ activeStepIndex + 1 }}
+                                    Gerbang Ujian Tahap {{ activeStepIndex + 1 }}
                                 </span>
-                                <span class="text-xs text-slate-500 font-medium">3 Soal Pemahaman</span>
+                                <span class="text-xs text-slate-500 font-medium">3 Soal Sederhana</span>
                             </div>
                             <h3 class="text-lg font-bold text-slate-900 dark:text-white mt-1">
-                                Kuis Pemahaman: {{ currentStage.title }}
+                                Tes Pemahaman: {{ currentStage.title }}
                             </h3>
                             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                                Jawab 3 pertanyaan berikut dengan benar untuk membuka akses ke tahap SDLC berikutnya.
+                                Jawab 3 pertanyaan bergaya anak RPL berikut untuk membuka gerbang tahap berikutnya!
                             </p>
                         </div>
 
@@ -352,10 +349,10 @@
                             <i v-else class="fa-solid fa-unlock-keyhole text-2xl text-amber-500"></i>
                             <div>
                                 <div class="text-xs font-bold text-slate-800 dark:text-slate-200">
-                                    {{ isStageCompleted(activeStepIndex) ? 'Status: Lulus & Terbuka' : 'Status: Perlu Diselesaikan' }}
+                                    {{ isStageCompleted(activeStepIndex) ? 'Status: LULUS ✓ (Tahap Berikutnya Terbuka)' : 'Status: Belum Lulus (Jawab Soal)' }}
                                 </div>
                                 <div class="text-[11px] text-slate-500">
-                                    Skor Gerbang Ini: {{ getStageScore(activeStepIndex) }} / 3
+                                    Skor Kamu: {{ getStageScore(activeStepIndex) }} / 3
                                 </div>
                             </div>
                         </div>
@@ -384,7 +381,7 @@
                                       class="text-xs font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1 flex-shrink-0"
                                       :class="stageQuizAnswers[activeStepIndex][qIdx] === q.correctAnswer ? 'bg-emerald-200 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-200' : 'bg-rose-200 dark:bg-rose-900 text-rose-800 dark:text-rose-200'">
                                     <i :class="stageQuizAnswers[activeStepIndex][qIdx] === q.correctAnswer ? 'fa-solid fa-check' : 'fa-solid fa-xmark'"></i>
-                                    {{ stageQuizAnswers[activeStepIndex][qIdx] === q.correctAnswer ? 'Benar' : 'Salah' }}
+                                    {{ stageQuizAnswers[activeStepIndex][qIdx] === q.correctAnswer ? 'Jawaban Benar!' : 'Kurang Tepat' }}
                                 </span>
                             </div>
 
@@ -414,7 +411,7 @@
                             <div v-if="stageQuizAnswers[activeStepIndex] && stageQuizAnswers[activeStepIndex][qIdx] !== undefined" 
                                  class="mt-3 p-3 rounded-lg bg-white/80 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 text-xs leading-relaxed text-slate-700 dark:text-slate-300">
                                 <span class="font-bold text-brand-600 dark:text-brand-400 flex items-center gap-1 mb-1">
-                                    <i class="fa-solid fa-circle-info"></i> Penjelasan Teknis:
+                                    <i class="fa-solid fa-graduation-cap"></i> Penjelasan Mudah:
                                 </span>
                                 {{ q.explanation }}
                             </div>
@@ -424,14 +421,14 @@
                     <!-- Action Footer to Unlock Next Stage -->
                     <div class="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
                         <div class="text-xs text-slate-500">
-                             Jawab ketiga pertanyaan di atas untuk membuka gerbang tahap berikutnya.
+                             Dapatkan minimal skor 2/3 untuk membuka tahap berikutnya!
                         </div>
 
                         <div class="flex items-center gap-2">
                             <button v-if="isStageCompleted(activeStepIndex) && activeStepIndex < stages.length - 1" 
                                     @click="nextStep" 
                                     class="px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-xl font-bold text-xs shadow-md hover:from-emerald-700 hover:to-teal-700 transition flex items-center gap-2 animate-bounce">
-                                <span>Lanjut ke Tahap {{ activeStepIndex + 2 }}: {{ stages[activeStepIndex + 1].title }}</span>
+                                <span>Lanjut ke Tahap {{ activeStepIndex + 2 }}: {{ stages[activeStepIndex + 1].shortTitle }}</span>
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
 
@@ -439,7 +436,7 @@
                                     @click="currentTab = 'simulator'" 
                                     class="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-indigo-600 text-white rounded-xl font-bold text-xs shadow-md hover:opacity-95 transition flex items-center gap-2">
                                 <i class="fa-solid fa-trophy"></i>
-                                <span>Ambil Ujian Akhir & Sertifikat</span>
+                                <span>Ambil Ujian Akhir & Sertifikat Kelulusan!</span>
                             </button>
                         </div>
                     </div>
@@ -453,13 +450,13 @@
                     <div class="w-16 h-16 bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 rounded-2xl flex items-center justify-center text-3xl mx-auto border border-amber-300 dark:border-amber-800">
                         <i class="fa-solid fa-lock"></i>
                     </div>
-                    <h2 class="text-xl font-bold text-slate-900 dark:text-white">Ujian Akhir Masih Terkunci</h2>
+                    <h2 class="text-xl font-bold text-slate-900 dark:text-white">Ujian Akhir Masih Terkunci!</h2>
                     <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 max-w-md mx-auto leading-relaxed">
-                        Anda harus menyelesaikan seluruh 3 soal Kuis Gerbang di ketujuh tahapan SDLC terlebih dahulu untuk dapat mengakses Ujian Akhir dan mengunduh Sertifikat Kelulusan.
+                        Kamu harus menyelesaikan kuis di ketujuh tahapan SDLC terlebih dahulu untuk bisa mengikuti Ujian Kelulusan dan mengunduh Sertifikat Anak RPL!
                     </p>
                     <div class="pt-2">
                         <button @click="currentTab = 'workflow'" class="px-5 py-2.5 bg-brand-600 text-white font-semibold text-xs rounded-xl hover:bg-brand-700 transition">
-                            <i class="fa-solid fa-arrow-left mr-1.5"></i> Kembali ke Alur Utama (Selesaikan {{ stages.length - completedStageCount }} Tahap Lagi)
+                            <i class="fa-solid fa-arrow-left mr-1.5"></i> Kembali ke Alur (Selesaikan {{ stages.length - completedStageCount }} Tahap Lagi)
                         </button>
                     </div>
                 </div>
@@ -467,18 +464,18 @@
                 <div v-else class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800">
                     <div class="max-w-3xl">
                         <div class="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider mb-2 bg-emerald-50 dark:bg-emerald-950/80 px-3 py-1 rounded-full border border-emerald-200 dark:border-emerald-800">
-                            <i class="fa-solid fa-trophy"></i> Modul Terbuka: Evaluasi Akhir SDLC
+                            <i class="fa-solid fa-trophy"></i> Tantangan Terakhir: Tim Programmer SMK
                         </div>
-                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Simulator Keputusan Tim Software Engineering</h2>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">Simulasi Pengambilan Keputusan Tim Software</h2>
                         <p class="text-sm text-slate-600 dark:text-slate-400">
-                            Selamat! Anda telah melampaui seluruh 7 gerbang tahapan SDLC. Sekarang uji pemahaman komprehensif Anda dalam simulasi insiden industri nyata berikut ini.
+                            Selamat! Kamu sudah menyelesaikan seluruh 7 tahap SDLC. Sekarang bayangkan kamu jadi Ketua Tim Programmer. Apa yang akan kamu lakukan jika ada masalah di dunia nyata berikut?
                         </p>
                     </div>
 
                     <!-- Quiz Progress -->
                     <div class="mt-6 flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-4">
-                        <span class="text-xs font-semibold text-slate-500">Pertanyaan {{ currentQuizIndex + 1 }} dari {{ quizQuestions.length }}</span>
-                        <span class="text-xs font-bold text-brand-600 dark:text-brand-400">Skor Anda: {{ quizScore }} Poin</span>
+                        <span class="text-xs font-semibold text-slate-500">Soal {{ currentQuizIndex + 1 }} dari {{ quizQuestions.length }}</span>
+                        <span class="text-xs font-bold text-brand-600 dark:text-brand-400">Skor Kamu: {{ quizScore }} Poin</span>
                     </div>
 
                     <!-- Current Question Card -->
@@ -520,11 +517,11 @@
                              :class="selectedOpt.isCorrect ? 'bg-emerald-50 dark:bg-emerald-950/50 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200' : 'bg-rose-50 dark:bg-rose-950/50 border-rose-300 dark:border-rose-800 text-rose-900 dark:text-rose-200'">
                             <div class="font-bold flex items-center gap-1.5">
                                 <i :class="selectedOpt.isCorrect ? 'fa-solid fa-circle-check' : 'fa-solid fa-triangle-exclamation'"></i>
-                                {{ selectedOpt.isCorrect ? 'Keputusan Tepat!' : 'Keputusan Kurang Tepat' }}
+                                {{ selectedOpt.isCorrect ? 'Keputusan Sangat Tepat!' : 'Keputusan Kurang Pas' }}
                             </div>
                             <p class="leading-relaxed">{{ activeQuiz.explanation }}</p>
                             <button @click="nextQuizQuestion" class="mt-3 px-4 py-2 bg-brand-600 text-white rounded-lg font-semibold text-xs hover:bg-brand-700 transition">
-                                {{ currentQuizIndex < quizQuestions.length - 1 ? 'Pertanyaan Selanjutnya' : 'Selesaikan Ujian & Terbitkan Sertifikat' }}
+                                {{ currentQuizIndex < quizQuestions.length - 1 ? 'Pertanyaan Selanjutnya' : 'Selesaikan & Cetak Sertifikat' }}
                             </button>
                         </div>
                     </div>
@@ -533,34 +530,34 @@
                     <div v-else class="text-center py-8 space-y-6">
                         <div class="max-w-xl mx-auto bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 text-white p-8 rounded-2xl shadow-xl border border-amber-500/40 relative overflow-hidden">
                             <div class="absolute -right-10 -bottom-10 opacity-10 text-white text-9xl">
-                                <i class="fa-solid fa-certificate"></i>
+                                <i class="fa-solid fa-award"></i>
                             </div>
 
                             <span class="bg-amber-500/20 text-amber-300 border border-amber-500/40 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest inline-block mb-3">
-                                Sertifikat Pemahaman SDLC
+                                Sertifikat Pemahaman SDLC Modern
                             </span>
-                            <h3 class="text-2xl font-extrabold text-white">Sertifikat Kelulusan Rekayasa Perangkat Lunak</h3>
-                            <p class="text-xs text-slate-300 mt-2">Diberikan kepada Pembelajar yang telah menyelesaikan seluruh 7 Tahapan SDLC Modern dan Ujian Evaluasi Simulasi.</p>
+                            <h3 class="text-2xl font-extrabold text-white">Sertifikat Kelulusan Junior Developer</h3>
+                            <p class="text-xs text-slate-300 mt-2">Diberikan kepada Siswa SMK Rekayasa Perangkat Lunak (RPL / PPLG) yang telah menguasai Alur Pengembangan Perangkat Lunak Standar Industri.</p>
 
                             <div class="my-6 p-4 bg-slate-800/80 rounded-xl border border-slate-700/80 grid grid-cols-2 gap-4 text-left">
                                 <div>
-                                    <span class="text-[10px] uppercase text-slate-400 font-semibold block">Skor Gerbang Tahapan</span>
-                                    <span class="text-lg font-bold text-emerald-400">21 / 21 Lulus</span>
+                                    <span class="text-[10px] uppercase text-slate-400 font-semibold block">Skor Gerbang 7 Tahap</span>
+                                    <span class="text-lg font-bold text-emerald-400">7 dari 7 Lulus</span>
                                 </div>
                                 <div>
-                                    <span class="text-[10px] uppercase text-slate-400 font-semibold block">Skor Ujian Akhir</span>
+                                    <span class="text-[10px] uppercase text-slate-400 font-semibold block">Skor Simulasi Akhir</span>
                                     <span class="text-lg font-bold text-amber-400">{{ quizScore }} Poin</span>
                                 </div>
                             </div>
 
                             <div class="text-[11px] text-slate-400 italic">
-                                Verified by SDLC & Modern Software Engineering Explorer Platform
+                                Terverifikasi oleh SDLC Explorer Interactive Platform
                             </div>
                         </div>
 
                         <div class="flex items-center justify-center gap-3">
                             <button @click="resetQuiz" class="px-5 py-2.5 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-slate-200 rounded-xl font-semibold text-xs hover:bg-slate-300 dark:hover:bg-slate-700 transition inline-flex items-center gap-2">
-                                <i class="fa-solid fa-rotate-right"></i> Ulangi Ujian
+                                <i class="fa-solid fa-rotate-right"></i> Coba Ujian Lagi
                             </button>
                         </div>
                     </div>
@@ -572,9 +569,9 @@
             <div v-if="currentTab === 'tools'" class="space-y-6">
                 <div class="bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 space-y-6">
                     <div>
-                        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Katalog Tool & Peran Industri Perangkat Lunak</h2>
+                        <h2 class="text-xl font-bold text-slate-900 dark:text-white">Kamus Tool & Profesi Dunia Software Engineering</h2>
                         <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
-                            Eksplorasi ekosistem aplikasi dan peran pekerjaan yang paling dicari dalam tim rekayasa perangkat lunak modern saat ini.
+                            Mengenal nama-nama aplikasi populer dan sebutan pekerjaan kakak tingkat yang kerja di perusahaan teknologi.
                         </p>
                     </div>
 
@@ -582,7 +579,7 @@
                     <div class="flex flex-col sm:flex-row gap-3">
                         <div class="relative flex-1">
                             <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-xs"></i>
-                            <input v-model="toolSearch" type="text" placeholder="Cari tool atau peran (misal: Docker, Jira, QA, DevOps)..." 
+                            <input v-model="toolSearch" type="text" placeholder="Cari tool (misal: Figma, Docker, GitHub, QA)..." 
                                    class="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
                         </div>
                     </div>
@@ -615,10 +612,9 @@
         <!-- Footer -->
         <footer class="bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-6 px-4 text-center text-xs text-slate-500 dark:text-slate-400 mt-8">
             <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-                <p>© 2026 Interactive SDLC Explorer — Didesain untuk Pembelajaran & Acuan Industri Software Engineering</p>
+                <p>© 2026 Interactive SDLC Explorer — Didesain Khusus untuk Pembelajaran SMK Kelas X RPL / PPLG</p>
                 <div class="flex items-center space-x-4">
-                    <span class="hover:text-brand-500 cursor-pointer"><i class="fa-brands fa-github mr-1"></i> Open Standard</span>
-                    <span class="hover:text-brand-500 cursor-pointer"><i class="fa-solid fa-code-branch mr-1"></i> Git Integration</span>
+                    <span class="hover:text-brand-500 cursor-pointer"><i class="fa-solid fa-graduation-cap mr-1"></i> Modul Pembelajaran RPL</span>
                 </div>
             </div>
         </footer>
@@ -643,596 +639,540 @@
                     toastMessage: '',
                     toolSearch: '',
 
-                    // Stage gatekeeper quiz states
-                    // Key: stageIndex, Value: object storing user answer indices { 0: optIndex, 1: optIndex, 2: optIndex }
+                    // Gatekeeper Quiz User Answers
                     stageQuizAnswers: {},
 
-                    // Quiz state
+                    // Final Quiz State
                     currentQuizIndex: 0,
                     quizScore: 0,
                     quizAnswered: false,
                     selectedOpt: null,
 
-                    // 7 Key Modern SDLC Stages with 3 Gatekeeper Questions each
+                    // 7 Stages Simplified for 10th Grade SMK RPL
                     stages: [
                         {
                             id: 'requirements',
-                            title: 'Requirements & Discovery',
-                            subtitle: 'Inisiasi & Analisis Bisnis',
-                            icon: 'fa-solid fa-compass-drafting',
+                            title: 'Tahap 1: Pengumpulan Kebutuhan (Mau Bikin Apa?)',
+                            shortTitle: '1. Kebutuhan (PRD)',
+                            icon: 'fa-solid fa-clipboard-list',
                             gradient: 'from-blue-600 to-indigo-600',
-                            estimatedTime: '1 - 2 Minggu',
-                            objective: 'Memahami masalah bisnis, mengumpulkan kebutuhan pemangku kepentingan (stakeholder), menentukan batasan kelayakan teknis, serta merumuskan produk yang bernilai.',
+                            estimatedTime: '1 Minggu',
+                            analogy: 'Ibarat kamu mau pesan baju di penjahit. Kamu harus bilang dulu mau baju warna apa, ukuran apa, dan ada kantongnya atau tidak, sebelum penjahitnya mulai memotong kain.',
+                            objective: 'Memahami apa keinginan pembeli dan bos, lalu mencatat daftar fitur aplikasi secara jelas agar programmer tidak salah bikin.',
                             activities: [
-                                'Wawancara dengan pengguna akhir (User Research) dan tim Product Manager.',
-                                'Penyusunan PRD (Product Requirement Document) dan indikator keberhasilan (KPI/OKR).',
-                                'Analisis kelayakan arsitektur sistem dan estimasi biaya infrastruktur cloud.',
-                                'Breakdown kebutuhan bisnis menjadi kumpulan User Stories dasar.'
+                                'Bertanya ke calon pengguna (User Research) tentang masalah yang sering mereka alami.',
+                                'Menuliskan aturan aplikasi ke dalam dokumen PRD (dokumen rencana fitur).',
+                                'Memecah ide besar menjadi catatan tugas kecil yang disebut "User Story".',
+                                'Menghitung perkiraan biaya dan berapa lama waktu pengerjaannya.'
                             ],
-                            deliverable: 'Dokumen PRD (Product Requirement Document), Matriks Risiko, & Initial Product Backlog di Jira.',
-                            roles: ['Product Owner / PM', 'Business Analyst', 'Lead System Architect', 'UX Researcher'],
-                            tools: ['Jira Software', 'Confluence', 'Miro / Whimsical', 'Notion'],
-                            exampleScenarioTitle: 'Perumusan Kebutuhan "Flash Sale Real-time"',
-                            exampleScenarioDesc: 'Tim Marketing ingin mengadakan diskon 70% selama 1 jam dengan target 50.000 pembeli bersamaan. Sistem lama tidak sanggup menangani lonjakan beban data (concurrency bottleneck). Di tahap ini, tim mendefinisikan batasan: checkout harus selesai dalam < 2 detik dan tidak boleh terjadi overselling kuota stok.',
-                            artifactType: 'Contoh Format User Story (Jira Format)',
-                            artifactContent: `EPIC: [FLASH-SALE] Sistem Diskon Kilat High-Concurrency
-----------------------------------------------------------------
-STORY: US-101 - Reservasi Stok Real-Time
-As a   : Pembeli aplikasi TokoKita
-I want : Mengunci 1 item flash sale selama 5 menit saat checkout
-So that: Stok tidak disobot pembeli lain saat saya menyelesaikan pembayaran.
+                            deliverable: 'Dokumen Rencana Fitur (PRD) & Daftar Tugas Pekerjaan di Jira/Trello.',
+                            roles: ['Product Owner (Si Pemilik Ide)', 'Business Analyst', 'System Analyst'],
+                            tools: ['Jira / Trello', 'Confluence / Notion', 'Google Docs'],
+                            exampleScenarioTitle: 'Niat Bikin Flash Sale di TokoKita',
+                            exampleScenarioDesc: 'Bos TokoKita mau bikin diskon HP 70% jam 12 malam. Tim mencatat syaratnya: Aplikasi tidak boleh "lag" walau dibuka 10.000 orang bersamaan, dan stok HP diskon tidak boleh terijual melebihi stok yang ada.',
+                            artifactType: 'Contoh Catatan Tugas (User Story)',
+                            artifactContent: `SEBAGAI   : Pembeli di aplikasi TokoKita
+SAYA INGIN: Mengunci 1 unit HP diskon selama 5 menit saat checkout
+SUPAYA    : Stok HP tidak diambil pembeli lain saat saya lagi transfer bank.
 
-KRITERIA PENERIMAAN (Acceptance Criteria):
-1. Menggunakan Redis Atomic Decrement untuk mencegah Race Condition.
-2. Jika pembayaran tidak selesai dalam 5 menit, stok otomatis direlease.
-3. Latensi penambahan ke keranjang < 300ms pada beban 10.000 RPS.`,
-                            bestPractice: 'Hindari membuat spesifikasi tertutup yang terlalu kaku. Fokuslah pada problem statement dan kriteria penerimaan (Acceptance Criteria) yang terukur.',
+SYARAT DITERIMA (Acceptance Criteria):
+1. HP di keranjang otomatis lepas jika tidak dibayar dalam 5 menit.
+2. Tampilan tombol "Beli" tidak boleh lemot (harus merespons < 1 detik).`,
+                            bestPractice: 'Jangan langsung mulai koding sebelum mengerti apa yang diinginkan pengguna! Catat syaratnya dulu dengan jelas.',
                             questions: [
                                 {
-                                    question: 'Apa tujuan utama dari penyusunan dokumen PRD (Product Requirement Document)?',
+                                    question: 'Apa fungsi utama dari dokumen rencana fitur (PRD) dalam membuat aplikasi?',
                                     options: [
-                                        'Menulis kode program awal aplikasi.',
-                                        'Mendefinisikan masalah bisnis, batasan fitur, dan kriteria keberhasilan produk secara jelas.',
-                                        'Membeli server cloud dengan kapasitas terbesar.',
-                                        'Menentukan desain warna logo aplikasi.'
-                                    ],
-                                    correctAnswer: 1,
-                                    explanation: 'PRD berfungsi sebagai acuan tunggal (single source of truth) yang mendefinisikan tujuan produk, ruang lingkup, dan kriteria keberhasilan sebelum pengembangan teknis dimulai.'
-                                },
-                                {
-                                    question: 'Bagaimana pendekatan Agile Scrum menyikapi perubahan kebutuhan mendadak dari stakeholder?',
-                                    options: [
-                                        'Langsung memasukkan perubahan ke Sprint yang sedang berjalan tanpa perencanaan.',
-                                        'Menolak semua perubahan secara permanen.',
-                                        'Mencatatnya ke dalam Product Backlog untuk diprioritaskan pada Sprint Planning berikutnya.',
-                                        'Menghentikan seluruh proyek e-commerce.'
-                                    ],
-                                    correctAnswer: 2,
-                                    explanation: 'Agile menyambut perubahan, namun perubahan dimasukkan ke Product Backlog agar tidak merusak fokus dan stabilitas Sprint yang sedang berlangsung.'
-                                },
-                                {
-                                    question: 'Mengapa Acceptance Criteria (Kriteria Penerimaan) sangat krusial dalam User Story?',
-                                    options: [
-                                        'Sebagai batasan terukur bagi developer dan QA untuk menyatakan apakah fitur sudah benar-benar selesai (Definition of Done).',
-                                        'Agar tampilan aplikasi terlihat bagus di HP.',
-                                        'Untuk menghitung berapa gaji para developer.',
-                                        'Sebagai formalitas tanpa fungsi praktis.'
+                                        'Sebagai panduan jelas agar semua tim paham fitur apa yang mau dibuat dan tidak salah paham.',
+                                        'Untuk diwarnai dan dijadikan poster dinding kamar.',
+                                        'Agar kita bisa langsung membeli komputer baru.',
+                                        'Sebagai syarat formalitas yang nantinya dibuang.'
                                     ],
                                     correctAnswer: 0,
-                                    explanation: 'Acceptance Criteria memberikan kriteria terukur bagi pengembang dan tim QA untuk memverifikasi bahwa fitur telah memenuhi ekspektasi bisnis.'
+                                    explanation: 'PRD berfungsi seperti petunjuk arah agar tim programmer, desainer, dan bos punya pemahaman yang sama tentang aplikasi yang mau dibuat.'
+                                },
+                                {
+                                    question: 'Dalam penulisan User Story, kalimat yang benar adalah...',
+                                    options: [
+                                        'Saya ingin kodingan Python yang panjang tanpa tahu tujuannya.',
+                                        'Sebagai [Pengguna], Saya ingin [Fitur], Supaya [Manfaat/Tujuan].',
+                                        'Aplikasi harus berwarna merah terang.',
+                                        'Hapus semua data pengguna sekarang.'
+                                    ],
+                                    correctAnswer: 1,
+                                    explanation: 'User Story selalu ditulis dari sudut pandang pengguna: Siapa penggunanya, Apa fiturnya, dan Apa manfaatnya.'
+                                },
+                                {
+                                    question: 'Apa yang terjadi jika kita langsung membuat kodingan tanpa mengumpulkan kebutuhan terlebih dahulu?',
+                                    options: [
+                                        'Aplikasi pasti langsung jadi dan tanpa bug.',
+                                        'Kita berisiko membuang waktu membuat fitur yang ternyata tidak dibutuhkan atau salah buat.',
+                                        'Gaji kita otomatis naik 2 kali lipat.',
+                                        'Komputer kita akan langsung mati.'
+                                    ],
+                                    correctAnswer: 1,
+                                    explanation: 'Tanpa rencana kebutuhan yang jelas, kita bisa salah paham dan harus mengulang koding dari awal (buang-buang waktu!).'
                                 }
                             ]
                         },
                         {
                             id: 'design',
-                            title: 'UI/UX & Architecture Design',
-                            subtitle: 'Desain Sistem & Antarmuka',
+                            title: 'Tahap 2: Desain Tampilan & Sistem (Bikin Gambaran)',
+                            shortTitle: '2. Desain (UI/UX)',
                             icon: 'fa-solid fa-pen-ruler',
                             gradient: 'from-indigo-600 to-violet-600',
-                            estimatedTime: '1 - 2 Minggu',
-                            objective: 'Menerjemahkan kebutuhan bisnis menjadi rancangan antarmuka pengguna (UI/UX) yang intuitif serta arsitektur sistem backend yang aman, terukur, dan berkinerja tinggi.',
+                            estimatedTime: '1 Minggu',
+                            analogy: 'Ibarat membangun rumah. Sebelum tukang menyemen bata, arsitek menggambar sketsa bentuk rumah (UI/UX) dan denah pipa air serta kabel listriknya (Arsitektur Database).',
+                            objective: 'Membuat rancangan tampilan layar HP/Web yang cantik dan mudah dipakai, serta merancang struktur database untuk menyimpan data aplikasi.',
                             activities: [
-                                'Pembuatan User Flow, Wireframe, dan High-Fidelity Prototype di Figma.',
-                                'Perancangan Diagram Skema Database (ERD) dan API Contract (OpenAPI/Swagger).',
-                                'Pemilihan arsitektur (Microservices vs Monolith) serta strategi Caching.',
-                                'Desain sistem ketahanan (Circuit Breaker, Rate Limiting).'
+                                'Menggambar rancangan layar aplikasi (Wireframe & Figma Prototype).',
+                                'Merancang tabel database dan hubungan antar data (ERD Diagram).',
+                                'Menyepakati format komunikasi data antara Frontend dan Backend (API Contract).'
                             ],
-                            deliverable: 'Figma Design System, Dokumentasi API Spec (Swagger), & Diagram Arsitektur C4 Model.',
-                            roles: ['UI/UX Designer', 'Principal Software Architect', 'Backend Tech Lead', 'Frontend Lead'],
-                            tools: ['Figma', 'Swagger / Postman', 'Draw.io / Lucichart', 'PlantUML'],
-                            exampleScenarioTitle: 'Perancangan Arsitektur High-Concurrency Flash Sale',
-                            exampleScenarioDesc: 'UI Designer merancang komponen Countdown Timer dan Pop-up stok menipis. Sementara Tech Lead merancang arsitektur decoupled: menggunakan Redis sebagai In-Memory Cache untuk stok kilat dan Apache Kafka sebagai Message Queue untuk menangani antrean transaksi checkout tanpa merusak database PostgreSQL utama.',
-                            artifactType: 'Spesifikasi API Contract (OpenAPI 3.0 / JSON)',
-                            artifactContent: `POST /api/v1/flash-sale/checkout
-Content-Type: application/json
-Header: Authorization: Bearer <JWT_TOKEN>
+                            deliverable: 'Desain Aplikasi di Figma & Gambar Rancangan Database (ERD).',
+                            roles: ['UI/UX Designer (Perancang Tampilan)', 'Software Architect (Perancang Sistem)'],
+                            tools: ['Figma', 'Draw.io / PlantUML', 'Postman'],
+                            exampleScenarioTitle: 'Mendesain Layar Flash Sale TokoKita',
+                            exampleScenarioDesc: 'Desainer UI menggambar tombol "Beli Flash Sale" berwarna merah dengan hitungan mundur (timer). Programmer merancang agar data stok disimpan di memori cepat (Cache) agar saat dibeli ribuan orang, server tidak tumbang.',
+                            artifactType: 'Contoh Rancangan Data API (JSON Format)',
+                            artifactContent: `// Jalur Komunikasi Permintaan Beli Flash Sale
+POST /api/v1/flash-sale/beli
 
+KIRIM DATA (Request):
 {
-  "flash_sale_id": "fs_2026_07_sale",
-  "product_id": "prod_laptop_pro_01",
-  "quantity": 1
+  "id_pembeli": "user_smk_123",
+  "id_produk": "hp_diskon_99",
+  "jumlah": 1
 }
 
-RESPONSE (202 Accepted):
+RESPONS SERVER (Success):
 {
-  "status": "QUEUED",
-  "booking_id": "bk_9981247",
-  "expires_at": "2026-07-26T17:05:00Z",
-  "queue_position": 142
+  "status": "BERHASIL_DIPESAN",
+  "pesan": "HP berhasil dikunci! Selesaikan pembayaran dalam 5 menit.",
+  "sisa_waktu_detik": 300
 }`,
-                            bestPractice: 'Lakukan API First Design (menyepakati kontrak API sebelum coding dimulai) agar tim Frontend dan Backend bisa bekerja secara paralel tanpa saling menunggu.',
+                            bestPractice: 'Bikin desain antarmuka (UI) yang ramah pengguna. Jangan buat pengguna bingung mencari di mana tombol belinya!',
                             questions: [
                                 {
-                                    question: 'Apa keuntungan utama menerapkan strategi "API First Design"?',
+                                    question: 'Siapakah anggota tim yang bertugas menggambar tampilan layar aplikasi agar terlihat menarik dan nyaman dipakai?',
                                     options: [
-                                        'Aplikasi tidak membutuhkan database.',
-                                        'Tim Frontend dan Backend dapat bekerja secara paralel berdasarkan kontrak API yang telah disepakati.',
-                                        'Tidak perlu melakukan pengujian perangkat lunak.',
-                                        'Biaya infrastruktur menjadi gratis.'
-                                    ],
-                                    correctAnswer: 1,
-                                    explanation: 'Dengan API First Design, tim frontend bisa memakai mock API sementara tim backend membangun logika API yang sesungguhnya secara simultan.'
-                                },
-                                {
-                                    question: 'Dalam arsitektur high-traffic flash sale, mengapa Message Queue (seperti Apache Kafka / RabbitMQ) digunakan?',
-                                    options: [
-                                        'Untuk menghapus data pengguna.',
-                                        'Untuk menampung lonjakan antrean transaksi checkout secara asinkron agar database utama tidak crash.',
-                                        'Untuk menggantikan fungsi desain Figma.',
-                                        'Untuk mempercepat koneksi internet pengguna.'
-                                    ],
-                                    correctAnswer: 1,
-                                    explanation: 'Message Queue berfungsi sebagai buffer (penampung) transaksi sehingga trafik puncak ribuan pengguna diproses secara bertahap tanpa membebani database.'
-                                },
-                                {
-                                    question: 'Komponen apakah yang digunakan untuk menyimpan data stok Flash Sale sementara di memori agar cepat diakses?',
-                                    options: [
-                                        'In-Memory Data Store seperti Redis / Memcached.',
-                                        'Harddisk eksternal USB.',
-                                        'File teks .txt biasa.',
-                                        'Google Drive Sheet.'
+                                        'UI/UX Designer',
+                                        'Database Administrator',
+                                        'Hardware Engineer',
+                                        'Network Technician'
                                     ],
                                     correctAnswer: 0,
-                                    explanation: 'In-memory cache seperti Redis menawarkan waktu baca/tulis dalam hitungan milidetik, ideal untuk penghitungan stok saat trafik sangat tinggi.'
+                                    explanation: 'UI/UX Designer bertugas merancang keindahan visual (User Interface) dan kemudahan penggunaan (User Experience).'
+                                },
+                                {
+                                    question: 'Apa fungsi dari skema Database (ERD) dalam pembuatan software?',
+                                    options: [
+                                        'Untuk mengedit video promosi aplikasi.',
+                                        'Mengatur struktur tabel penyimpanan data (seperti data barang, data user, dan data transaksi).',
+                                        'Meningkatkan kecepatan koneksi Wi-Fi.',
+                                        'Menghapus virus dari laptop.'
+                                    ],
+                                    correctAnswer: 1,
+                                    explanation: 'Database seperti lemari arsip digital. ERD membantu merancang bagaimana data disimpan dan dihubungkan secara rapi.'
+                                },
+                                {
+                                    question: 'Aplikasi populer apa yang paling sering digunakan industri saat ini untuk menggambar desain UI/UX?',
+                                    options: [
+                                        'Microsoft Excel',
+                                        'Figma',
+                                        'Notepad++',
+                                        'Windows Media Player'
+                                    ],
+                                    correctAnswer: 1,
+                                    explanation: 'Figma adalah aplikasi standar industri untuk mendesain tampilan web/aplikasi mobile secara kolaboratif.'
                                 }
                             ]
                         },
                         {
                             id: 'development',
-                            title: 'Coding & Development',
-                            subtitle: 'Implementasi Kode Program',
+                            title: 'Tahap 3: Koding & Pembuatan Kode (Ngetik Program)',
+                            shortTitle: '3. Koding (Code)',
                             icon: 'fa-solid fa-code',
                             gradient: 'from-violet-600 to-purple-600',
-                            estimatedTime: '2 - 3 Minggu (Sprint)',
-                            objective: 'Menulis kode program yang bersih (clean code), modular, aman, dan dapat diuji (*testable*) sesuai rancangan teknis dan pedoman gaya pengodean tim.',
+                            estimatedTime: '2 - 3 Minggu',
+                            analogy: 'Ibarat tukang bangunan yang mulai menyusun batu bata, memasang semen, dan memasang pintu sesuai dengan gambar denah dari arsitek.',
+                            objective: 'Menulis baris kode program (HTML, CSS, JavaScript, PHP, Python, Go, dll) untuk mengubah gambar desain menjadi aplikasi sungguhan yang bisa diklik.',
                             activities: [
-                                'Membuat branch fitur baru berdasarkan strategi Git Branching (GitFlow / Trunk-Based).',
-                                'Pengembangan komponen Frontend UI responsive dan integrasi state management.',
-                                'Pengembangan logika bisnis Backend, pembuatan ORM model, dan Caching layer.',
-                                'Penulisan Unit Testing & Integration Testing oleh developer (TDD / Test-Driven Development).'
+                                'Membuat kodingan tampilan antarmuka di layar (Frontend Development).',
+                                'Membuat kodingan logika bisnis dan pemrosesan data di server (Backend Development).',
+                                'Menyimpan history baris kode menggunakan sistem Git agar kodingan tidak hilang.'
                             ],
-                            deliverable: 'Source Code di Version Control (GitHub/GitLab) & Unit Test Coverage (>80%).',
-                            roles: ['Frontend Developer', 'Backend Developer', 'Fullstack Engineer'],
-                            tools: ['VS Code / IntelliJ', 'Git / GitHub', 'Docker (Local)', 'Node.js/Go/Python'],
-                            exampleScenarioTitle: 'Implementasi Caching Anti-Race Condition di Backend',
-                            exampleScenarioDesc: 'Developer Backend mengimplementasikan fungsi potong stok menggunakan perintah atomik Redis (`DECRBY`) di bahasa Go / Node.js. Strategi ini mencegah dua pembeli mendapat barang yang sama saat stok tersisa 1 (Race Condition Prevention).',
-                            artifactType: 'Cuplikan Kode Backend (Node.js/Redis - Race Condition Safe)',
-                            artifactContent: `// Potong stok atomik dengan Redis untuk mencegah overselling
-async function reserveFlashSaleStock(productId, userId) {
-  const stockKey = \`flash_stock:\${productId}\`;
-  
-  // Decrement atomik bawaan Redis
-  const remainingStock = await redis.decr(stockKey);
-  
-  if (remainingStock < 0) {
-    // Revert jika stok habis
-    await redis.incr(stockKey);
-    throw new Error("STOK_HABIS");
-  }
-  
-  // Masukkan ke Message Queue Kafka untuk proses pembayaran
-  await kafkaProducer.send({
-    topic: 'flash-checkout-orders',
-    messages: [{ value: JSON.stringify({ productId, userId, timestamp: Date.now() }) }]
-  });
+                            deliverable: 'Source Code Program di Git Repository (GitHub/GitLab).',
+                            roles: ['Frontend Developer (Koding Layar)', 'Backend Developer (Koding Server)', 'Fullstack Developer'],
+                            tools: ['VS Code', 'Git & GitHub', 'Node.js / PHP / Python / HTML CSS'],
+                            exampleScenarioTitle: 'Ngetik Kode Pemotong Stok Barang',
+                            exampleScenarioDesc: 'Backend Developer mengetik kode program yang bertugas mengurangi stok barang secara otomatis di database. Jika stok sisa 1 dan ada 2 orang klik barengan, kodingan harus pintar menolak pembeli kedua agar stok tidak minus!',
+                            artifactType: 'Cuplikan Kode Backend (JavaScript)',
+                            artifactContent: `// Kodingan memotong stok barang flash sale
+async function beliFlashSale(idProduk, idUser) {
+  // Cek sisa stok di database
+  let stok = await database.getStok(idProduk);
 
-  return { success: true };
+  if (stok > 0) {
+    // Kurangi stok 1 angka
+    await database.kurangiStok(idProduk, 1);
+    return "Selamat! Kamu dapat barang diskon.";
+  } else {
+    return "Maaf, stok barang sudah habis!";
+  }
 }`,
-                            bestPractice: 'Terapkan Clean Architecture dan patuhi prinsip SOLID. Jangan sertakan rahasia (API key, password) di dalam kode repository!',
+                            bestPractice: 'Tulis kodingan yang rapi dan beri komentar penjelasan! Kodingan yang rapi akan memudahkan teman sekelompokmu saat membaca kodenya.',
                             questions: [
                                 {
-                                    question: 'Apa risiko jika pemotongan stok barang tidak menggunakan operasi atomik di lingkungan bertrafik tinggi?',
+                                    question: 'Apakah tugas utama dari seorang Frontend Developer?',
                                     options: [
-                                        'Terjadi Race Condition yang menyebabkan overselling (barang terjual melebihi stok yang ada).',
-                                        'Komputer developer akan meledak.',
-                                        'Ukuran file kode menjadi terlalu besar.',
-                                        'Warna tampilan website berubah menjadi abu-abu.'
+                                        'Mengatur kabel jaringan di gedung kantor.',
+                                        'Menulis kode program untuk tampilan visual yang dilihat dan diklik langsung oleh pengguna.',
+                                        'Membersihkan komputer dari debu.',
+                                        'Menjual HP di toko seluler.'
+                                    ],
+                                    correctAnswer: 1,
+                                    explanation: 'Frontend Developer berfokus pada apa yang terlihat di layar pengguna (UI/UX) menggunakan HTML, CSS, JavaScript, dll.'
+                                },
+                                {
+                                    question: 'Mengapa kita wajib menggunakan Git (Version Control) saat ngetik kode program bersama tim?',
+                                    options: [
+                                        'Agar file kodingan tersimpan riwayatnya, bisa digabung dengan kodingan teman, dan bisa di-undo jika ada error.',
+                                        'Agar baterai laptop tidak cepat habis.',
+                                        'Supaya kodingan kita otomatis jadi sendiri tanpa diketik.',
+                                        'Agar keyboard laptop menyala warna-warni.'
                                     ],
                                     correctAnswer: 0,
-                                    explanation: 'Race condition terjadi saat beberapa permintaan mengakses dan menguji nilai stok bersamaan, berpotensi menjual stok yang sebetulnya sudah habis.'
+                                    explanation: 'Git menyimpan sejarah perubahan kode, sehingga jika kodingan rusak, kita bisa kembali ke versi sebelumnya dengan mudah.'
                                 },
                                 {
-                                    question: 'Mengapa kredensial rahasia (API Key, Database Password) TIDAK boleh ditulis langsung (hardcoded) di kode Git repository?',
+                                    question: 'Kondisi di mana dua orang membeli barang secara bersamaan di detik yang sama sehingga stok jadi salah disebut...',
                                     options: [
-                                        'Karena membuat file koding terlihat jelek.',
-                                        'Untuk mencegah kebocoran keamanan jika repository diakses oleh pihak yang tidak berhak.',
-                                        'Karena Git tidak bisa menyimpan huruf kapital.',
-                                        'Agar program bisa berjalan lebih cepat.'
+                                        'Game Over',
+                                        'Race Condition',
+                                        'Blue Screen',
+                                        'Low Battery'
                                     ],
                                     correctAnswer: 1,
-                                    explanation: 'Kredensial harus disimpan di Environment Variables (.env) dan ditangani secara aman untuk menghindari peretasan.'
-                                },
-                                {
-                                    question: 'Apakah fungsi utama dari penulisan Unit Testing oleh Developer pada tahap pengembangan?',
-                                    options: [
-                                        'Membuktikan bahwa aplikasi bebas bug 100%.',
-                                        'Menguji fungsi/komponen kecil secara terisolasi untuk memastikan logika internal berjalan sesuai ekspektasi.',
-                                        'Menggantikan peran manajer proyek.',
-                                        'Mengirim email pemasaran ke pengguna.'
-                                    ],
-                                    correctAnswer: 1,
-                                    explanation: 'Unit Testing memverifikasi bahwa potongan fungsi terkecil berfungsi secara independen sebelum diintegrasikan.'
+                                    explanation: 'Race Condition terjadi saat beberapa proses berebut mengubah data yang sama dalam waktu persis bersamaan.'
                                 }
                             ]
                         },
                         {
                             id: 'ci_review',
-                            title: 'Code Review & CI Pipeline',
-                            subtitle: 'Integrasi Kontinu & Tinjauan Kode',
+                            title: 'Tahap 4: Pemeriksaan Kode & Robot Otomatis (Code Review)',
+                            shortTitle: '4. Cek Kode (CI)',
                             icon: 'fa-solid fa-code-merge',
                             gradient: 'from-purple-600 to-pink-600',
-                            estimatedTime: 'Harian (Kontinu)',
-                            objective: 'Memastikan kualitas kode tetap tinggi melalui pemeriksaan sesama rekan sejawat (*Peer Review*) dan verifikasi pengujian otomatis melalui skrip CI (Continuous Integration).',
+                            estimatedTime: 'Setiap Hari',
+                            analogy: 'Ibarat sebelum kamu mengumpulkan PR ke guru, teman sebangkumu mengecek dulu ejaan tulisanmu, lalu ada sistem komputer sekolah yang otomatis menguji apakah jawabanmu betul.',
+                            objective: 'Memastikan kodingan buatan programmer diperiksa oleh senior/teman sekelompok (Peer Review) dan dicek otomatis oleh sistem robot (CI) agar bebas kesalahan.',
                             activities: [
-                                'Membuka Pull Request / Merge Request (PR/MR) dari branch fitur ke branch `develop`.',
-                                'Pemeriksaan otomatis linting, verifikasi keamanan (SAST), dan eksekusi suite Unit Test di server CI.',
-                                'Peer Review minimal oleh 1-2 Senior Engineer (mengecek efisiensi & arsitektur kode).',
-                                'Penggabungan kode (Merge) ke branch utama setelah disetujui.'
+                                'Mengirimkan kodingan baru lewat "Pull Request" di GitHub.',
+                                'Senior Developer membaca kodingan kita dan memberikan masukan jika ada kodingan yang kurang rapi.',
+                                'Sistem robot CI (Continuous Integration) otomatis menguji apakah kodingan baru merusak fungsi lama.'
                             ],
-                            deliverable: 'Merged Pull Request, CI Build Artifacts, & Laporan Code Quality (SonarQube).',
-                            roles: ['Senior Software Engineer', 'DevOps Engineer', 'Peer Code Reviewers'],
-                            tools: ['GitHub Actions / GitLab CI', 'SonarQube', 'Snyk Security'],
-                            exampleScenarioTitle: 'Otomatisasi Pengecekan PR Fitur Flash Sale',
-                            exampleScenarioDesc: 'Saat developer mengirim Pull Request fitur Flash Sale, GitHub Actions otomatis menguji 45 Unit Test backend. SonarQube mendeteksi bahwa ada variabel sensitif yang terpencil, sehingga build dibatalkan sampai developer memperbaikinya.',
-                            artifactType: 'Skrip Workflow CI (GitHub Actions .github/workflows/ci.yml)',
-                            artifactContent: `name: Flash Sale Service CI/CD
+                            deliverable: 'Kodingan Terverifikasi & Lulus Uji Otomatis di GitHub.',
+                            roles: ['Senior Developer (Pemeriksa Kode)', 'DevOps Engineer'],
+                            tools: ['GitHub Actions', 'GitLab CI', 'SonarQube'],
+                            exampleScenarioTitle: 'Pemeriksaan Otomatis Kodingan Flash Sale',
+                            exampleScenarioDesc: 'Saat programmer mengirim kodingan fitur Flash Sale ke GitHub, robot GitHub Actions otomatis menjalankan tes. Jika ada kodingan yang salah, sistem memberi tanda merah ✗ dan menolak kodingan tersebut gabung ke aplikasi utama.',
+                            artifactType: 'Contoh Pesan Pemeriksaan Kode di GitHub',
+                            artifactContent: `[PULL REQUEST #45] Fitur Tombol Hitung Mundur Flash Sale
+Pembuat: Budi (Junior Dev)
+Pemeriksa: Kak Edo (Senior Dev)
 
-on:
-  pull_request:
-    branches: [ main, develop ]
+CATATAN REVIEWER:
+"Budi, kodinganmu di baris 24 masih kurang rapi. 
+Gunakan fungsi setTimeout() yang aman agar timer tidak loncat 
+saat HP pengguna mati lampu. Tolong diperbaiki ya!"
 
-jobs:
-  test-and-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with: { node-version: '18' }
-      - name: Install Dependencies
-        run: npm ci
-      - name: Run Linter & Security Audit
-        run: npm run lint && npx snyk test
-      - name: Execute Automated Unit Tests
-        run: npm test -- --coverage`,
-                            bestPractice: 'Kirim Pull Request dalam ukuran kecil (small PRs < 400 baris kode). PR yang terlalu besar cenderung ditinjau secara tidak cermat.',
+STATUS ROBOT CI: ✓ 12 Unit Test Lulus (Siap digabungkan!)`,
+                            bestPractice: 'Jangan tersinggung kalau kodinganmu dikritik senior saat Code Review. Itu kesempatan emas buat belajar koding lebih jago!',
                             questions: [
                                 {
-                                    question: 'Apa fungsi utama dari server CI (Continuous Integration) seperti GitHub Actions saat Pull Request dibuka?',
+                                    question: 'Apakah yang dimaksud dengan "Pull Request" di GitHub/GitLab?',
                                     options: [
-                                        'Menjalankan skrip otomatis pengujian (test suite), linter, dan pemeriksaan keamanan secara konsisten.',
-                                        'Mengirim barang dari gudang e-commerce.',
-                                        'Membuatkan desain UI baru secara otomatis.',
-                                        'Menghapus kode yang ditulis oleh developer junior.'
-                                    ],
-                                    correctAnswer: 0,
-                                    explanation: 'Server CI melakukan validasi otomatis bahwa kode baru tidak merusak pengujian yang ada dan sesuai standar kualitas.'
-                                },
-                                {
-                                    question: 'Mengapa Pull Request (PR) sebaiknya berukuran kecil (< 400 baris kode)?',
-                                    options: [
-                                        'Agar reviewer dapat meninjau kode secara lebih cermat, cepat, dan menemukan potensi bug lebih efektif.',
-                                        'Agar kuota internet perusahaan tidak habis.',
-                                        'Karena GitHub membatasi jumlah baris kode.',
-                                        'Supaya developer tidak perlu bekerja terlalu banyak.'
-                                    ],
-                                    correctAnswer: 0,
-                                    explanation: 'PR berukuran kecil mengurangi beban kognitif reviewer dan mempercepat deteksi kesalahan logika.'
-                                },
-                                {
-                                    question: 'Apakah yang dilakukan sistem CI jika salah satu Unit Test gagal atau ditemukan kerentanan keamanan kritis oleh SonarQube?',
-                                    options: [
-                                        'Tetap membiarkan kode masuk ke server produksi.',
-                                        'Menghentikan proses build (fail build) dan menolak penggabungan (merge) kode.',
-                                        'Mengirim pesan suara ke manajer.',
-                                        'Mematikan semua komputer di kantor.'
+                                        'Permintaan untuk menarik kabel LAN.',
+                                        'Pengajuan kodingan baru buatan kita agar diperiksa dan digabungkan ke kodingan utama proyek tim.',
+                                        'Menghapus akun media sosial teman.',
+                                        'Mematikan server secara paksa.'
                                     ],
                                     correctAnswer: 1,
-                                    explanation: 'Aturan CI akan menggagalkan pipeline untuk mencegah masuknya cacat/bug ke branch utama.'
+                                    explanation: 'Pull Request adalah cara berdiskusi dan meminta izin sebelum kodingan kita dimasukkan ke kode utama proyek.'
+                                },
+                                {
+                                    question: 'Apa keuntungan dari sistem Continuous Integration (CI) / Robot Penguji Otomatis?',
+                                    options: [
+                                        'Robot akan langsung menggantikan semua pekerjaan manusia.',
+                                        'Kesalahan atau bug pada kode dapat dideteksi secara otomatis dan cepat sebelum aplikasi dirilis.',
+                                        'Aplikasi langsung terkenal di internet.',
+                                        'Laptop kita tidak pernah panas lagi.'
+                                    ],
+                                    correctAnswer: 1,
+                                    explanation: 'Sistem CI menjalankan pengujian otomatis setiap kali ada kode baru, sehingga eror bisa ketahuan lebih awal.'
+                                },
+                                {
+                                    question: 'Mengapa "Code Review" (Pemeriksaan Kode oleh Teman/Senior) sangat penting?',
+                                    options: [
+                                        'Agar bisa mengejek kodingan buatan teman.',
+                                        'Memastikan kualitas kode tetap rapi, aman, dan saling berbagi ilmu antar tim.',
+                                        'Agar waktu pengerjaan jadi makin lambat.',
+                                        'Sebagai formalitas tanpa arti.'
+                                    ],
+                                    correctAnswer: 1,
+                                    explanation: 'Code Review membantu menjaga standar kualitas kode dan melatih programmer junior agar makin paham kodingan yang baik.'
                                 }
                             ]
                         },
                         {
                             id: 'testing_qa',
-                            title: 'QA & Staging Testing',
-                            subtitle: 'Pengujian Kualitas & Beban',
+                            title: 'Tahap 5: Pengujian & Uji Beban (QA Testing)',
+                            shortTitle: '5. Pengujian (QA)',
                             icon: 'fa-solid fa-vial-circle-check',
                             gradient: 'from-pink-600 to-rose-600',
                             estimatedTime: '3 - 5 Hari',
-                            objective: 'Memvalidasi bahwa sistem terbebas dari kutu (*bug*), memenuhi kriteria Acceptance, dan stabil dalam simulasi beban kerja ekstrem sebelum rilis ke publik.',
+                            analogy: 'Ibarat mobil baru sebelum dijual ke pembeli, mobil itu ditabrakkan ke dinding dalam uji keselamatan (Crash Test) untuk memastikan rem dan air-bag berfungsi sempurna saat kecelakaan.',
+                            objective: 'Menguji aplikasi di server percobaan (Staging) untuk berburu bug (error) dan mensimulasikan ribuan pengguna ngamuk agar tahu apakah aplikasi kuat atau jebol.',
                             activities: [
-                                'Pengujian Fungsional (Manual Testing) berdasarkan Test Case di lingkungan Staging.',
-                                'Pengujian Otomatis End-to-End (E2E) antarmuka UI.',
-                                'Performance & Load Testing (Uji Beban) menggunakan alat simulasi ribu trafik.',
-                                'User Acceptance Testing (UAT) bersama pihak Product Owner / Bisnis.'
+                                'Mencoba semua tombol dan form di aplikasi secara manual (Manual Testing).',
+                                'Membuat skrip otomatis yang berpura-pura klik sana-sini (Automation Testing).',
+                                'Melakukan Uji Beban (Load Testing): Menyerbu server dengan 10.000 pengguna buatan bersamaan.'
                             ],
-                            deliverable: 'Laporan Hasil Testing (QA Test Report), Bug Log, & Sign-off Kelayakan Rilis.',
-                            roles: ['QA Automation Engineer', 'Manual QA Tester', 'Performance Test Engineer'],
-                            tools: ['Cypress / Playwright', 'JMeter / k6', 'BrowserStack', 'TestRail'],
-                            exampleScenarioTitle: 'Uji Beban (Load Test) 50.000 User di Staging',
-                            exampleScenarioDesc: 'Tim QA melakukan simulasi trafik menggunakan tool k6 dengan menyuntikkan 10.000 *virtual users* per detik ke server Staging. Ditemukan bug: halaman pembayaran mengalami crash pada detik ke-30 karena batas koneksi database PostgreSQL terlampaui. Tim DB-Admin langsung memperbaiki *connection pooling*.',
-                            artifactType: 'Skrip Load Test dengan Tool k6 (Javascript)',
-                            artifactContent: `import http from 'k6/http';
-import { check, sleep } from 'k6';
+                            deliverable: 'Laporan Bebas Bug (QA Test Report) & Tanda Tangan Siap Rilis.',
+                            roles: ['QA Tester (Penguji Aplikasi)', 'Performance Test Engineer'],
+                            tools: ['Selenium / Cypress', 'k6 / JMeter', 'Postman'],
+                            exampleScenarioTitle: 'Simulasi Serbuan 10.000 Pembeli di Server Uji Coba',
+                            exampleScenarioDesc: 'Tim QA memakai tool bernama k6 untuk membuat 10.000 pembeli virtual yang mengklik tombol Flash Sale dalam detik yang sama. Ketahuan! Pada detik ke-15, server mati karena memori penuh. Tim langsung memperbaiki masalah ini sebelum aplikasi dirilis ke publik.',
+                            artifactType: 'Laporan Hasil Pengujian Beban (Load Test Output)',
+                            artifactContent: `--- LAPORAN PENGUJIAN BEBAN (k6 Load Test) ---
+Target      : https://staging.tokokita.com/flash-sale
+Pengguna    : 10,000 Virtual Users (Simulasi Pembeli)
+Durasi Test : 1 Menit
 
-// Simulasi 10,000 pengguna bersamaan dalam 1 menit
-export const options = {
-  stages: [
-    { duration: '30s', target: 5000 },
-    { duration: '1m', target: 10000 }, // Peak flash sale
-    { duration: '30s', target: 0 },
-  ],
-};
-
-export default function () {
-  const res = http.post('https://staging.tokokita.com/api/v1/flash-sale/checkout', {
-    flash_sale_id: 'fs_test'
-  });
-  
-  check(res, {
-    'status is 202': (r) => r.status === 202,
-    'response time < 500ms': (r) => r.timings.duration < 500,
-  });
-  sleep(1);
-}`,
-                            bestPractice: 'Jangan pernah melakukan pengujian beban (*load testing*) langsung di lingkungan Production aktif tanpa koordinasi ketat.',
+HASIL TEST:
+- Total Transaksi : 45,210 klik
+- Kecepatan Respon: 240ms (Sangat Cepat! < 1 detik)
+- Tingkat Error   : 0.01% (LULUS SANGAT BISA DIPAKAI!)`,
+                            bestPractice: 'Jangan pernah bilang "Aplikasi ini sudah 100% sempurna tanpa eror!". Tugas QA adalah berpura-pura jadi pengguna jahat yang suka bikin aplikasi crash.',
                             questions: [
                                 {
-                                    question: 'Mengapa Load Testing (Uji Beban) harus dilakukan di lingkungan Staging, bukan langsung di lingkungan Production aktif?',
+                                    question: 'Apakah tugas utama dari seorang Quality Assurance (QA) Tester?',
                                     options: [
-                                        'Agar tidak mengganggu dan merusak pengalaman pengguna asli yang sedang bertransaksi di aplikasi live.',
-                                        'Karena Staging tidak menggunakan listrik.',
-                                        'Agar biaya pengujian menjadi mahal.',
-                                        'Karena Production tidak bisa menerima lalu lintas data.'
+                                        'Mencari kesalahan/bug pada aplikasi dan memastikan aplikasi berjalan sesuai harapan sebelum dirilis.',
+                                        'Mengirimkan tagihan listrik ke kantor.',
+                                        'Mengetik kodingan backend dari awal.',
+                                        'Mendesain spanduk promosi.'
                                     ],
                                     correctAnswer: 0,
-                                    explanation: 'Uji beban menghasilkan lalu lintas buatan dalam jumlah besar yang bisa menurunkan performa jika dijalankan di Production aktif.'
+                                    explanation: 'QA Tester bertugas sebagai "detektif bug" yang sengaja menguji berbagai skenario agar eror ditemukan sebelum pengguna asli yang menemukannya.'
                                 },
                                 {
-                                    question: 'Apakah tujuan utama dilakukannya User Acceptance Testing (UAT)?',
+                                    question: 'Apakah yang dimaksud dengan "Load Testing" (Uji Beban)?',
                                     options: [
-                                        'Menguji daya tahan perangkat keras laptop.',
-                                        'Memastikan oleh pihak bisnis/client bahwa aplikasi sudah sesuai dengan kebutuhan bisnis yang disepakati.',
-                                        'Menghapus basis data produk.',
-                                        'Menulis ulang skrip antarmuka.'
+                                        'Menimbang berat laptop di timbangan beras.',
+                                        'Menguji ketahanan server aplikasi dengan mensimulasikan ribuan pengguna yang mengakses bersamaan.',
+                                        'Mengunduh file film berukuran besar.',
+                                        'Mengecas HP sampai 100%.'
                                     ],
                                     correctAnswer: 1,
-                                    explanation: 'UAT adalah tahap di mana pemilik produk/klien memverifikasi bahwa solusi memenuhi kriteria penerimaan bisnis.'
+                                    explanation: 'Load testing bertujuan memastikan server aplikasi tidak crash saat diserbu banyak pembeli pada event besar seperti Flash Sale.'
                                 },
                                 {
-                                    question: 'Tools manakah yang populer digunakan untuk pengujian beban trafik (Load Testing)?',
+                                    question: 'Istilah "Bug" dalam dunia komputer dan software berarti...',
                                     options: [
-                                        'Microsoft Paint & Word.',
-                                        'k6, Apache JMeter, atau Locust.',
-                                        'Photoshop & Illustrator.',
-                                        'WinRAR & Zip.'
+                                        'Serangga kecoa yang merayap di atas keyboard.',
+                                        'Kesalahan, cacat, atau eror pada kode program yang menyebabkan aplikasi tidak berjalan sebagaimana mestinya.',
+                                        'Fitur rahasia yang bikin aplikasi makin cepat.',
+                                        'Kabel charger yang putus.'
                                     ],
                                     correctAnswer: 1,
-                                    explanation: 'k6 dan JMeter adalah standar industri untuk mensimulasikan ribuan pengguna bersamaan (Virtual Users) guna menguji ketahanan server.'
+                                    explanation: 'Bug adalah istilah populer untuk menggambarkan eror atau cacat pada software yang perlu diperbaiki (Debugging).'
                                 }
                             ]
                         },
                         {
                             id: 'deployment',
-                            title: 'CD & Production Release',
-                            subtitle: 'Peluncuran ke Lingkungan Produksi',
+                            title: 'Tahap 6: Peluncuran ke Publik (Rilis / Deployment)',
+                            shortTitle: '6. Peluncuran (Release)',
                             icon: 'fa-solid fa-rocket',
                             gradient: 'from-rose-600 to-emerald-600',
-                            estimatedTime: '1 Hari (Deployment Window)',
-                            objective: 'Mendeploy aplikasi secara aman ke server Production dengan waktu henti (*downtime*) nol atau minimal menggunakan strategi peluncuran modern.',
+                            estimatedTime: '1 Hari',
+                            analogy: 'Ibarat roket yang siap diluncurkan ke luar angkasa, atau game baru yang resmi terbit dan bisa diunduh di Google Play Store oleh jutaan orang.',
+                            objective: 'Memindahkan kodingan yang sudah lulus uji coba dari server komputer lokal ke server internet asli (Production) agar bisa dipakai oleh pengguna umum.',
                             activities: [
-                                'Eksekusi deployment otomatis menggunakan skrip CD (Continuous Deployment).',
-                                'Penggunaan strategi Blue-Green Deployment atau Canary Release (mencoba ke 5% pengguna dulu).',
-                                'Penerapan Feature Flags (Saklar fitur untuk mengaktifkan/mematikan fitur secara instan).',
-                                'Pemeriksaan Post-Deployment Sanity Check di Production.'
+                                'Menjalankan proses rilis otomatis menggunakan skrip CD (Continuous Deployment).',
+                                'Menerapkan strategi "Canary Release" (Merilis ke 5% pengguna dulu untuk cek situasi).',
+                                'Memasang "Feature Flag" (Saklar fitur untuk menghidupkan/mematikan tombol Flash Sale secara mendadak).'
                             ],
-                            deliverable: 'Live Production Build, Release Notes, & Feature Flag Configuration.',
-                            roles: ['DevOps Engineer', 'Site Reliability Engineer (SRE)', 'Release Manager'],
-                            tools: ['Kubernetes / Helm', 'ArgoCD / Terraform', 'LaunchDarkly (Feature Flag)', 'AWS / GCP'],
-                            exampleScenarioTitle: 'Canary Deployment & Feature Flag Flash Sale',
-                            exampleScenarioDesc: 'Pukul 23:00 WIB, aplikasi di-deploy menggunakan Kubernetes Canary Strategy. Fitur Flash Sale baru dibuka untuk 5% pengguna di pulau Jawa. Setelah metrik sistem stabil tanpa error, lalu lintas dinaikkan bertahap menjadi 100% pada pukul 23:30 WIB.',
-                            artifactType: 'Konfigurasi Kubernetes Canary Deployment (YAML)',
-                            artifactContent: `apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: flash-sale-service-canary
-spec:
-  replicas: 2 # 10% dari total pod produksi
-  selector:
-    matchLabels:
-      app: flash-sale-service
-      track: canary
-  template:
-    metadata:
-      labels:
-        app: flash-sale-service
-        track: canary
-    spec:
-      containers:
-      - name: flash-sale-api
-        image: registry.tokokita.com/flash-sale:v2.4.0
-        ports:
-        - containerPort: 8080`,
-                            bestPractice: 'Selalu miliki Automated Rollback Plan (Rencana Pembatalan Otomatis). Jika tingkat error di Production naik di atas 1%, sistem harus otomatis kembali ke versi sebelumnya.',
+                            deliverable: 'Aplikasi Live yang Sudah Bisa Diberikan ke Pembeli Asli.',
+                            roles: ['DevOps Engineer', 'Release Manager', 'SRE (Site Reliability Engineer)'],
+                            tools: ['Docker / Kubernetes', 'AWS / Google Cloud', 'LaunchDarkly'],
+                            exampleScenarioTitle: 'Detik-Detik Rilis Flash Sale Jam 12 Malam',
+                            exampleScenarioDesc: 'Tim DevOps menekan tombol rilis pada pukul 23.50 WIB. Fitur Flash Sale baru dibuka untuk 5% pengguna di Pulau Jawa dulu. Setelah dipastikan lancar tanpa lag, saklar fitur dibuka 100% untuk seluruh Indonesia Tepat jam 00.00 WIB!',
+                            artifactType: 'Contoh Saklar Fitur (Feature Flag Code)',
+                            artifactContent: `// Saklar Sakti Fitur Flash Sale
+if (FeatureFlag.isAktif("FLASH_SALE_2026")) {
+  // Tampilkan Tombol Diskon 70% di Layar HP Pembeli
+  tampilkanTombolFlashSale();
+} else {
+  // Sembunyikan fitur jika belum jamnya / jika terjadi eror
+  tampilkanHargaNormal();
+}`,
+                            bestPractice: 'Selalu siapkan "Tombol Batal" (Rollback Plan)! Jika rilis baru ternyata eror parah, kita bisa dengan cepat kembalikan aplikasi ke versi lama yang stabil.',
                             questions: [
                                 {
-                                    question: 'Apa keunggulan utama dari strategi peluncuran "Canary Deployment"?',
+                                    question: 'Apakah yang dimaksud dengan "Production" dalam dunia pembuatan aplikasi?',
                                     options: [
-                                        'Rilis dilakukan secara mendadak ke semua pengguna sekaligus.',
-                                        'Fitur dirilis bertahap ke sebagian kecil pengguna (misal 5%), sehingga dampak risiko error terisolasi sebelum dibuka 100%.',
-                                        'Aplikasi dimatikan selama 24 jam.',
-                                        'Menghemat kapasitas memori RAM laptop.'
+                                        'Pabrik pembuatan plastik.',
+                                        'Lingkungan server live tempat aplikasi asli berjalan dan diakses oleh pengguna umum secara nyata.',
+                                        'Folder tempat menyimpan foto-foto liburan.',
+                                        'Komputer bekas di laboratorium sekolah.'
                                     ],
                                     correctAnswer: 1,
-                                    explanation: 'Canary release memungkinkan tim menguji perilaku aplikasi di lingkungan live nyata dengan porsi pengguna yang terbatas dulu.'
+                                    explanation: 'Production (Prod) adalah lingkungan aplikasi yang digunakan secara live oleh pengguna nyata.'
                                 },
                                 {
-                                    question: 'Mengapa Feature Flags (saklar fitur) sangat berguna saat melakukan peluncuran di Production?',
+                                    question: 'Apa kegunaan dari strategi peluncuran "Canary Release"?',
                                     options: [
-                                        'Memungkinkan tim mematikan fitur yang bermasalah secara instan tanpa perlu melakukankan re-deploy ulang kode.',
-                                        'Membuat warna tombol berubah-ubah otomatis.',
-                                        'Menghapus akun pengguna yang tidak aktif.',
-                                        'Mempercepat instalasi sistem operasi.'
+                                        'Mengirimkan burung kenari ke server.',
+                                        'Merilis aplikasi baru ke sebagian kecil pengguna terlebih dahulu (misal 5%) untuk memastikan tidak ada eror sebelum rilis ke 100% pengguna.',
+                                        'Menghapus aplikasi lama secara permanen tanpa backup.',
+                                        'Mematikan jaringan internet seluruh kantor.'
                                     ],
-                                    correctAnswer: 0,
-                                    explanation: 'Feature Flags memberikan kendali dinamis untuk menyalakan atau mematikan fungsi tertentu melalui konfigurasi tanpa penginjeksian kode baru.'
+                                    correctAnswer: 1,
+                                    explanation: 'Canary Release meminimalkan risiko: jika ada bug, hanya 5% pengguna yang terdampak dan bisa langsung diperbaiki.'
                                 },
                                 {
-                                    question: 'Apa langkah pertama yang wajib dilakukan jika setelah deployment error rate aplikasi melonjak tinggi di Production?',
+                                    question: 'Jika setelah aplikasi dirilis tiba-tiba terjadi eror fatal, tindakan terbaik yang dilakukan dengan cepat adalah...',
                                     options: [
-                                        'Langsung melakukan Automated Rollback ke versi stabil sebelumnya.',
-                                        'Meninggalkan kantor dan mematikan HP.',
-                                        'Mulai koding perbaikan bug di server production aktif.',
-                                        'Menyalahkan pengguna aplikasi.'
+                                        'Melakukan "Rollback" (mengembalikan sistem ke versi lama yang stabil) secara cepat.',
+                                        'Membiarkan aplikasi eror selama seminggu.',
+                                        'Pindah sekolah/tempat kerja.',
+                                        'Menghapus semua kodingan dari laptop.'
                                     ],
                                     correctAnswer: 0,
-                                    explanation: 'Prioritas utama adalah mengembalikan kestabilan layanan bagi pengguna melalui rollback, lalu melakukan investigasi penyebab error.'
+                                    explanation: 'Rollback seperti menekan tombol "Undo" raksasa untuk memulihkan aplikasi ke versi stabil sebelumnya demi menyelamatkan kenyamanan pengguna.'
                                 }
                             ]
                         },
                         {
                             id: 'monitoring',
-                            title: 'Monitoring & Retrospective',
-                            subtitle: 'Pemantauan Server & Evaluasi Sprint',
+                            title: 'Tahap 7: Pemantauan & Evaluasi Tim (Monitoring & Retrospektif)',
+                            shortTitle: '7. Pemantauan & Evaluasi',
                             icon: 'fa-solid fa-chart-line',
                             gradient: 'from-emerald-600 to-teal-600',
-                            estimatedTime: 'Berkelanjutan (Post-Release)',
-                            objective: 'Memantau kesehatan aplikasi secara real-time di lingkungan live, mendeteksi insiden error secara proaktif, serta mengevaluasi efisiensi kerja tim dalam pertemuan Retrospektif.',
+                            estimatedTime: 'Terus Menerus',
+                            analogy: 'Ibarat dokter yang memantau detak jantung pasien di layar monitor rumah sakit, dan rapat evaluasi tim sepak bola setelah pertandingan selesai untuk membahas taktik minggu depan.',
+                            objective: 'Mengawasi kesehatan server secara live saat aplikasi dipakai pengguna, serta berkumpul bersama tim untuk membahas apa yang sudah bagus dan apa yang perlu ditingkatkan.',
                             activities: [
-                                'Pemantauan metrik CPU, Memory, Latensi, dan Error Rate melalui Dashboard Observabilitas.',
-                                'Penanganan Alert otomatis jika terjadi kegagalan sistem (Incident Management).',
-                                'Pelaksanaan Sprint Retrospective: Membahas *What went well*, *What didn\'t*, dan *Action items*.',
-                                'Pengumpulan feedback pengguna nyata & analitik penggunaan fitur.'
+                                'Melihat grafik penggunaan CPU, memori server, dan jumlah pengakses secara real-time.',
+                                'Menerima pemberitahuan alarm otomatis jika ada server yang kepanasan/eror.',
+                                'Melakukan Rapat Retrospektif: Membahas "Apa yang sukses?", "Apa yang kurang?", dan "Apa rencananya minggu depan?".'
                             ],
-                            deliverable: 'Dashboard Observabilitas (Datadog/Grafana), Dokumen Post-Mortem (jika ada insiden), & Action Plan Sprint Berikutnya.',
-                            roles: ['SRE / Ops', 'Product Manager', 'Scrum Master', 'Seluruh Tim Developers'],
-                            tools: ['Datadog / Prometheus', 'Grafana', 'Sentry (Error Tracking)', 'PagerDuty'],
-                            exampleScenarioTitle: 'Pemantauan Event Flash Sale & Retrospektif Tim',
-                            exampleScenarioDesc: 'Saat jam Flash Sale berlangsung pukul 12:00, Sentry menangkap 12 insiden kebocoran memori pada pod backend. SRE mendapat alarm PagerDuty dan langsung menambah alokasi memori Kubernetes. Hari berikutnya, tim menggelar Sprint Retrospective untuk mendiskusikan perbaikan alokasi memori tersebut pada Sprint mendatang.',
-                            artifactType: 'Tampilan Log Observabilitas Error (Sentry Json Output)',
-                            artifactContent: `{
-  "event_id": "893cfa2110294b",
-  "environment": "production",
-  "level": "warning",
-  "transaction": "POST /api/v1/flash-sale/checkout",
-  "exception": {
-    "type": "RedisConnectionTimeout",
-    "value": "Connection pool exhausted under high load (15,200 active conns)"
-  },
-  "tags": {
-    "pod_name": "flash-sale-service-78bf-x9l",
-    "region": "ap-southeast-1"
-  }
-}`,
-                            bestPractice: 'Budayakan Blameless Post-Mortem (evaluasi insiden tanpa menyalahkan individu). Fokuslah pada perbaikan sistem dan proses kerja.',
+                            deliverable: 'Laporan Performa Server & Catatan Perbaikan Tim (Action Items).',
+                            roles: ['SRE / Operations', 'Scrum Master', 'Seluruh Anggota Tim RPL'],
+                            tools: ['Grafana / Prometheus', 'Sentry', 'Datadog'],
+                            exampleScenarioTitle: 'Pantau Serbuan Jam 12 Malam & Rapat Evaluasi',
+                            exampleScenarioDesc: 'Saat Flash Sale berlangsung, tim melihat layar monitor Grafana. Terlihat ada 15.000 transaksi masuk per detik! Server sempat agak panas tapi tetap lancar. Besok paginya, tim mengadakan rapat Retrospektif sambil makan donat untuk merayakan keberhasilan.',
+                            artifactType: 'Contoh Pesan Alarm Server Eror (Sentry Alert)',
+                            artifactContent: `[ALARM SERVER PRODUCTION - WARNA MERAH]
+Waktu     : 00:03:12 WIB
+Pesan Eror: "Koneksi ke Database Penuh! (100% Capacity)"
+Lokasi    : Layar Checkout Flash Sale
+
+TINDAKAN TIM:
+SRE otomatis menambah kapasitas server (Auto-scaling).
+Server kembali normal dalam waktu 15 detik!`,
+                            bestPractice: 'Saat terjadi masalah di aplikasi, jangan saling menyalahkan teman! Fokuslah bersama-sama mencari tahu penyebabnya dan perbaiki sistemnya.',
                             questions: [
                                 {
-                                    question: 'Mengapa filosofi "Blameless Post-Mortem" sangat penting diterapkan saat mengevaluasi insiden pasca-rilis?',
+                                    question: 'Apakah fungsi dari alat "Monitoring" seperti Grafana atau Datadog?',
                                     options: [
-                                        'Fokus pada perbaikan kelemahan sistem/proses, bukan mencari kambing hitam individu.',
-                                        'Agar anggota tim yang salah dihukum berat.',
-                                        'Agar insiden disembunyikan dari manajemen.',
-                                        'Supaya tidak perlu mengadakan rapat lagi.'
+                                        'Memantau kondisi kesehatan server, kecepatan aplikasi, dan jumlah eror secara real-time di layar monitor.',
+                                        'Mengintip isi obrolan chat pribadi teman.',
+                                        'Memainkan game 3D dengan grafis tinggi.',
+                                        'Mengunci laptop agar tidak bisa dibuka.'
                                     ],
                                     correctAnswer: 0,
-                                    explanation: 'Pendekatan tanpa menyalahkan individu menciptakan budaya psikologis aman dan mendorong transparansi untuk memperbaiki kegagalan sistemik.'
+                                    explanation: 'Monitoring memberikan gambaran visual berbentuk grafik tentang kesehatan server kita saat dipakai pengguna.'
                                 },
                                 {
-                                    question: 'Apakah fungsi dari alat Error Tracking seperti Sentry atau Rollbar?',
+                                    question: 'Apakah tujuan utama dilaksanakannya agenda rapat "Sprint Retrospective" dalam metode Agile?',
                                     options: [
-                                        'Mencatat stacktrace exception dan crash aplikasi secara real-time di Production.',
-                                        'Membuat gambar animasi 3D.',
-                                        'Mengirimtagihan pembayaran ke pelanggan.',
-                                        'Mengedit video presentasi produk.'
+                                        'Saling menyalahkan dan menghukum anggota tim yang buat eror.',
+                                        'Mengevaluasi cara kerja tim (apa yang sudah baik dan apa yang harus diperbaiki) demi kemajuan bersama di proyek berikutnya.',
+                                        'Menjual komputer sekolah.',
+                                        'Membaca novel bersama-sama.'
                                     ],
-                                    correctAnswer: 0,
-                                    explanation: 'Error tracking membantu pengembang mendeteksi crash persis di mana baris kode gagal beserta kontekstual payloadnya.'
+                                    correctAnswer: 1,
+                                    explanation: 'Retrospektif adalah momen belajar bersama tim untuk terus meningkatkan kekompakan dan kualitas cara kerja.'
                                 },
                                 {
-                                    question: 'Apakah tujuan utama dari agenda Sprint Retrospective dalam kerangka kerja Agile?',
+                                    question: 'Budaya "Blameless Post-Mortem" saat mengevaluasi masalah eror berarti...',
                                     options: [
-                                        'Mengevaluasi proses kerja tim (apa yang berjalan baik, apa yang perlu diperbaiki) guna perbaikan berkelanjutan di Sprint berikutnya.',
-                                        'Membagikan bonus gaji akhir tahun.',
-                                        'Menjual lisensi perangkat lunak ke perusahaan lain.',
-                                        'Mendesain Ulang arsitektur database dari awal.'
+                                        'Mencari satu orang yang paling bersalah untuk dipecat.',
+                                        'Fokus memperbaiki kekurangan pada sistem dan proses kerja tanpa mencari kambing hitam individu.',
+                                        'Pura-pura tidak pernah terjadi masalah sama sekali.',
+                                        'Menyalahkan pembeli yang menggunakan aplikasi.'
                                     ],
-                                    correctAnswer: 0,
-                                    explanation: 'Sprint Retrospective berfokus pada inspeksi dan adaptasi cara kerja internal tim untuk meningkatkan efisiensi kerja.'
+                                    correctAnswer: 1,
+                                    explanation: 'Budaya profesional fokus pada perbaikan sistem (kenapa eror bisa lolos?) daripada menyalahkan orang secara personal.'
                                 }
                             ]
                         }
                     ],
 
-                    // Simulator Quiz Data
+                    // Final Simulator Quiz Questions
                     quizQuestions: [
                         {
-                            stageTag: 'Tahap 1: Requirements',
-                            question: 'Client tiba-tiba meminta fitur pendaftaran lewat akun WhatsApp saat Sprint tinggal 2 hari lagi sebelum rilis. Apa tindakan terbaik Product Owner / Tech Lead?',
-                            scenario: 'Fitur belum tercantum dalam PRD dan akan mengganggu waktu testing yang sudah dijadwalkan.',
+                            stageTag: 'Kasus 1: Perubahan Kebutuhan Mendadak',
+                            question: 'Bos tiba-tiba minta ditambah tombol "Login Pakai TikTok" padahal jadwal rilis tinggal 2 hari lagi! Sebagai Ketua Tim Programmer, apa keputusanmu?',
+                            scenario: 'Jika dipaksakan diketik sekarang, waktu pengujian akan mepet dan aplikasi berisiko eror saat rilis.',
                             options: [
-                                { text: 'Langsung menyuruh developer lembur malam ini untuk memasukkannya.', isCorrect: false },
-                                { text: 'Menolak keras dan memarahi client karena tidak konsisten.', isCorrect: false },
-                                { text: 'Mencatatnya sebagai User Story baru di Product Backlog untuk diprioritaskan pada Sprint berikutnya.', isCorrect: true },
-                                { text: 'Menghapus fitur keamanan lain agar fitur WhatsApp ini muat.', isCorrect: false }
+                                { text: 'Paksa semua anggota tim lembur sampai jam 3 pagi tanpa peduli pengujian.', isCorrect: false },
+                                { text: 'Marah-marah ke bos dan langsung keluar dari proyek.', isCorrect: false },
+                                { text: 'Catat ide bos ke daftar tugas (Backlog) untuk dikerjakan pada rilis versi berikutnya setelah rilis ini stabil.', isCorrect: true },
+                                { text: 'Hapus fitur keamanan pembayaran agar tombol TikTok muat.', isCorrect: false }
                             ],
-                            explanation: 'Prinsip Agile menerima perubahan, namun tidak boleh merusak kestabilan Sprint yang sedang berjalan. Perubahan dimasukkan ke Backlog untuk di-planning pada Sprint berikutnya.'
+                            explanation: 'Keputusan bijak dalam Agile: Tampung ide baru ke Backlog untuk dikerjakan pada tahap berikutnya agar rilis yang ada sekarang tidak berisiko rusak.'
                         },
                         {
-                            stageTag: 'Tahap 3: Development & Git',
-                            question: 'Developer A dan Developer B sama-sama mengubah baris kode yang sama pada file `checkout.js`. Apa yang harus dilakukan saat terjadi Merge Conflict?',
-                            scenario: 'Git menolak merge otomatis ke branch `develop`.',
+                            stageTag: 'Kasus 2: Bentrokan Kodingan (Merge Conflict)',
+                            question: 'Budi dan Siti tidak sengaja mengubah baris kodingan yang sama di file `aplikasi.js`. Saat mau digabungkan di Git, terjadi "Merge Conflict". Apa yang harus mereka lakukan?',
+                            scenario: 'Git bingung memilih kodingan mana yang benar.',
                             options: [
-                                { text: 'Menghapus seluruh file checkout.js dan membuatnya dari awal.', isCorrect: false },
-                                { text: 'Developer A & B duduk bersama, meninjau konflik, dan menentukan logika mana yang paling benar untuk dipertahankan.', isCorrect: true },
-                                { text: 'Memaksa push dengan git push --force agar kode Developer A menimpa kode B.', isCorrect: false },
-                                { text: 'Melaporkan ke atasan bahwa proyek gagal.', isCorrect: false }
+                                { text: 'Hapus seluruh file aplikasi.js dan ulang koding dari nol.', isCorrect: false },
+                                { text: 'Budi dan Siti duduk bareng, melihat perbedaan kodingan, dan memutuskan kodingan mana yang paling tepat untuk dipakai.', isCorrect: true },
+                                { text: 'Paksa kodingan Budi menimpa kodingan Siti tanpa diskusi.', isCorrect: false },
+                                { text: 'Menangis di pojokan kelas.', isCorrect: false }
                             ],
-                            explanation: 'Merge Conflict adalah hal normal dalam kolaborasi tim. Solusi terbaik adalah komunikasi langsung antar developer untuk menyelesaikan perbedaan logika kode.'
+                            explanation: 'Merge Conflict adalah hal biasa! Solusinya adalah komunikasi antar sesama programmer untuk menggabungkan kodingan dengan benar.'
                         },
                         {
-                            stageTag: 'Tahap 6: Deployment',
-                            question: 'Baru 5 menit di-deploy ke Production, sistem menunjukkan tingkat error 15% pada transaksi pembayaran. Apa tindakan SRE / DevOps pertama kali?',
-                            scenario: 'Ribuan pembeli gagal melakukan pembayaran.',
+                            stageTag: 'Kasus 3: Eror Setelah Rilis',
+                            question: 'Baru 5 menit rilis di Play Store, ada laporan 20% pengguna tidak bisa melakukan transaksi. Apa tindakan pertama yang paling tepat?',
+                            scenario: 'Pengguna asli mulai memberikan ulasan bintang 1 di Play Store.',
                             options: [
-                                { text: 'Langsung melakukan Automated Rollback ke versi stabil sebelumnya sambil melakukan investigasi di Staging.', isCorrect: true },
-                                { text: 'Membiarkannya dan mulai coding perbaikan bug langsung di server Production.', isCorrect: false },
-                                { text: 'Mematikan seluruh server e-commerce selama 2 hari.', isCorrect: false },
-                                { text: 'Menyalahkan tim QA di grup WhatsApp.', isCorrect: false }
+                                { text: 'Segera tekan tombol "Rollback" untuk mengembalikan aplikasi ke versi stabil sebelumnya sambil mencari masalahnya di lokal.', isCorrect: true },
+                                { text: 'Biarkan saja dan ketik perbaikan kode langsung di server live yang sedang dipakai pengguna.', isCorrect: false },
+                                { text: 'Matikan semua server dan pura-pura tidak tahu.', isCorrect: false },
+                                { text: 'Menyalahkan tim penguji QA di grup WhatsApp.', isCorrect: false }
                             ],
-                            explanation: 'Di lingkungan Production, keselamatan pengguna adalah prioritas #1. Lakukan Rollback instan terlebih dahulu untuk memulihkan layanan, baru investigasi error di lokal/staging.'
+                            explanation: 'Prioritas #1 adalah menyelamatkan kenyamanan pengguna! Kembalikan dulu aplikasi ke versi yang aman (Rollback), baru cari penyakiterornya dengan tenang.'
                         }
                     ],
 
-                    // Catalog Tools Data
+                    // Tools Catalog
                     toolsCatalog: [
-                        { name: 'Jira Software', category: 'Project Management', stageName: 'Requirements & Planning', icon: 'fa-brands fa-jira', description: 'Papan Kanban dan Scrum untuk melacak User Story, Bug, dan grafik Burndown Sprint.' },
-                        { name: 'Figma', category: 'UI/UX Design', stageName: 'Design', icon: 'fa-brands fa-figma', description: 'Platform kolaborasi desain antarmuka, prototyping, dan Design System.' },
-                        { name: 'GitHub / GitLab', category: 'Version Control & CI/CD', stageName: 'Development & CI', icon: 'fa-brands fa-github', description: 'Penyimpanan repository kode Git, Peer Review Pull Request, dan otomatisasi CI/CD.' },
-                        { name: 'Docker', category: 'Containerization', stageName: 'Development & Deploy', icon: 'fa-brands fa-docker', description: 'Membungkus aplikasi dan dependensinya dalam container konsisten di lokal maupun cloud.' },
-                        { name: 'Kubernetes', category: 'Orchestration', stageName: 'Deployment & Ops', icon: 'fa-solid fa-dharmachakra', description: 'Mengatur otomatisasi scaling, deployment, dan manajemen container skala besar.' },
-                        { name: 'Datadog / Prometheus', category: 'Observability', stageName: 'Monitoring', icon: 'fa-solid fa-chart-pie', description: 'Memantau metrik performa server, penggunaan CPU, memori, dan latensi sistem secara live.' },
-                        { name: 'Cypress / k6', category: 'Testing', stageName: 'QA Testing', icon: 'fa-solid fa-vials', description: 'Alat otomatisasi uji antarmuka (E2E) dan pengujian beban trafik (Load Testing).' },
-                        { name: 'Sentry', category: 'Error Tracking', stageName: 'Monitoring', icon: 'fa-solid fa-bug', description: 'Mencatat crash dan exception kode secara real-time beserta stacktrace lengkapnya.' }
+                        { name: 'Jira / Trello', category: 'Manajemen Tugas', stageName: 'Kebutuhan (Requirements)', icon: 'fa-brands fa-jira', description: 'Papan kartu digital untuk menempel tugas-tugas programmer dan melihat sejauh mana progres proyek.' },
+                        { name: 'Figma', category: 'Desain UI/UX', stageName: 'Desain (Design)', icon: 'fa-brands fa-figma', description: 'Aplikasi menggambar rancangan tampilan layar HP/Web yang bisa diklik-klik sebelum dikoding.' },
+                        { name: 'GitHub / GitLab', category: 'Simpan Kodingan', stageName: 'Koding & CI', icon: 'fa-brands fa-github', description: 'Tempat menyimpan baris kode program secara online, kerja kelompok koding, dan cek otomatis.' },
+                        { name: 'VS Code', category: 'Editor Kode', stageName: 'Koding (Development)', icon: 'fa-solid fa-code', description: 'Aplikasi tempat programmer mengetik perintah baris kode program (HTML, CSS, JS, PHP, dll).' },
+                        { name: 'Docker', category: 'Wadah Aplikasi', stageName: 'Koding & Deployment', icon: 'fa-brands fa-docker', description: 'Membungkus aplikasi beserta bumbunya agar bisa berjalan lancar di komputer manapun tanpa error.' },
+                        { name: 'Postman', category: 'Uji Coba API', stageName: 'Desain & Testing', icon: 'fa-solid fa-paper-plane', description: 'Alat untuk mengetes pengiriman data antar Frontend dan Backend apakah sudah nyambung atau belum.' },
+                        { name: 'k6 / Cypress', category: 'Uji Coba Otomatis', stageName: 'Pengujian (QA)', icon: 'fa-solid fa-vials', description: 'Robot otomatis untuk menguji tombol-tombol aplikasi dan menembak server dengan ribuan pengakses.' },
+                        { name: 'Sentry / Grafana', category: 'Pemantau Server', stageName: 'Pemantauan (Monitoring)', icon: 'fa-solid fa-chart-line', description: 'Layar grafik pemantau kondisi kesehatan server dan pelapor otomatis jika ada aplikasi yang crash.' }
                     ]
                 }
             },
@@ -1254,7 +1194,7 @@ spec:
                     );
                 },
 
-                // Stage Gatekeeper Progress Computed
+                // Progress Mechanics
                 completedStageCount() {
                     let count = 0;
                     for (let i = 0; i < this.stages.length; i++) {
@@ -1276,10 +1216,9 @@ spec:
                     }
                 },
                 
-                // Stage Lock Mechanics
+                // Stage Lock Logic
                 isStageUnlocked(stageIdx) {
                     if (stageIdx === 0) return true;
-                    // Stage N is unlocked if Stage N-1 is completed
                     return this.isStageCompleted(stageIdx - 1);
                 },
                 isStageCompleted(stageIdx) {
@@ -1288,12 +1227,10 @@ spec:
                     const stage = this.stages[stageIdx];
                     if (!stage || !stage.questions) return false;
 
-                    // All 3 questions must be answered
                     for (let q = 0; q < stage.questions.length; q++) {
                         if (answers[q] === undefined) return false;
                     }
 
-                    // Must get at least 2 out of 3 correct to pass gate
                     let correct = 0;
                     for (let q = 0; q < stage.questions.length; q++) {
                         if (answers[q] === stage.questions[q].correctAnswer) correct++;
@@ -1321,7 +1258,7 @@ spec:
                     const isNowCompleted = this.isStageCompleted(stageIdx);
 
                     if (!wasCompleted && isNowCompleted) {
-                        this.showToast(`Selamat! Anda lulus Gerbang Tahap ${stageIdx + 1}. Tahap selanjutnya telah terbuka!`);
+                        this.showToast(`Hore! Kamu lulus kuis Tahap ${stageIdx + 1}! Tahap selanjutnya resmi terbuka! 🎉`);
                     }
                 },
 
@@ -1329,7 +1266,7 @@ spec:
                     if (this.isStageUnlocked(idx)) {
                         this.activeStepIndex = idx;
                     } else {
-                        this.showToast(`Tahap ${idx + 1} masih terkunci! Selesaikan kuis di Tahap ${idx} terlebih dahulu.`);
+                        this.showToast(`Tahap ${idx + 1} masih terkunci! Jawab kuis di Tahap ${idx} dulu ya.`);
                     }
                 },
                 nextStep() {
@@ -1337,7 +1274,7 @@ spec:
                         if (this.isStageUnlocked(this.activeStepIndex + 1)) {
                             this.activeStepIndex++;
                         } else {
-                            this.showToast(`Selesaikan Kuis Gerbang Tahap ${this.activeStepIndex + 1} terlebih dahulu untuk membuka tahap berikutnya.`);
+                            this.showToast(`Jawab dulu 3 soal kuis di Tahap ${this.activeStepIndex + 1} sampai lulus ya!`);
                         }
                     }
                 },
@@ -1349,8 +1286,8 @@ spec:
 
                 switchTab(tab) {
                     if (tab === 'simulator' && !this.isAllStagesCompleted) {
-                        this.showToast(`Ujian Akhir masih terkunci! Selesaikan kuis di 7 Tahapan SDLC terlebih dahulu.`);
-                        this.currentTab = 'simulator'; // Show the locked view
+                        this.showToast(`Ujian Akhir masih terkunci! Selesaikan kuis di 7 Tahap SDLC dulu ya.`);
+                        this.currentTab = 'simulator';
                     } else {
                         this.currentTab = tab;
                     }
@@ -1364,7 +1301,7 @@ spec:
                     document.execCommand('copy');
                     document.body.removeChild(el);
 
-                    this.showToast('Sampel kode/artefak berhasil disalin!');
+                    this.showToast('Teks contoh berhasil disalin!');
                 },
                 showToast(msg) {
                     this.toastMessage = msg;
