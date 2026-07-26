@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petualangan Tim RPL - Mengenal Peran Pengembangan Perangkat Lunak</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        pm: { light: '#f59e0b', dark: '#b45309' },
+                        sa: { light: '#06b6d4', dark: '#0e7490' },
+                        uiux: { light: '#ec4899', dark: '#be185d' },
+                        dev: { light: '#10b981', dark: '#047857' },
+                        qa: { light: '#8b5cf6', dark: '#6d28d9' },
+                        dba: { light: '#3b82f6', dark: '#1d4ed8' }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-card-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+        .badge-glow {
+            box-shadow: 0 0 15px currentColor;
+        }
+        @keyframes pulse-subtle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        .animate-pulse-subtle {
+            animation: pulse-subtle 3s infinite ease-in-out;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased min-h-full flex flex-col bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white">
+
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+                        <i class="fa-solid fa-code-merge text-xl"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-extrabold text-lg tracking-tight bg-gradient-to-r from-indigo-400 via-purple-300 to-pink-400 bg-clip-text text-transparent">
+                                RPL Tech Squad
+                            </span>
+                            <span class="bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Kelas X</span>
+                        </div>
+                        <p class="text-xs text-slate-400 hidden sm:block">Media Pembelajaran Interaktif Bersama Pak Joyo</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center space-x-1 bg-slate-800/60 p-1 rounded-xl border border-slate-700/50">
+                    <button onclick="switchTab('cards')" id="tab-cards" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 text-indigo-400 bg-slate-700/80 shadow-sm">
+                        <i class="fa-solid fa-id-card"></i> Galeri Peran
+                    </button>
+                    <button onclick="switchTab('quest')" id="tab-quest" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200">
+                        <i class="fa-solid fa-gamepad"></i> Game Simulasi Proyek
+                    </button>
+                    <button onclick="switchTab('quiz')" id="tab-quiz" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200">
+                        <i class="fa-solid fa-circle-question"></i> Kuis Tebak Peran
+                    </button>
+                    <button onclick="switchTab('present')" id="tab-present" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200">
+                        <i class="fa-solid fa-chalkboard-user"></i> Mode Pak Joyo
+                    </button>
+                </nav>
+
+                <!-- Sound FX Toggle & Mobile Menu Trigger -->
+                <div class="flex items-center gap-2">
+                    <button onclick="toggleAudio()" id="audio-btn" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white transition" title="Efek Suara">
+                        <i class="fa-solid fa-volume-high" id="audio-icon"></i>
+                    </button>
+                    <button onclick="toggleMobileNav()" class="md:hidden p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-slate-300">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-nav" class="hidden md:hidden border-t border-slate-800 bg-slate-900 px-4 pt-2 pb-4 space-y-2">
+            <button onclick="switchTab('cards'); toggleMobileNav()" class="w-full text-left px-3 py-2 rounded-lg font-medium text-slate-200 hover:bg-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-id-card text-amber-400"></i> Galeri Peran RPG
+            </button>
+            <button onclick="switchTab('quest'); toggleMobileNav()" class="w-full text-left px-3 py-2 rounded-lg font-medium text-slate-200 hover:bg-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-emerald-400"></i> Game Simulasi Proyek
+            </button>
+            <button onclick="switchTab('quiz'); toggleMobileNav()" class="w-full text-left px-3 py-2 rounded-lg font-medium text-slate-200 hover:bg-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-circle-question text-purple-400"></i> Kuis Tantangan
+            </button>
+            <button onclick="switchTab('present'); toggleMobileNav()" class="w-full text-left px-3 py-2 rounded-lg font-medium text-slate-200 hover:bg-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-chalkboard-user text-cyan-400"></i> Mode Presentasi Guru
+            </button>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 flex flex-col">
+
+        <!-- ================= SECTION 1: GALERI PERAN (CARDS) ================= -->
+        <section id="view-cards" class="space-y-6">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-900/60 via-purple-900/40 to-slate-900 border border-indigo-500/20 p-6 sm:p-8 shadow-2xl">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 mb-3">
+                        <i class="fa-solid fa-sparkles"></i> Karakter Tim Software House
+                    </span>
+                    <h1 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
+                        Pilih & Kenali Pahlawan di Balik Pembuatan Aplikasi!
+                    </h1>
+                    <p class="mt-2 text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Halo anak-anak X RPL! Bikin aplikasi keren itu seperti main game RPG tim: butuh strategi, desain, koding, dan pengujian. Klik setiap kartu di bawah untuk mempelajari tugas, super-skill, dan peralatan mereka!
+                    </p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-laptop-code text-[260px]"></i>
+                </div>
+            </div>
+
+            <!-- Role Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- CARD 1: PROJECT MANAGER -->
+                <div onclick="openRoleModal('pm')" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer border-l-4 border-l-amber-500 relative group overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-extrabold tracking-wider text-amber-400 uppercase bg-amber-500/10 px-2.5 py-1 rounded-lg border border-amber-500/20">ROLE #1</span>
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-user-gear"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-amber-400 transition">Project Manager (PM)</h3>
+                    <p class="text-xs text-amber-200/70 font-medium mb-3">"Sang Kapten Kapal Proyek"</p>
+                    <p class="text-sm text-slate-300 line-clamp-2 mb-4">
+                        Menetapkan tujuan, jadwal deadline, anggaran, serta menghubungkan tim dengan klien.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Trello</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Jira</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Gantt Chart</span>
+                    </div>
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-amber-400 font-semibold">
+                        <span>Pelajari Detail RPG</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- CARD 2: SYSTEM ANALYST -->
+                <div onclick="openRoleModal('sa')" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer border-l-4 border-l-cyan-500 relative group overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-extrabold tracking-wider text-cyan-400 uppercase bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/20">ROLE #2</span>
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-sitemap"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-cyan-400 transition">System Analyst (SA)</h3>
+                    <p class="text-xs text-cyan-200/70 font-medium mb-3">"Sang Arsitek Sistem"</p>
+                    <p class="text-sm text-slate-300 line-clamp-2 mb-4">
+                        Menerjemahkan keinginan klien menjadi diagram alur proses bisnis dan rancangan teknis aplikasi.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Flowchart</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">UML Diagram</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Draw.io</span>
+                    </div>
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-cyan-400 font-semibold">
+                        <span>Pelajari Detail RPG</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- CARD 3: UI/UX DESIGNER -->
+                <div onclick="openRoleModal('uiux')" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer border-l-4 border-l-pink-500 relative group overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-extrabold tracking-wider text-pink-400 uppercase bg-pink-500/10 px-2.5 py-1 rounded-lg border border-pink-500/20">ROLE #3</span>
+                        <div class="w-12 h-12 rounded-xl bg-pink-500/20 text-pink-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-palette"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-pink-400 transition">UI/UX Designer</h3>
+                    <p class="text-xs text-pink-200/70 font-medium mb-3">"Sang Seniman & Perancang Kenyamanan"</p>
+                    <p class="text-sm text-slate-300 line-clamp-2 mb-4">
+                        Membuat tampilan visual aplikasi cantik, estetik, dan memastikan alur penggunaan terasa mudah.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Figma</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Wireframe</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Prototype</span>
+                    </div>
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-pink-400 font-semibold">
+                        <span>Pelajari Detail RPG</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- CARD 4: PROGRAMMER -->
+                <div onclick="openRoleModal('dev')" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer border-l-4 border-l-emerald-500 relative group overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-extrabold tracking-wider text-emerald-400 uppercase bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">ROLE #4</span>
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-emerald-400 transition">Programmer / Software Engineer</h3>
+                    <p class="text-xs text-emerald-200/70 font-medium mb-3">"Sang Pembangun & Pencipta Kode"</p>
+                    <p class="text-sm text-slate-300 line-clamp-2 mb-4">
+                        Menulis baris kode program untuk mewujudkan alur sistem dan desain menjadi aplikasi yang nyata.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">VS Code</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">JavaScript/PHP</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Git</span>
+                    </div>
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-emerald-400 font-semibold">
+                        <span>Pelajari Detail RPG</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- CARD 5: QUALITY ASSURANCE -->
+                <div onclick="openRoleModal('qa')" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer border-l-4 border-l-purple-500 relative group overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-extrabold tracking-wider text-purple-400 uppercase bg-purple-500/10 px-2.5 py-1 rounded-lg border border-purple-500/20">ROLE #5</span>
+                        <div class="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bug-slash"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-purple-400 transition">Quality Assurance (QA / Tester)</h3>
+                    <p class="text-xs text-purple-200/70 font-medium mb-3">"Sang Detektif pemburu Error/Bug"</p>
+                    <p class="text-sm text-slate-300 line-clamp-2 mb-4">
+                        Menguji setiap tombol dan fitur secara ketat agar aplikasi bebas dari crash atau kesalahan sebelum dipakai user.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Test Scenario</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Bug Report</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Selenium</span>
+                    </div>
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-purple-400 font-semibold">
+                        <span>Pelajari Detail RPG</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+                <!-- CARD 6: DATABASE ADMINISTRATOR -->
+                <div onclick="openRoleModal('dba')" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer border-l-4 border-l-blue-500 relative group overflow-hidden">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-extrabold tracking-wider text-blue-400 uppercase bg-blue-500/10 px-2.5 py-1 rounded-lg border border-blue-500/20">ROLE #6</span>
+                        <div class="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-database"></i>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold text-white group-hover:text-blue-400 transition">Database Administrator (DBA)</h3>
+                    <p class="text-xs text-blue-200/70 font-medium mb-3">"Sang Penjaga Brankas Informasi"</p>
+                    <p class="text-sm text-slate-300 line-clamp-2 mb-4">
+                        Merancang struktur tabel, menjaga keamanan data sensitif, dan mengoptimalkan kecepatan pencarian data.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">MySQL</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">PostgreSQL</span>
+                        <span class="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">Backup & Security</span>
+                    </div>
+                    <div class="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-blue-400 font-semibold">
+                        <span>Pelajari Detail RPG</span>
+                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: SIMULASI PROYEK (QUEST MINI-GAMES) ================= -->
+        <section id="view-quest" class="hidden space-y-6">
+            <!-- Game Header -->
+            <div class="glass-card rounded-2xl p-6 border-indigo-500/30 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                        <i class="fa-solid fa-rocket mr-1"></i> Misi: Bikin "Aplikasi Kantin Digital SMK"
+                    </span>
+                    <h2 class="text-2xl font-extrabold text-white mt-2">Simulator Tahapan Pembuatan Aplikasi</h2>
+                    <p class="text-slate-300 text-sm">Selesaikan 6 mini-game beruntun untuk memahami peran masing-masing anggota tim secara langsung!</p>
+                </div>
+                
+                <!-- Progress Stepper -->
+                <div class="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0">
+                    <div id="step-dot-1" class="w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-xs shadow-lg shadow-amber-500/30">1</div>
+                    <div class="w-4 h-0.5 bg-slate-700"></div>
+                    <div id="step-dot-2" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">2</div>
+                    <div class="w-4 h-0.5 bg-slate-700"></div>
+                    <div id="step-dot-3" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">3</div>
+                    <div class="w-4 h-0.5 bg-slate-700"></div>
+                    <div id="step-dot-4" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">4</div>
+                    <div class="w-4 h-0.5 bg-slate-700"></div>
+                    <div id="step-dot-5" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">5</div>
+                    <div class="w-4 h-0.5 bg-slate-700"></div>
+                    <div id="step-dot-6" class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs">6</div>
+                </div>
+            </div>
+
+            <!-- Mini Game Play Arena Container -->
+            <div id="game-container" class="glass-card rounded-2xl p-6 sm:p-8 min-h-[420px] flex flex-col justify-between border-slate-700">
+                <!-- Game Stage Content Dynamic Render Here -->
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: KUIS TEBAK PERAN ================= -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 max-w-3xl mx-auto border-purple-500/30 shadow-2xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-trophy text-amber-400"></i> Tantangan Kuis Peran RPL
+                        </h2>
+                        <p class="text-xs text-slate-400">Uji seberapa paham kamu tentang peran tim perangkat lunak!</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-xs text-slate-400">Skor Anda</span>
+                        <div id="quiz-score" class="text-2xl font-black text-amber-400">0</div>
+                    </div>
+                </div>
+
+                <div id="quiz-box" class="space-y-6">
+                    <!-- Dynamic Question Loaded Here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: MODE PRESENTASI PAK JOYO ================= -->
+        <section id="view-present" class="hidden space-y-6">
+            <div class="glass-card rounded-3xl p-6 sm:p-10 border-indigo-500/40 relative">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-800">
+                    <div>
+                        <span class="px-3 py-1 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                            👨‍🏫 Presentation Mode - Kelas X RPL
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white mt-2">Materi Ajar: "Siapa Melakukan Apa?"</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="prevSlide()" class="p-3 bg-slate-800 hover:bg-slate-700 text-white rounded-xl border border-slate-700 transition">
+                            <i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <span id="slide-num" class="text-sm font-bold text-indigo-400 px-3">Slide 1 / 7</span>
+                        <button onclick="nextSlide()" class="p-3 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl shadow-lg shadow-indigo-600/30 transition">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Slide Active Stage -->
+                <div id="slide-content" class="min-h-[380px] flex flex-col justify-center">
+                    <!-- Dynamic Slide Content -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ROLE DETAIL RPG MODAL -->
+    <div id="role-modal" class="fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card rounded-3xl max-w-2xl w-full p-6 sm:p-8 border-indigo-500/30 max-h-[90vh] overflow-y-auto relative animate-pulse-subtle">
+            <button onclick="closeRoleModal()" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 flex items-center justify-center transition">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-body">
+                <!-- Modal Dynamic Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-slate-900/60 py-4 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+            Dibuat Khusus untuk Pembelajaran SMK RPL (Rekayasa Perangkat Lunak) Kelas X &bull; <span class="text-slate-400 font-semibold">Pak Joyo Edition</span>
+        </div>
+    </footer>
+
+    <script>
+        // ================= AUDIO SYNTHESIZER (WEB AUDIO API) =================
+        let audioEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!audioEnabled) return;
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                } else if (type === 'success') {
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, audioCtx.currentTime + 0.2); // G5
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.35);
+                } else if (type === 'error') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(120, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.25);
+                }
+            } catch (e) { console.log(e); }
+        }
+
+        function toggleAudio() {
+            audioEnabled = !audioEnabled;
+            const btn = document.getElementById('audio-icon');
+            if (audioEnabled) {
+                btn.className = 'fa-solid fa-volume-high text-emerald-400';
+            } else {
+                btn.className = 'fa-solid fa-volume-xmark text-slate-500';
+            }
+        }
+
+        function toggleMobileNav() {
+            const nav = document.getElementById('mobile-nav');
+            nav.classList.toggle('hidden');
+        }
+
+        // ================= TAB SWITCHING =================
+        function switchTab(tabId) {
+            playSound('click');
+            const views = ['cards', 'quest', 'quiz', 'present'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                const btn = document.getElementById(`tab-${v}`);
+                if (v === tabId) {
+                    el.classList.remove('hidden');
+                    if (btn) {
+                        btn.className = 'px-4 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 text-indigo-400 bg-slate-700/80 shadow-sm';
+                    }
+                } else {
+                    el.classList.add('hidden');
+                    if (btn) {
+                        btn.className = 'px-4 py-2 text-sm font-semibold rounded-lg transition-all flex items-center gap-2 text-slate-400 hover:text-slate-200';
+                    }
+                }
+            });
+
+            if (tabId === 'quest') renderGameStage(currentStage);
+            if (tabId === 'quiz') renderQuizQuestion();
+            if (tabId === 'present') renderSlide();
+        }
+
+        // ================= ROLE DATA (RPG CARDS) =================
+        const rolesData = {
+            pm: {
+                title: "Project Manager (PM)",
+                subtitle: "Sang Kapten Kapal Proyek",
+                color: "amber",
+                icon: "fa-user-gear",
+                analogy: "Ibarat Ketua Panitia Acara Pentas Seni Sekolah. Dia memastikan acara selesai tepat waktu, dana cukup, dan semua seksi bekerja kompak.",
+                tasks: [
+                    "Menentukan Tujuan, Ruang Lingkup, Anggaran, & Deadline proyek.",
+                    "Menjadi jembatan komunikasi antara tim dev dan pemangku kepentingan (klien).",
+                    "Manajemen Risiko: Mengantisipasi masalah sebelum terjadi.",
+                    "Memotivasi tim agar pengerjaan tetap sesuai timeline."
+                ],
+                tools: ["Trello", "Jira", "Asana", "Gantt Chart", "Slack"],
+                stats: { Kepemimpinan: 95, Komunikasi: 90, ManajemenWaktu: 95, Koding: 40 }
+            },
+            sa: {
+                title: "System Analyst (SA)",
+                subtitle: "Sang Arsitek Sistem",
+                color: "cyan",
+                icon: "fa-sitemap",
+                analogy: "Ibarat Arsitek Bangunan. Sebelum tukang membangun rumah, Arsitek mewawancarai pemilik rumah lalu menggambar denah ruangan dan instalasi listriknya.",
+                tasks: [
+                    "Wawancara pengguna untuk menggali kebutuhan sistem bisnis.",
+                    "Menerjemahkan bahasa bisnis menjadi Persyaratan Teknis (User Stories).",
+                    "Merancang alur data & proses (Flowchart, Diagram UML, Arsitektur).",
+                    "Membuat Dokumen Spesifikasi Teknis sebagai panduan Programmer."
+                ],
+                tools: ["Draw.io", "Lucidchart", "Enterprise Architect", "Word/Notion"],
+                stats: { AnalisisLogika: 95, Dokumen: 90, Komunikasi: 85, Koding: 60 }
+            },
+            uiux: {
+                title: "UI/UX Designer",
+                subtitle: "Sang Seniman & Perancang Kenyamanan",
+                color: "pink",
+                icon: "fa-palette",
+                analogy: "Ibarat Desainer Interior & Tata Letak Toko. Memastikan warna menarik, letak barang mudah dicapai, dan pembeli betah berlama-lama.",
+                tasks: [
+                    "Riset Pengguna: Memahami kebiasaan dan kenyamanan pengguna.",
+                    "Wireframing: Membuat sketsa cetak biru letak tombol & menu.",
+                    "Prototyping: Membuat purwarupa aplikasi yang bisa diklik.",
+                    "Desain Visual: Memilih kombinasi warna, ikon, dan jenis huruf."
+                ],
+                tools: ["Figma", "Adobe XD", "Miro", "Canva", "Whimsical"],
+                stats: { Kreativitas: 95, EmpatiPengguna: 90, Estetika: 90, Koding: 45 }
+            },
+            dev: {
+                title: "Programmer (Software Engineer)",
+                subtitle: "Sang Pembangun & Pencipta Kode",
+                color: "emerald",
+                icon: "fa-laptop-code",
+                analogy: "Ibarat Tukang Kayu & Mekanik Ahli. Membangun fondasi, memasang mesin, dan menyambungkan kabel-kabel agar semua tombol berfungsi nyata.",
+                tasks: [
+                    "Menulis kode program (Coding) berdasarkan panduan SA & desain UI/UX.",
+                    "Membangun logika fitur (misal: hitung total belanja, sistem login).",
+                    "Melakukan debugging untuk memperbaiki kesalahan baris kode.",
+                    "Memelihara dan memperbarui sistem aplikasi secara berkala."
+                ],
+                tools: ["VS Code", "GitHub", "JavaScript", "Python/PHP", "Laravel"],
+                stats: { LogikaPemrograman: 98, ProblemSolving: 95, Ketelitian: 90, Desain: 50 }
+            },
+            qa: {
+                title: "Quality Assurance (QA / Tester)",
+                subtitle: "Sang Detektif Pemburu Bug",
+                color: "purple",
+                icon: "fa-bug-slash",
+                analogy: "Ibarat Petugas Uji Emisi & QC Pabrik Mobil. Menguji rem, kemudi, dan ketahanan mobil sampai dipastikan 100% aman disopiri pelanggan.",
+                tasks: [
+                    "Merancang Skenario Pengujian (Test Case).",
+                    "Menguji aplikasi secara sistematis untuk menemukan bug/error.",
+                    "Melaporkan kesalahan secara rinci kepada Programmer untuk diperbaiki.",
+                    "Uji Regresi: Memastikan perbaikan bug baru tidak merusak fitur lama."
+                ],
+                tools: ["Selenium", "Postman", "JMeter", "Spreadsheet Testcase"],
+                stats: { Ketelitian: 98, Kritis: 95, SkenarioUji: 90, Koding: 65 }
+            },
+            dba: {
+                title: "Database Administrator (DBA)",
+                subtitle: "Sang Penjaga Brankas Informasi",
+                color: "blue",
+                icon: "fa-database",
+                analogy: "Ibarat Kepala Perpustakaan & Penjaga Brankas Bank. Mengatur jutaan buku agar mudah dicari dalam hitungan detik dan terlindung dari pencuri.",
+                tasks: [
+                    "Merancang Struktur Database (Tabel, Skema, & Hubungan Relasi Data).",
+                    "Instalasi & Pengaturan server database (MySQL, PostgreSQL, Oracle).",
+                    "Keamanan Data: Mengatur hak akses user & backup data berkala.",
+                    "Optimasi Performa: Memastikan pencarian jutaan data berjalan sangat cepat."
+                ],
+                tools: ["MySQL", "PostgreSQL", "phpMyAdmin", "Navicat", "Redis"],
+                stats: { ManajemenData: 98, Keamanan: 95, Optimasi: 90, Koding: 70 }
+            }
+        };
+
+        function openRoleModal(roleKey) {
+            playSound('click');
+            const role = rolesData[roleKey];
+            const modal = document.getElementById('role-modal');
+            const body = document.getElementById('modal-body');
+
+            body.innerHTML = `
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-16 h-16 rounded-2xl bg-${role.color}-500/20 text-${role.color}-400 border border-${role.color}-500/40 flex items-center justify-center text-3xl">
+                        <i class="fa-solid ${role.icon}"></i>
+                    </div>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-${role.color}-400">Detail Peran RPG</span>
+                        <h2 class="text-2xl font-black text-white">${role.title}</h2>
+                        <p class="text-sm text-slate-400 font-medium">${role.subtitle}</p>
+                    </div>
+                </div>
+
+                <!-- Analog Sederhana -->
+                <div class="p-4 rounded-xl bg-slate-800/80 border border-slate-700/60 mb-6">
+                    <div class="text-xs font-bold text-indigo-400 uppercase tracking-wide mb-1 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb"></i> Analogi Sederhana untuk Anak SMK:
+                    </div>
+                    <p class="text-sm text-slate-200 leading-relaxed italic">"${role.analogy}"</p>
+                </div>
+
+                <!-- Tugas Utama -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-2">Tugas Utama Sehari-hari:</h4>
+                    <ul class="space-y-2">
+                        ${role.tasks.map(t => `
+                            <li class="flex items-start gap-2 text-xs sm:text-sm text-slate-300">
+                                <i class="fa-solid fa-circle-check text-${role.color}-400 mt-1"></i>
+                                <span>${t}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <!-- Stats RPG -->
+                <div class="mb-6">
+                    <h4 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-3">Atribut Skill RPG:</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        ${Object.entries(role.stats).map(([stat, val]) => `
+                            <div>
+                                <div class="flex justify-between text-xs mb-1">
+                                    <span class="text-slate-400">${stat}</span>
+                                    <span class="font-bold text-${role.color}-400">${val}%</span>
+                                </div>
+                                <div class="w-full h-2 rounded-full bg-slate-800 overflow-hidden">
+                                    <div class="h-full bg-${role.color}-500 rounded-full" style="width: ${val}%"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+
+                <!-- Daily Tools -->
+                <div>
+                    <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-2">Aplikasi / Tool yang Dipakai:</h4>
+                    <div class="flex flex-wrap gap-2">
+                        ${role.tools.map(tool => `
+                            <span class="px-3 py-1 rounded-lg bg-slate-800 text-xs font-semibold text-slate-300 border border-slate-700">
+                                <i class="fa-solid fa-wrench text-slate-500 mr-1"></i>${tool}
+                            </span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeRoleModal() {
+            playSound('click');
+            document.getElementById('role-modal').classList.add('hidden');
+        }
+
+        // ================= GAME SIMULATION LOGIC =================
+        let currentStage = 1;
+
+        function updateStepDots() {
+            for (let i = 1; i <= 6; i++) {
+                const dot = document.getElementById(`step-dot-${i}`);
+                if (i < currentStage) {
+                    dot.className = "w-8 h-8 rounded-full bg-emerald-500 text-slate-950 font-bold flex items-center justify-center text-xs shadow-lg shadow-emerald-500/30";
+                    dot.innerHTML = `<i class="fa-solid fa-check"></i>`;
+                } else if (i === currentStage) {
+                    dot.className = "w-8 h-8 rounded-full bg-amber-500 text-slate-950 font-bold flex items-center justify-center text-xs shadow-lg shadow-amber-500/30 ring-4 ring-amber-500/20";
+                    dot.innerText = i;
+                } else {
+                    dot.className = "w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-bold flex items-center justify-center text-xs";
+                    dot.innerText = i;
+                }
+            }
+        }
+
+        function renderGameStage(stage) {
+            updateStepDots();
+            const container = document.getElementById('game-container');
+
+            if (stage === 1) {
+                // STAGE 1: PROJECT MANAGER
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                            <span class="p-2 rounded-xl bg-amber-500/20 text-amber-400 font-bold text-sm">TAHAP 1/6</span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-user-gear text-amber-400"></i> Peran PM: Tentukan Segitiga Manajemen Proyek!
+                            </h3>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            Kepala Sekolah meminta Kantin Digital selesai dalam <b>2 Minggu</b> dengan anggaran terbatas. Sebagai <b>Project Manager</b>, keputusan prioritas apa yang kamu ambil?
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+                            <button onclick="answerStage(1, false)" class="p-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-rose-500/50 text-left transition group">
+                                <span class="text-xs font-bold text-rose-400 block mb-1">Opsi A</span>
+                                <h4 class="font-bold text-white text-sm mb-1 group-hover:text-rose-400">Terima Semua Fitur Tanpa Batas</h4>
+                                <p class="text-xs text-slate-400">Menjanjikan 50 fitur rumit selesai 2 minggu tanpa memangkas scope.</p>
+                            </button>
+                            <button onclick="answerStage(1, true)" class="p-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-emerald-500/50 text-left transition group">
+                                <span class="text-xs font-bold text-emerald-400 block mb-1">Opsi B (Tepat)</span>
+                                <h4 class="font-bold text-white text-sm mb-1 group-hover:text-emerald-400">Prioritaskan MVP (Fitur Utama)</h4>
+                                <p class="text-xs text-slate-400">Fokus fitur pesan & bayar dulu. Fitur ulasan restoran dikerjakan tahap selanjutnya.</p>
+                            </button>
+                            <button onclick="answerStage(1, false)" class="p-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-rose-500/50 text-left transition group">
+                                <span class="text-xs font-bold text-rose-400 block mb-1">Opsi C</span>
+                                <h4 class="font-bold text-white text-sm mb-1 group-hover:text-rose-400">Minta Deadline Ditunda 6 Bulan</h4>
+                                <p class="text-xs text-slate-400">Menolak waktu yang ada dan menunda peluncuran aplikasi terlalu lama.</p>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="game-feedback" class="mt-4"></div>
+                `;
+            } else if (stage === 2) {
+                // STAGE 2: SYSTEM ANALYST
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                            <span class="p-2 rounded-xl bg-cyan-500/20 text-cyan-400 font-bold text-sm">TAHAP 2/6</span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-sitemap text-cyan-400"></i> Peran System Analyst: Terjemahkan Kebutuhan Pengguna!
+                            </h3>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            Ibu Kantin berkata: <i>"Saya ingin tahu makanan mana yang paling laris setiap jam istirahat agar tidak kekurangan stok!"</i>. Sebagai <b>System Analyst</b>, bagaimana kamu menerjemahkan ini ke Dokumen Spesifikasi Teknis?
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <button onclick="answerStage(2, true)" class="p-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-cyan-500/50 text-left transition group">
+                                <span class="text-xs font-bold text-cyan-400 block mb-1">Spesifikasi Kebutuhan Teknis (Tepat)</span>
+                                <h4 class="font-bold text-white text-sm mb-1">Sistem Laporan Dashboard & Rekapitulasi Real-time</h4>
+                                <p class="text-xs text-slate-400">Sistem harus mencatat query penjualan per jam dan menampilkan grafik statistik menu terlaris untuk Admin Kantin.</p>
+                            </button>
+                            <button onclick="answerStage(2, false)" class="p-4 rounded-xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 hover:border-rose-500/50 text-left transition group">
+                                <span class="text-xs font-bold text-rose-400 block mb-1">Bukan Tugas SA</span>
+                                <h4 class="font-bold text-white text-sm mb-1">Langsung Buat Tombol Beli Warna Merah</h4>
+                                <p class="text-xs text-slate-400">Langsung membuat tampilan gambar makanan tanpa merancang alur data dan kebutuhan laporan.</p>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="game-feedback" class="mt-4"></div>
+                `;
+            } else if (stage === 3) {
+                // STAGE 3: UI/UX DESIGNER
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                            <span class="p-2 rounded-xl bg-pink-500/20 text-pink-400 font-bold text-sm">TAHAP 3/6</span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-palette text-pink-400"></i> Peran UI/UX: Pilih Tata Letak Terbaik untuk Murid!
+                            </h3>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            Pilih desain antarmuka (UI) pemesanan makanan mana yang lebih ramah pengguna (UX) untuk siswa SMK yang sedang terburu-buru di jam istirahat!
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                            <div onclick="answerStage(3, false)" class="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-rose-500 cursor-pointer transition">
+                                <span class="text-xs font-bold text-rose-400">Desain A (Buruk)</span>
+                                <div class="mt-2 p-3 bg-slate-900 rounded-lg text-xs space-y-2">
+                                    <p class="text-slate-500 text-[10px]">Teks tulisan sangat kecil tanpa gambar makanan</p>
+                                    <div class="bg-red-900/50 text-red-200 p-1 text-[10px] rounded">Tombol "Beli" tersembunyi di paling bawah halaman</div>
+                                    <div class="text-slate-400">Harus mengisi 10 formulir sebelum memesan makanan</div>
+                                </div>
+                            </div>
+                            <div onclick="answerStage(3, true)" class="p-4 rounded-xl bg-slate-800/80 border border-slate-700 hover:border-emerald-500 cursor-pointer transition">
+                                <span class="text-xs font-bold text-emerald-400">Desain B (Tepat)</span>
+                                <div class="mt-2 p-3 bg-slate-900 rounded-lg text-xs space-y-2">
+                                    <div class="flex items-center justify-between bg-slate-800 p-2 rounded">
+                                        <span class="font-bold text-white">🍵 Es Teh Manis</span>
+                                        <span class="bg-emerald-500 text-slate-950 font-bold px-2 py-0.5 rounded text-[10px]">+ Beli (1 Klik)</span>
+                                    </div>
+                                    <p class="text-emerald-300/80 text-[10px]">Foto jelas, tombol beli menonjol, checkout instan dalam 2 langkah!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="game-feedback" class="mt-4"></div>
+                `;
+            } else if (stage === 4) {
+                // STAGE 4: PROGRAMMER
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                            <span class="p-2 rounded-xl bg-emerald-500/20 text-emerald-400 font-bold text-sm">TAHAP 4/6</span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-laptop-code text-emerald-400"></i> Peran Programmer: Perbaiki Baris Kode Yang Hilang!
+                            </h3>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            Sebagai <b>Programmer</b>, kamu menyusun logika diskon kantin. Ada baris kode yang rumpang di bawah ini:
+                        </p>
+
+                        <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 font-mono text-xs sm:text-sm text-emerald-400">
+                            <p class="text-slate-500">// Hitung Total Belanja Kantin</p>
+                            <p>let total = hargaMakanan * jumlah;</p>
+                            <p class="text-amber-400 font-bold bg-amber-500/10 p-1 rounded my-1 border border-amber-500/20">
+                                if (total &gt;= 20000) { <span class="text-white underline">[ ISI BARIS KODE INI ]</span> }
+                            </p>
+                            <p>return total;</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2">
+                            <button onclick="answerStage(4, true)" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-left text-xs font-mono text-emerald-300">
+                                total = total - 3000; // Potong Diskon Rp 3.000
+                            </button>
+                            <button onclick="answerStage(4, false)" class="p-3 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-left text-xs font-mono text-rose-300">
+                                total = "Diskon Gratis"; // Mengubah angka jadi teks error
+                            </button>
+                        </div>
+                    </div>
+                    <div id="game-feedback" class="mt-4"></div>
+                `;
+            } else if (stage === 5) {
+                // STAGE 5: QUALITY ASSURANCE
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                            <span class="p-2 rounded-xl bg-purple-500/20 text-purple-400 font-bold text-sm">TAHAP 5/6</span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-bug-slash text-purple-400"></i> Peran QA Tester: Temukan Bug Aplikasi!
+                            </h3>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            Sebagai <b>Quality Assurance (QA)</b>, temukan kesalahan (bug) serius saat melakukan pengujian pada fitur pendaftaran akun siswa baru di bawah!
+                        </p>
+
+                        <div class="p-4 rounded-xl bg-slate-900 border border-slate-700 space-y-3 max-w-md mx-auto">
+                            <h5 class="text-xs font-bold text-slate-400 uppercase">Formulir Pendaftaran Kantin</h5>
+                            <div>
+                                <label class="text-[11px] text-slate-400">Nomor NISN Siswa:</label>
+                                <input type="text" value="Budi Keren BGT 123 !!" readonly class="w-full bg-slate-800 border border-rose-500/80 text-rose-300 px-3 py-1.5 rounded text-xs mt-1">
+                                <span class="text-[10px] text-rose-400"><i class="fa-solid fa-triangle-exclamation"></i> Error: Input NISN mau menerima huruf & simbol acak!</span>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center gap-4 pt-2">
+                            <button onclick="answerStage(5, true)" class="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs shadow-lg shadow-purple-600/30">
+                                <i class="fa-solid fa-bug mr-1"></i> Laporkan Bug ke Programmer untuk Dibatasi Hanya Angka!
+                            </button>
+                        </div>
+                    </div>
+                    <div id="game-feedback" class="mt-4"></div>
+                `;
+            } else if (stage === 6) {
+                // STAGE 6: DATABASE ADMINISTRATOR
+                container.innerHTML = `
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-3 border-b border-slate-800 pb-3">
+                            <span class="p-2 rounded-xl bg-blue-500/20 text-blue-400 font-bold text-sm">TAHAP 6/6</span>
+                            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-database text-blue-400"></i> Peran DBA: Sambungkan Relasi Tabel Database!
+                            </h3>
+                        </div>
+                        <p class="text-sm text-slate-300">
+                            Sebagai <b>Database Administrator (DBA)</b>, tabel transaksi pemesanan membutuhkan relasi (Primary Key & Foreign Key) ke tabel mana agar nama pembeli tercatat sah?
+                        </p>
+
+                        <div class="flex items-center justify-center gap-4 py-4">
+                            <div class="p-3 bg-slate-800 border border-blue-500/50 rounded-xl text-center text-xs">
+                                <i class="fa-solid fa-table text-blue-400 text-xl block mb-1"></i>
+                                <span class="font-bold text-white">tabel_pesanan</span>
+                                <p class="text-[10px] text-slate-400">id_pesanan, total</p>
+                            </div>
+                            <i class="fa-solid fa-link text-blue-400 animate-pulse text-lg"></i>
+                            <div class="p-3 bg-slate-800 border border-blue-500/50 rounded-xl text-center text-xs">
+                                <i class="fa-solid fa-users text-blue-400 text-xl block mb-1"></i>
+                                <span class="font-bold text-white">tabel_siswa</span>
+                                <p class="text-[10px] text-slate-400">nisn, nama_siswa</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center gap-4 pt-2">
+                            <button onclick="answerStage(6, true)" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs shadow-lg shadow-blue-600/30">
+                                Sambungkan Relasi dengan Foreign Key (nisn_siswa)
+                            </button>
+                        </div>
+                    </div>
+                    <div id="game-feedback" class="mt-4"></div>
+                `;
+            }
+        }
+
+        function answerStage(stage, isCorrect) {
+            const feedback = document.getElementById('game-feedback');
+            if (isCorrect) {
+                playSound('success');
+                feedback.innerHTML = `
+                    <div class="p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs sm:text-sm flex items-center justify-between">
+                        <span class="flex items-center gap-2 font-semibold">
+                            <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i> Luar Biasa! Jawabanmu sangat tepat sesuai tugas peran ini.
+                        </span>
+                        <button onclick="nextGameStage()" class="px-4 py-2 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs shadow hover:bg-emerald-400 transition">
+                            Lanjut Tahap Berikutnya <i class="fa-solid fa-arrow-right ml-1"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                playSound('error');
+                feedback.innerHTML = `
+                    <div class="p-4 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs sm:text-sm flex items-center gap-2 font-semibold">
+                        <i class="fa-solid fa-circle-xmark text-rose-400 text-lg"></i> Kurang Tepat! Coba pelajari lagi tugas utama peran ini dan pilih kembali.
+                    </div>
+                `;
+            }
+        }
+
+        function nextGameStage() {
+            if (currentStage < 6) {
+                currentStage++;
+                renderGameStage(currentStage);
+            } else {
+                // GAME COMPLETE
+                playSound('success');
+                const container = document.getElementById('game-container');
+                container.innerHTML = `
+                    <div class="text-center py-8 space-y-4">
+                        <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-amber-400 to-emerald-400 text-slate-950 flex items-center justify-center text-4xl shadow-2xl shadow-emerald-500/30 animate-bounce">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                        <h2 class="text-3xl font-black text-white">SELAMAT! APLIKASI KANTIN LULUS RILIS!</h2>
+                        <p class="text-slate-300 text-sm max-w-lg mx-auto">
+                            Kamu dan tim berhasil menjalankan kolaborasi 6 peran penting RPL dengan sempurna: <b>PM, SA, UI/UX, Programmer, QA, dan DBA!</b>
+                        </p>
+                        <div class="pt-4">
+                            <button onclick="currentStage=1; renderGameStage(1)" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm shadow-xl shadow-indigo-600/30 transition">
+                                <i class="fa-solid fa-rotate-right mr-2"></i> Mainkan Simulasi Lagi
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // ================= QUIZ ENGINE =================
+        const quizData = [
+            {
+                q: "Aplikasi Kantin SMK sering error saat ditekan tombol bayar. Siapa anggota tim yang bertugas mendeteksi error ini sebelum aplikasi dipakai siswa?",
+                options: ["System Analyst", "Quality Assurance (QA)", "Database Administrator", "Project Manager"],
+                answer: 1,
+                explain: "Quality Assurance (QA/Tester) bertugas menguji dan menemukan bug/error sebelum aplikasi dirilis."
+            },
+            {
+                q: "Siapa yang bertugas menggambar denah alur data, rancangan sistem, dan spesifikasi teknis untuk panduan programmer?",
+                options: ["UI/UX Designer", "Programmer", "System Analyst (SA)", "Database Administrator"],
+                answer: 2,
+                explain: "System Analyst merancang diagram alur data (Flowchart/UML) dan spesifikasi teknis."
+            },
+            {
+                q: "Pak Joyo ingin tampilan warna aplikasi ramah mata dan letak tombol mudah dipahami. Peran siapa ini?",
+                options: ["UI/UX Designer", "Project Manager", "Database Administrator", "Quality Assurance"],
+                answer: 0,
+                explain: "UI/UX Designer bertanggung jawab atas estetika tampilan dan kenyamanan alur penggunaan."
+            },
+            {
+                q: "Siapa yang menuliskan baris kode program (coding) nyata menggunakan JavaScript, PHP, atau Python?",
+                options: ["System Analyst", "Programmer / Software Engineer", "Project Manager", "UI/UX Designer"],
+                answer: 1,
+                explain: "Programmer menerjemahkan rancangan sistem dan desain menjadi kode aplikasi nyata."
+            },
+            {
+                q: "Siapa pahlawan di balik layar yang mengatur keamanan tabel database, backup data, dan kecepatan pencarian data?",
+                options: ["Database Administrator (DBA)", "UI/UX Designer", "Project Manager", "Quality Assurance"],
+                answer: 0,
+                explain: "Database Administrator (DBA) mengelola skema database, keamanan, dan optimasi query."
+            }
+        ];
+
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        function renderQuizQuestion() {
+            const quizBox = document.getElementById('quiz-box');
+            if (currentQuizIndex >= quizData.length) {
+                // Quiz Finish
+                quizBox.innerHTML = `
+                    <div class="text-center py-6 space-y-4">
+                        <i class="fa-solid fa-award text-5xl text-amber-400"></i>
+                        <h3 class="text-2xl font-bold text-white">Kuis Selesai!</h3>
+                        <p class="text-slate-300 text-sm">Skor Akhir Anda: <span class="text-2xl font-black text-amber-400">${quizScore}</span> / ${quizData.length * 20}</p>
+                        <button onclick="resetQuiz()" class="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-bold text-xs">Ulangi Kuis</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = quizData[currentQuizIndex];
+            quizBox.innerHTML = `
+                <div>
+                    <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">Pertanyaan ${currentQuizIndex + 1} dari ${quizData.length}</span>
+                    <h3 class="text-base sm:text-lg font-bold text-white mt-1 leading-relaxed">${q.q}</h3>
+                </div>
+
+                <div class="space-y-2.5 pt-2">
+                    ${q.options.map((opt, idx) => `
+                        <button onclick="checkQuizAnswer(${idx})" class="w-full text-left p-3.5 rounded-xl bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700/80 text-sm text-slate-200 font-medium transition flex items-center justify-between group">
+                            <span>${opt}</span>
+                            <i class="fa-solid fa-chevron-right text-slate-500 group-hover:text-purple-400 transition"></i>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            const q = quizData[currentQuizIndex];
+            const quizBox = document.getElementById('quiz-box');
+            
+            if (selectedIdx === q.answer) {
+                playSound('success');
+                quizScore += 20;
+                document.getElementById('quiz-score').innerText = quizScore;
+                quizBox.innerHTML += `
+                    <div class="p-4 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-xs mt-4 flex items-center justify-between">
+                        <div>
+                            <p class="font-bold"><i class="fa-solid fa-circle-check"></i> BENAR!</p>
+                            <p class="mt-0.5">${q.explain}</p>
+                        </div>
+                        <button onclick="currentQuizIndex++; renderQuizQuestion()" class="px-4 py-2 bg-emerald-500 text-slate-950 font-bold text-xs rounded-lg">Lanjut</button>
+                    </div>
+                `;
+            } else {
+                playSound('error');
+                quizBox.innerHTML += `
+                    <div class="p-4 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs mt-4 flex items-center justify-between">
+                        <div>
+                            <p class="font-bold"><i class="fa-solid fa-circle-xmark"></i> KURANG TEPAT!</p>
+                            <p class="mt-0.5">${q.explain}</p>
+                        </div>
+                        <button onclick="currentQuizIndex++; renderQuizQuestion()" class="px-4 py-2 bg-slate-700 text-white font-bold text-xs rounded-lg">Lanjut</button>
+                    </div>
+                `;
+            }
+        }
+
+        function resetQuiz() {
+            currentQuizIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-score').innerText = 0;
+            renderQuizQuestion();
+        }
+
+        // ================= PAK JOYO PRESENTATION SLIDES =================
+        const slides = [
+            {
+                title: "Selamat Datang di Dunia Rekayasa Perangkat Lunak!",
+                content: `
+                    <div class="text-center space-y-4 max-w-2xl mx-auto">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-3xl border border-indigo-500/30">
+                            <i class="fa-solid fa-people-group"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Membuat Aplikasi Itu Kerja Tim, Bukan Solo Player!</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Banyak orang mengira anak RPL hanya duduk sendirian mengetik kodingan. Padahal, untuk menghasilkan aplikasi sekelas Tokopedia, Gojek, atau Mobile Legends, dibutuhkan kolaborasi <span class="text-indigo-400 font-bold">6 Peran Spesialis Utama</span>!
+                        </p>
+                    </div>
+                `
+            },
+            {
+                title: "1. Project Manager (PM) - Sang Kapten",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div class="space-y-3">
+                            <span class="px-2.5 py-1 rounded bg-amber-500/20 text-amber-400 text-xs font-bold">Peran 1: Management</span>
+                            <h4 class="text-xl font-bold text-white">Menjaga Waktu, Anggaran, & Tim</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">PM memastikan semua anggota tim tahu apa yang dikerjakan dan aplikasi rilis tepat waktu tanpa melebihi anggaran.</p>
+                            <ul class="text-xs space-y-1 text-amber-300">
+                                <li>✔ Menghubungi Klien</li>
+                                <li>✔ Menyusun Gantt Chart & Deadline</li>
+                                <li>✔ Mengatasi Hambatan Tim</li>
+                            </ul>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-center">
+                            <i class="fa-solid fa-user-gear text-6xl text-amber-400 mb-3"></i>
+                            <p class="text-xs font-bold text-amber-200">Analogi: Ketua Panitia Pentas Seni</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "2. System Analyst (SA) - Sang Arsitek",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div class="space-y-3">
+                            <span class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-400 text-xs font-bold">Peran 2: Analysis</span>
+                            <h4 class="text-xl font-bold text-white">Menerjemahkan Bahasa Bisnis ke Teknis</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">SA mewawancarai pemangku kepentingan dan membuat diagram alur proses bisnis (Flowchart & UML).</p>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-center">
+                            <i class="fa-solid fa-sitemap text-6xl text-cyan-400 mb-3"></i>
+                            <p class="text-xs font-bold text-cyan-200">Analogi: Arsitek Denah Rumah</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "3. UI/UX Designer - Sang Perancang Tampilan",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div class="space-y-3">
+                            <span class="px-2.5 py-1 rounded bg-pink-500/20 text-pink-400 text-xs font-bold">Peran 3: Design</span>
+                            <h4 class="text-xl font-bold text-white">Keindahan (UI) + Kenyamanan (UX)</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">UI membuat warna & ikon menarik. UX memastikan tombol muat dengan mudah tanpa pengguna bingung.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-pink-500/10 border border-pink-500/20 text-center">
+                            <i class="fa-solid fa-palette text-6xl text-pink-400 mb-3"></i>
+                            <p class="text-xs font-bold text-pink-200">Analogi: Desainer Interior Toko</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "4. Programmer - Sang Pembangun Kode",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                        <div class="space-y-3">
+                            <span class="px-2.5 py-1 rounded bg-emerald-500/20 text-emerald-400 text-xs font-bold">Peran 4: Development</span>
+                            <h4 class="text-xl font-bold text-white">Mewujudkan Desain & Alur Menjadi Nyata</h4>
+                            <p class="text-xs text-slate-300 leading-relaxed">Menulis baris program (coding) agar tombol dapat diklik dan fungsi aplikasi berjalan lancar.</p>
+                        </div>
+                        <div class="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 text-center">
+                            <i class="fa-solid fa-laptop-code text-6xl text-emerald-400 mb-3"></i>
+                            <p class="text-xs font-bold text-emerald-200">Analogi: Tukang & Mekanik Ahli</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "5 & 6. QA Tester & DBA - Penjaga Kualitas & Data",
+                content: `
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="p-4 rounded-2xl bg-purple-500/10 border border-purple-500/20">
+                            <i class="fa-solid fa-bug-slash text-3xl text-purple-400 mb-2"></i>
+                            <h5 class="font-bold text-white text-sm">Quality Assurance (QA)</h5>
+                            <p class="text-xs text-slate-300 mt-1">Mencari error/bug secara teliti sebelum rilis.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20">
+                            <i class="fa-solid fa-database text-3xl text-blue-400 mb-2"></i>
+                            <h5 class="font-bold text-white text-sm">Database Administrator (DBA)</h5>
+                            <p class="text-xs text-slate-300 mt-1">Menjaga struktur tabel & keamanan data rahasia.</p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                title: "Kesimpulan untuk Siswa X RPL",
+                content: `
+                    <div class="text-center space-y-4 max-w-2xl mx-auto">
+                        <h3 class="text-2xl font-extrabold text-indigo-400">Kamu Ingin Menjadi Peran Yang Mana?</h3>
+                        <p class="text-xs sm:text-sm text-slate-300">
+                            Setiap peran memiliki keahlian unik masing-masing. Suka memimpin? Pilih PM. Suka menggambar? Pilih UI/UX. Suka logika pemecahan masalah? Pilih Programmer atau DBA!
+                        </p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function renderSlide() {
+            document.getElementById('slide-num').innerText = `Slide ${currentSlide + 1} / ${slides.length}`;
+            const s = slides[currentSlide];
+            document.getElementById('slide-content').innerHTML = `
+                <div class="space-y-4">
+                    <h3 class="text-2xl font-extrabold text-indigo-300">${s.title}</h3>
+                    <div class="pt-2">${s.content}</div>
+                </div>
+            `;
+        }
+
+        function nextSlide() {
+            playSound('click');
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                renderSlide();
+            }
+        }
+
+        function prevSlide() {
+            playSound('click');
+            if (currentSlide > 0) {
+                currentSlide--;
+                renderSlide();
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderGameStage(1);
+        };
+    </script>
+</body>
+</html>
