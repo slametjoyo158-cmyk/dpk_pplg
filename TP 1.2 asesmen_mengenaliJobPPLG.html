@@ -1,0 +1,636 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asesmen Awal Minat & Karir RPL Tech Squad (TP 1.1)</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header / Navbar -->
+  <header class="border-b border-slate-800/80 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+      <div class="flex items-center space-x-3">
+        <div class="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
+          <i data-lucide="cpu" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-base md:text-lg leading-tight text-white flex items-center gap-2">
+            RPL Tech Squad <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">Kelas X</span>
+          </h1>
+          <p class="text-xs text-slate-400">Asesmen Minat & Peran Tim Proyek Software</p>
+        </div>
+      </div>
+      <span class="text-xs px-2.5 py-1 bg-slate-800 text-slate-300 border border-slate-700 rounded-full font-medium hidden sm:inline-block">DPK PPLG</span>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-3xl mx-auto px-4 py-8 w-full flex-grow">
+
+    <!-- Screen 1: Identitas & Pilihan Minat -->
+    <section id="screen-intro" class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl backdrop-blur-sm">
+      <div class="text-center mb-8">
+        <div class="inline-flex p-3.5 bg-indigo-500/10 text-indigo-400 rounded-2xl mb-3 border border-indigo-500/20">
+          <i data-lucide="users" class="w-8 h-8"></i>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Temukan Peran Impianmu di RPL Tech Squad!</h2>
+        <p class="text-slate-400 text-sm mt-2 max-w-lg mx-auto">
+          Isi identitasmu dan pilih 1 atau 2 peran (job) yang paling sesuai dengan minat kamu saat ini.
+        </p>
+      </div>
+
+      <form id="form-identity" onsubmit="startAssessment(event)" class="space-y-5">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Nama Lengkap Siswa</label>
+          <div class="relative">
+            <i data-lucide="user" class="w-5 h-5 absolute left-3 top-3 text-slate-400"></i>
+            <input type="text" id="student-name" required placeholder="Contoh: Ahmad Rizky" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-indigo-500 text-slate-100 text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Kelas / Rombel</label>
+          <div class="relative">
+            <i data-lucide="graduation-cap" class="w-5 h-5 absolute left-3 top-3 text-slate-400"></i>
+            <input type="text" id="student-class" required placeholder="Contoh: X PPLG 1" class="w-full pl-10 pr-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl focus:outline-none focus:border-indigo-500 text-slate-100 text-sm">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">Pilih 1 atau 2 Peran Utama yang Paling Kamu Minati</label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm" id="jobs-checkbox-group">
+            
+            <!-- PM -->
+            <label class="flex items-start p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-amber-500/50 cursor-pointer transition">
+              <input type="checkbox" value="Project Manager (PM)" class="job-checkbox rounded border-slate-700 text-amber-500 focus:ring-amber-500 mt-0.5 mr-3">
+              <div>
+                <span class="font-bold text-amber-400 block">👑 Project Manager (PM)</span>
+                <span class="text-xs text-slate-400">"Sang Kapten Kapal Proyek"</span>
+              </div>
+            </label>
+
+            <!-- SA -->
+            <label class="flex items-start p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-cyan-500/50 cursor-pointer transition">
+              <input type="checkbox" value="System Analyst (SA)" class="job-checkbox rounded border-slate-700 text-cyan-500 focus:ring-cyan-500 mt-0.5 mr-3">
+              <div>
+                <span class="font-bold text-cyan-400 block">📐 System Analyst (SA)</span>
+                <span class="text-xs text-slate-400">"Sang Arsitek Sistem"</span>
+              </div>
+            </label>
+
+            <!-- UI/UX -->
+            <label class="flex items-start p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-pink-500/50 cursor-pointer transition">
+              <input type="checkbox" value="UI/UX Designer" class="job-checkbox rounded border-slate-700 text-pink-500 focus:ring-pink-500 mt-0.5 mr-3">
+              <div>
+                <span class="font-bold text-pink-400 block">🎨 UI/UX Designer</span>
+                <span class="text-xs text-slate-400">"Sang Seniman & Perancang"</span>
+              </div>
+            </label>
+
+            <!-- Programmer -->
+            <label class="flex items-start p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-emerald-500/50 cursor-pointer transition">
+              <input type="checkbox" value="Programmer / Software Engineer" class="job-checkbox rounded border-slate-700 text-emerald-500 focus:ring-emerald-500 mt-0.5 mr-3">
+              <div>
+                <span class="font-bold text-emerald-400 block">💻 Programmer / Engineer</span>
+                <span class="text-xs text-slate-400">"Sang Pembangun & Kode"</span>
+              </div>
+            </label>
+
+            <!-- QA -->
+            <label class="flex items-start p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-purple-500/50 cursor-pointer transition">
+              <input type="checkbox" value="Quality Assurance (QA/Tester)" class="job-checkbox rounded border-slate-700 text-purple-500 focus:ring-purple-500 mt-0.5 mr-3">
+              <div>
+                <span class="font-bold text-purple-400 block">🧪 Quality Assurance (QA)</span>
+                <span class="text-xs text-slate-400">"Sang Detektif Pemburu Bug"</span>
+              </div>
+            </label>
+
+            <!-- DBA -->
+            <label class="flex items-start p-3 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-blue-500/50 cursor-pointer transition">
+              <input type="checkbox" value="Database Administrator (DBA)" class="job-checkbox rounded border-slate-700 text-blue-500 focus:ring-blue-500 mt-0.5 mr-3">
+              <div>
+                <span class="font-bold text-blue-400 block">🗄️ Database Administrator</span>
+                <span class="text-xs text-slate-400">"Sang Penjaga Brankas Data"</span>
+              </div>
+            </label>
+
+          </div>
+          <p id="job-warning" class="text-xs text-rose-400 mt-2 hidden font-medium">⚠️ Pilihlah minimal 1 dan maksimal 2 pilihan peran minat.</p>
+        </div>
+
+        <button type="submit" class="w-full py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-indigo-600/30 transition flex items-center justify-center space-x-2">
+          <span>Mulai Asesmen (10 Soal)</span>
+          <i data-lucide="arrow-right" class="w-5 h-5"></i>
+        </button>
+      </form>
+    </section>
+
+    <!-- Screen 2: Quiz Assessment -->
+    <section id="screen-quiz" class="hidden space-y-6">
+      <!-- Progress Bar -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 flex flex-col md:flex-row justify-between items-center gap-3">
+        <div class="flex items-center space-x-3 w-full md:w-auto">
+          <span id="question-badge" class="px-3 py-1 bg-indigo-600 text-white font-bold text-xs rounded-lg">Soal 1/10</span>
+          <span id="category-badge" class="text-xs text-slate-300 font-medium bg-slate-950 px-2.5 py-1 rounded-md border border-slate-800">Kategori Job</span>
+        </div>
+        <div class="w-full md:w-64 bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+          <div id="progress-bar" class="bg-indigo-500 h-full w-10 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- Question Card -->
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-2xl">
+        <h3 id="question-text" class="text-lg md:text-xl font-bold text-white mb-6 leading-relaxed">
+          Pertanyaan akan muncul di sini...
+        </h3>
+
+        <!-- Options Container -->
+        <div id="options-container" class="space-y-3">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Navigation / Action -->
+        <div class="mt-8 pt-6 border-t border-slate-800 flex justify-between items-center">
+          <span class="text-xs text-slate-400">Pilihlah 1 jawaban yang paling tepat.</span>
+          <button id="btn-next" onclick="nextQuestion()" disabled class="px-6 py-2.5 bg-slate-800 text-slate-500 font-semibold rounded-xl cursor-not-allowed transition flex items-center space-x-2">
+            <span>Lanjut</span>
+            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screen 3: Result & Profile Analysis -->
+    <section id="screen-result" class="hidden space-y-6">
+      <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 md:p-8 text-center shadow-2xl">
+        <div class="inline-flex p-4 bg-emerald-500/10 text-emerald-400 rounded-full mb-4 border border-emerald-500/20">
+          <i data-lucide="award" class="w-10 h-10"></i>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-extrabold text-white">Hasil Asesmen Peran Tech Squad</h2>
+        <p class="text-slate-400 text-sm mt-1">Luar biasa! Kamu telah menyelesaikan asesmen diagnostik ini.</p>
+
+        <!-- Summary Info Box -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-xs text-slate-400 uppercase font-semibold">Skor Pemahaman</span>
+            <div id="result-score" class="text-3xl font-black text-indigo-400 mt-1">0/100</div>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-xs text-slate-400 uppercase font-semibold">Jawaban Benar</span>
+            <div id="result-correct" class="text-3xl font-black text-emerald-400 mt-1">0 Soal</div>
+          </div>
+          <div class="bg-slate-950 p-4 rounded-xl border border-slate-800">
+            <span class="text-xs text-slate-400 uppercase font-semibold">Pilihan Minat Awal</span>
+            <div id="result-chosen-jobs" class="text-xs font-bold text-amber-300 mt-2">--</div>
+          </div>
+        </div>
+
+        <!-- Career Match Analysis -->
+        <div class="mt-6 p-5 bg-indigo-950/20 border border-indigo-500/30 rounded-xl text-left">
+          <h4 class="font-bold text-indigo-300 text-base flex items-center gap-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-indigo-400"></i>
+            Rekomendasi Profil Peran Berdasarkan Jawabanmu:
+          </h4>
+          <p id="career-recommendation" class="text-sm text-slate-300 mt-2 leading-relaxed">
+            Analisis sedang diproses...
+          </p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <button onclick="copySummary()" class="px-5 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-medium rounded-xl transition flex items-center justify-center space-x-2">
+            <i data-lucide="copy" class="w-4 h-4"></i>
+            <span>Salin Hasil untuk Guru</span>
+          </button>
+          <button onclick="toggleReview()" class="px-5 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium rounded-xl transition flex items-center justify-center space-x-2">
+            <i data-lucide="eye" class="w-4 h-4"></i>
+            <span>Lihat Pembahasan Soal</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Detailed Question Review Section -->
+      <div id="review-section" class="hidden space-y-4">
+        <h3 class="text-lg font-bold text-white flex items-center space-x-2">
+          <i data-lucide="file-check-2" class="w-5 h-5 text-indigo-400"></i>
+          <span>Pembahasan Kunci Jawaban Soal</span>
+        </h3>
+        <div id="review-container" class="space-y-4">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Toast Notification -->
+  <div id="modal-toast" class="fixed bottom-5 right-5 bg-emerald-600 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center space-x-3 transition transform translate-y-20 opacity-0 z-50 pointer-events-none">
+    <i data-lucide="check-circle" class="w-5 h-5"></i>
+    <span id="toast-message" class="text-sm font-medium">Ringkasan hasil berhasil disalin!</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 py-4 text-center text-xs text-slate-500">
+    <p>Media Pembelajaran RPL Tech Squad &copy; DPK PPLG SMK</p>
+  </footer>
+
+  <script>
+    // 10 Diagnostic & Interest Questions mapped directly to the 6 roles in RPL Tech Squad Material
+    const questionsData = [
+      {
+        id: 1,
+        category: "Role: Project Manager (PM)",
+        tag: "PM",
+        question: "Siapakah peran dalam tim proyek software yang dijuluki 'Sang Kapten Kapal Proyek' dengan tugas menetapkan tujuan, jadwal deadline, anggaran, serta menghubungkan tim dengan klien?",
+        options: [
+          "System Analyst (SA)",
+          "Project Manager (PM)",
+          "Programmer / Software Engineer",
+          "Quality Assurance (QA)"
+        ],
+        correct: 1,
+        explanation: "Project Manager (PM) adalah kapten kapal proyek yang mengelola jadwal, anggaran, deadline, dan komunikasi dengan klien."
+      },
+      {
+        id: 2,
+        category: "Tools: Project Manager",
+        tag: "PM",
+        question: "Perangkat kerja (tools) yang umum digunakan oleh seorang Project Manager (PM) untuk memantau progres dan Gantt Chart proyek adalah...",
+        options: [
+          "VS Code, Git, JavaScript",
+          "Figma, Wireframe, Prototype",
+          "Trello, Jira, Gantt Chart",
+          "MySQL, PostgreSQL, Backup"
+        ],
+        correct: 2,
+        explanation: "Project Manager menggunakan tools manajemen tugas dan jadwal seperti Trello, Jira, dan Gantt Chart."
+      },
+      {
+        id: 3,
+        category: "Role: System Analyst (SA)",
+        tag: "SA",
+        question: "Peran yang bertugas menerjemahkan keinginan klien menjadi diagram alur proses bisnis, flowchart, dan rancangan teknis aplikasi disebut...",
+        options: [
+          "System Analyst (SA) - 'Sang Arsitek Sistem'",
+          "UI/UX Designer - 'Sang Seniman'",
+          "Database Administrator (DBA) - 'Sang Penjaga Brankas'",
+          "Quality Assurance (QA) - 'Sang Detektif'"
+        ],
+        correct: 0,
+        explanation: "System Analyst (SA) bertindak sebagai Arsitek Sistem yang mengubah kebutuhan bisnis menjadi alur teknis (Flowchart/UML)."
+      },
+      {
+        id: 4,
+        category: "Tools: System Analyst",
+        tag: "SA",
+        question: "Aplikasi seperti Flowchart, UML Diagram, dan Draw.io paling sering digunakan oleh peran...",
+        options: [
+          "Programmer",
+          "System Analyst (SA)",
+          "UI/UX Designer",
+          "Quality Assurance"
+        ],
+        correct: 1,
+        explanation: "System Analyst menggunakan Flowchart, UML Diagram, dan Draw.io untuk menggambarkan alur kerja sistem."
+      },
+      {
+        id: 5,
+        category: "Role: UI/UX Designer",
+        tag: "UIUX",
+        question: "Jika kamu suka membuat tampilan visual aplikasi yang cantik, estetik, dan memastikan alur penggunaan terasa nyaman, peran yang tepat untukmu adalah...",
+        options: [
+          "Database Administrator (DBA)",
+          "Quality Assurance (QA)",
+          "UI/UX Designer",
+          "Project Manager (PM)"
+        ],
+        correct: 2,
+        explanation: "UI/UX Designer dijuluki 'Sang Seniman & Perancang Kenyamanan' yang membuat tata letak visual serta Wireframe/Prototype di Figma."
+      },
+      {
+        id: 6,
+        category: "Role: Programmer / Engineer",
+        tag: "DEV",
+        question: "Siapakah 'Sang Pembangun & Pencipta Kode' yang bertugas menulis baris kode program menggunakan VS Code, JavaScript/PHP, dan Git untuk mewujudkan desain menjadi aplikasi nyata?",
+        options: [
+          "Programmer / Software Engineer",
+          "System Analyst",
+          "Database Administrator",
+          "Project Manager"
+        ],
+        correct: 0,
+        explanation: "Programmer/Software Engineer mengubah desain dan alur teknis menjadi aplikasi nyata dengan menulis kode program."
+      },
+      {
+        id: 7,
+        category: "Role: Quality Assurance (QA)",
+        tag: "QA",
+        question: "Siapakah peran yang dijuluki 'Sang Detektif Pemburu Error/Bug' dengan tugas menguji setiap tombol dan fitur agar aplikasi bebas dari crash?",
+        options: [
+          "Quality Assurance (QA / Tester)",
+          "Programmer / Software Engineer",
+          "UI/UX Designer",
+          "System Analyst"
+        ],
+        correct: 0,
+        explanation: "QA/Tester adalah detektif pemburu bug yang membuat Test Scenario dan Bug Report sebelum aplikasi diluncurkan."
+      },
+      {
+        id: 8,
+        category: "Tools: Quality Assurance",
+        tag: "QA",
+        question: "Istilah 'Test Scenario', 'Bug Report', dan instrumen pengujian otomatis seperti 'Selenium' berkaitan erat dengan pekerjaan...",
+        options: [
+          "Database Administrator",
+          "Quality Assurance (QA / Tester)",
+          "Project Manager",
+          "UI/UX Designer"
+        ],
+        correct: 1,
+        explanation: "Seorang QA/Tester menguji aplikasi menggunakan Test Scenario, membuat Bug Report, dan memanfaatkan tools otomatisasi seperti Selenium."
+      },
+      {
+        id: 9,
+        category: "Role: Database Administrator",
+        tag: "DBA",
+        question: "Peran yang dijuluki 'Sang Penjaga Brankas Informasi' dengan tanggung jawab merancang struktur tabel, menjaga keamanan data sensitif, dan mengoptimalkan kecepatan akses data adalah...",
+        options: [
+          "Database Administrator (DBA)",
+          "UI/UX Designer",
+          "Software Tester",
+          "Project Manager"
+        ],
+        correct: 0,
+        explanation: "Database Administrator (DBA) bertanggung jawab atas penyimpanan, struktur tabel, backup, dan keamanan data."
+      },
+      {
+        id: 10,
+        category: "Tools: Database Administrator",
+        tag: "DBA",
+        question: "Teknologi seperti MySQL, PostgreSQL, serta prosedur Backup & Security adalah fokus keahlian utama dari seorang...",
+        options: [
+          "UI/UX Designer",
+          "Database Administrator (DBA)",
+          "System Analyst",
+          "Project Manager"
+        ],
+        correct: 1,
+        explanation: "DBA menguasai sistem basis data seperti MySQL dan PostgreSQL serta prosedur pemulihan (backup) data."
+      }
+    ];
+
+    // App State
+    let studentInfo = {
+      name: "",
+      class: "",
+      preferredJobs: []
+    };
+    let currentQuestionIndex = 0;
+    let selectedAnswers = new Array(questionsData.length).fill(null);
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Limit Checkbox choices (Min 1, Max 2)
+    document.querySelectorAll('.job-checkbox').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const checked = document.querySelectorAll('.job-checkbox:checked');
+        if (checked.length > 2) {
+          cb.checked = false;
+        }
+      });
+    });
+
+    function startAssessment(e) {
+      e.preventDefault();
+      const name = document.getElementById('student-name').value.trim();
+      const studentClass = document.getElementById('student-class').value.trim();
+      const checkedJobs = Array.from(document.querySelectorAll('.job-checkbox:checked')).map(cb => cb.value);
+
+      const warning = document.getElementById('job-warning');
+      if (checkedJobs.length === 0 || checkedJobs.length > 2) {
+        warning.classList.remove('hidden');
+        return;
+      }
+      warning.classList.add('hidden');
+
+      studentInfo.name = name;
+      studentInfo.class = studentClass;
+      studentInfo.preferredJobs = checkedJobs;
+
+      // Switch screen
+      document.getElementById('screen-intro').classList.add('hidden');
+      document.getElementById('screen-quiz').classList.remove('hidden');
+
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      const q = questionsData[currentQuestionIndex];
+      
+      // Update Headers
+      document.getElementById('question-badge').innerText = `Soal ${q.id} / ${questionsData.length}`;
+      document.getElementById('category-badge').innerText = q.category;
+      
+      // Update Progress Bar
+      const progressPercent = ((currentQuestionIndex + 1) / questionsData.length) * 100;
+      document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+
+      // Update Text
+      document.getElementById('question-text').innerText = q.question;
+
+      // Render Options
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const isSelected = selectedAnswers[currentQuestionIndex] === idx;
+        const btn = document.createElement('button');
+        btn.onclick = () => selectOption(idx);
+        btn.className = `w-full p-4 rounded-xl text-left text-sm font-medium border transition flex items-center justify-between ${
+          isSelected 
+            ? 'bg-indigo-600/20 border-indigo-500 text-white shadow-md' 
+            : 'bg-slate-950 border-slate-800 text-slate-300 hover:border-slate-600'
+        }`;
+
+        btn.innerHTML = `
+          <div class="flex items-center space-x-3">
+            <span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs ${
+              isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'
+            }">${String.fromCharCode(65 + idx)}</span>
+            <span>${opt}</span>
+          </div>
+          ${isSelected ? '<i data-lucide="check" class="w-4 h-4 text-indigo-400"></i>' : ''}
+        `;
+        optionsContainer.appendChild(btn);
+      });
+
+      // Update Next button state
+      const nextBtn = document.getElementById('btn-next');
+      if (selectedAnswers[currentQuestionIndex] !== null) {
+        nextBtn.disabled = false;
+        nextBtn.className = "px-6 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl shadow-lg transition flex items-center space-x-2";
+      } else {
+        nextBtn.disabled = true;
+        nextBtn.className = "px-6 py-2.5 bg-slate-800 text-slate-500 font-semibold rounded-xl cursor-not-allowed transition flex items-center space-x-2";
+      }
+
+      lucide.createIcons();
+    }
+
+    function selectOption(index) {
+      selectedAnswers[currentQuestionIndex] = index;
+      renderQuestion();
+    }
+
+    function nextQuestion() {
+      if (selectedAnswers[currentQuestionIndex] === null) return;
+
+      if (currentQuestionIndex < questionsData.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion();
+      } else {
+        calculateResult();
+      }
+    }
+
+    function calculateResult() {
+      let correctCount = 0;
+      let tagCounts = {};
+
+      questionsData.forEach((q, idx) => {
+        if (selectedAnswers[idx] === q.correct) {
+          correctCount++;
+          tagCounts[q.tag] = (tagCounts[q.tag] || 0) + 1;
+        }
+      });
+
+      const finalScore = (correctCount / questionsData.length) * 100;
+
+      // Map tags to full role names
+      const tagRoleNames = {
+        "PM": "Project Manager (PM)",
+        "SA": "System Analyst (SA)",
+        "UIUX": "UI/UX Designer",
+        "DEV": "Programmer / Software Engineer",
+        "QA": "Quality Assurance (QA/Tester)",
+        "DBA": "Database Administrator (DBA)"
+      };
+
+      let topTag = "DEV";
+      let maxTagCount = -1;
+      for (const [tag, count] of Object.entries(tagCounts)) {
+        if (count > maxTagCount) {
+          maxTagCount = count;
+          topTag = tag;
+        }
+      }
+
+      const dominantRoleName = tagRoleNames[topTag] || "Software Engineer";
+      const chosenStr = studentInfo.preferredJobs.join(" & ");
+
+      // Generate Analysis Text
+      let recommendation = `Pemahaman dasarmu tentang peran tim proyek software adalah <strong>${finalScore}%</strong> (${correctCount} dari 10 soal benar).<br><br>`;
+      recommendation += `Berdasarkan ketepatan jawabanmu, kamu memiliki kecenderungan paling kuat pada peran <strong>${dominantRoleName}</strong>. `;
+      recommendation += `Pilihan minat awal yang kamu pilih yaitu <strong>${chosenStr}</strong> sangat berpotensi dikembangkan selama pembelajaran PPLG di kelas!`;
+
+      // Update Result UI
+      document.getElementById('result-score').innerText = `${finalScore}/100`;
+      document.getElementById('result-correct').innerText = `${correctCount} / 10 Soal`;
+      document.getElementById('result-chosen-jobs').innerText = chosenStr;
+      document.getElementById('career-recommendation').innerHTML = recommendation;
+
+      // Switch Screen
+      document.getElementById('screen-quiz').classList.add('hidden');
+      document.getElementById('screen-result').classList.remove('hidden');
+
+      renderReview();
+    }
+
+    function renderReview() {
+      const container = document.getElementById('review-container');
+      container.innerHTML = '';
+
+      questionsData.forEach((q, idx) => {
+        const userAns = selectedAnswers[idx];
+        const isCorrect = userAns === q.correct;
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-xl border text-sm ${
+          isCorrect 
+            ? 'bg-emerald-950/20 border-emerald-500/40' 
+            : 'bg-rose-950/20 border-rose-500/40'
+        }`;
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <span class="font-bold text-white">Soal ${idx + 1}: ${q.question}</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded shrink-0 ${
+              isCorrect ? 'bg-emerald-500/20 text-emerald-300' : 'bg-rose-500/20 text-rose-300'
+            }">${isCorrect ? 'Benar' : 'Salah'}</span>
+          </div>
+          <div class="mt-2 text-xs space-y-1 text-slate-300">
+            <p>Jawaban Kamu: <span class="${isCorrect ? 'text-emerald-400 font-semibold' : 'text-rose-400 font-semibold'}">${q.options[userAns]}</span></p>
+            ${!isCorrect ? `<p>Jawaban Tepat: <span class="text-emerald-400 font-semibold">${q.options[q.correct]}</span></p>` : ''}
+            <p class="text-slate-400 italic mt-1.5 border-t border-slate-800 pt-1.5">💡 ${q.explanation}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function toggleReview() {
+      const reviewSec = document.getElementById('review-section');
+      reviewSec.classList.toggle('hidden');
+    }
+
+    function copySummary() {
+      let correctCount = 0;
+      questionsData.forEach((q, idx) => {
+        if (selectedAnswers[idx] === q.correct) correctCount++;
+      });
+      const score = (correctCount / questionsData.length) * 100;
+
+      const summaryText = `*HASIL ASESMEN AWAL RPL TECH SQUAD (TP 1.1)*
+Nama: ${studentInfo.name}
+Kelas: ${studentInfo.class}
+Pilihan Peran Minat: ${studentInfo.preferredJobs.join(", ")}
+--------------------------------
+Skor Pemahaman: ${score}/100 (${correctCount}/10 Benar)
+Status: Selesai Asesmen Diagnostik Awal`;
+
+      // Copy text using fallback command
+      const el = document.createElement('textarea');
+      el.value = summaryText;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+
+      // Show Toast Notification
+      const toast = document.getElementById('modal-toast');
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
+
+```
