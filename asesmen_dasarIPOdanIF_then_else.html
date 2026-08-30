@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen DPK PPLG - SMK Bhakti Persada</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .no-select {
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 font-sans min-h-screen text-slate-800 antialiased no-select">
+
+    <!-- Container Utama -->
+    <div id="app" class="min-h-screen flex flex-col">
+
+        <!-- HEADER -->
+        <header class="bg-indigo-900 text-white shadow-lg sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white p-2 rounded-lg text-indigo-900 font-bold text-xl">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg md:text-xl leading-tight">SMK BHAKTI PERSADA PATEBON</h1>
+                        <p class="text-xs text-indigo-200">Asesmen DPK PPLG - Konsep IPO & Kontrol Alur (Scratch)</p>
+                    </div>
+                </div>
+
+                <!-- Info Header (Tampil saat ujian) -->
+                <div id="header-exam-info" class="hidden flex items-center space-x-6">
+                    <div class="text-right hidden sm:block">
+                        <span class="text-xs text-indigo-200 block">Siswa (NIS)</span>
+                        <span id="user-display-nis" class="font-semibold text-sm"></span>
+                    </div>
+                    <div class="bg-red-600 px-4 py-2 rounded-xl flex items-center space-x-2 animate-pulse shadow">
+                        <i class="fa-solid fa-clock"></i>
+                        <span id="timer-display" class="font-mono font-bold text-lg">20:00</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main class="flex-1 flex justify-center items-center p-4">
+
+            <!-- 1. HALAMAN LOGIN -->
+            <div id="login-page" class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 p-8 my-auto">
+                <div class="text-center mb-6">
+                    <div class="w-20 h-20 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center mx-auto mb-3 text-3xl font-bold border-2 border-indigo-500">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-800">Login Ujian Siswa</h2>
+                    <p class="text-sm text-slate-500 mt-1">Materi: IPO & Algoritma Percabangan (Scratch)</p>
+                </div>
+
+                <form id="login-form" onsubmit="handleLogin(event)" class="space-y-5">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Nomor Induk Siswa (NIS)</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <input type="text" id="input-nis" required placeholder="Masukkan NIS Anda" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <input type="password" id="input-password" required placeholder="Default: dpk10" class="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition">
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1">* Password default: <span class="font-mono font-bold text-indigo-600">dpk10</span></p>
+                    </div>
+
+                    <div id="login-error" class="hidden bg-red-50 text-red-600 text-xs p-3 rounded-lg border border-red-200">
+                        NIS atau Password salah! Pengampu: Slamet Joyo M,S.T,Gr.
+                    </div>
+
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-lg shadow-md hover:shadow-lg transition duration-200 flex items-center justify-center space-x-2">
+                        <span>Mulai Mulai Asesmen</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <div class="mt-6 pt-6 border-t border-slate-100 text-center text-xs text-slate-400">
+                    Pengampu: Slamet Joyo M, S.T., Gr.
+                </div>
+            </div>
+
+            <!-- 2. HALAMAN UJIAN / ASESMEN -->
+            <div id="exam-page" class="hidden w-full max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+                <!-- Kiri / Middle: Konten Soal -->
+                <div class="lg:col-span-3 bg-white rounded-2xl shadow-md border border-slate-200 flex flex-col justify-between overflow-hidden">
+                    
+                    <!-- Top Bar Soal -->
+                    <div class="bg-slate-50 border-b border-slate-200 px-6 py-4 flex justify-between items-center">
+                        <div class="flex items-center space-x-3">
+                            <span id="badge-kategori" class="bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                                Bagian 1: Pilihan Ganda Kompleks
+                            </span>
+                            <span class="text-slate-400">|</span>
+                            <span id="question-number-title" class="font-bold text-slate-700">Soal 1 dari 20</span>
+                        </div>
+                        <span id="multiple-select-info" class="text-xs bg-amber-50 text-amber-700 border border-amber-200 px-2.5 py-1 rounded font-medium">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> Pilih lebih dari 2 jawaban benar!
+                        </span>
+                    </div>
+
+                    <!-- Isi Soal & Opsi -->
+                    <div class="p-6 md:p-8 flex-1">
+                        <h3 id="question-text" class="text-lg md:text-xl font-semibold text-slate-800 mb-6 leading-relaxed">
+                            Loading Soal...
+                        </h3>
+
+                        <!-- Container Opsi Jawaban -->
+                        <div id="options-container" class="space-y-3">
+                            <!-- Opsi akan digenerate via Javascript -->
+                        </div>
+                    </div>
+
+                    <!-- Bottom Bar Navigasi Tombol -->
+                    <div class="bg-slate-50 border-t border-slate-200 px-6 py-4 flex justify-between items-center">
+                        <button id="btn-prev" onclick="navigateQuestion(-1)" class="bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 px-5 py-2.5 rounded-xl font-medium flex items-center space-x-2 transition disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i class="fa-solid fa-chevron-left"></i>
+                            <span>Sebelumnya</span>
+                        </button>
+
+                        <button id="btn-next" onclick="navigateQuestion(1)" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-medium flex items-center space-x-2 shadow transition">
+                            <span>Selanjutnya</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Kanan: Navigasi Kotak Soal -->
+                <div class="lg:col-span-1 bg-white rounded-2xl shadow-md border border-slate-200 p-6 flex flex-col justify-between">
+                    <div>
+                        <h4 class="font-bold text-slate-800 mb-4 pb-2 border-b border-slate-200 flex justify-between items-center">
+                            <span>Navigasi Soal</span>
+                            <i class="fa-solid fa-th-large text-indigo-600"></i>
+                        </h4>
+
+                        <!-- Grid Nomor -->
+                        <div class="mb-4">
+                            <p class="text-xs font-semibold text-slate-400 mb-2 uppercase">PG Kompleks (1-15)</p>
+                            <div id="nav-grid-pg" class="grid grid-cols-5 gap-2"></div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-semibold text-slate-400 mb-2 uppercase">Benar / Salah (16-20)</p>
+                            <div id="nav-grid-bs" class="grid grid-cols-5 gap-2"></div>
+                        </div>
+
+                        <!-- Keterangan Warna Status -->
+                        <div class="mt-6 pt-4 border-t border-slate-100 space-y-2 text-xs text-slate-600">
+                            <div class="flex items-center space-x-2">
+                                <span class="w-4 h-4 rounded bg-indigo-600 border border-indigo-700 inline-block"></span>
+                                <span>Sedang Dikerjakan</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-4 h-4 rounded bg-emerald-500 border border-emerald-600 inline-block"></span>
+                                <span>Sudah Dijawab</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-4 h-4 rounded bg-slate-100 border border-slate-300 inline-block"></span>
+                                <span>Belum Dijawab</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="confirmSubmit()" class="mt-6 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow transition flex justify-center items-center space-x-2">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Selesaikan & Submit</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <!-- 3. HALAMAN HASIL / RESULT -->
+            <div id="result-page" class="hidden w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-200 p-8 my-auto text-center">
+                <div id="result-badge-icon" class="w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl shadow-inner">
+                    <!-- Icon Javascript -->
+                </div>
+
+                <h2 class="text-3xl font-bold text-slate-800">Hasil Asesmen Anda</h2>
+                <p class="text-slate-500 text-sm mt-1">DPK PPLG - Konsep IPO & Kontrol Alur Scratch</p>
+
+                <div class="my-6 bg-slate-50 rounded-xl p-6 border border-slate-200 space-y-3">
+                    <div class="text-slate-600 text-sm">Nilai Akhir Siswa (NIS: <span id="res-nis" class="font-bold"></span>)</div>
+                    <div id="res-score" class="text-6xl font-extrabold text-indigo-700">0</div>
+                    <div>
+                        <span id="res-category" class="inline-block px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide">
+                            Category
+                        </span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4 text-left mb-6 text-sm">
+                    <div class="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
+                        <div class="text-emerald-700 text-xs font-semibold uppercase">Jawaban Benar / Lengkap</div>
+                        <div id="res-correct-count" class="text-2xl font-bold text-emerald-800">0 / 20</div>
+                    </div>
+                    <div class="bg-blue-50 border border-blue-200 p-4 rounded-xl">
+                        <div class="text-blue-700 text-xs font-semibold uppercase">Waktu Tersisa</div>
+                        <div id="res-time-left" class="text-2xl font-bold text-blue-800">00:00</div>
+                    </div>
+                </div>
+
+                <!-- Range Kategori Info -->
+                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-800 text-left mb-6 space-y-1">
+                    <div class="font-bold border-b border-amber-200 pb-1 mb-1">Kriteria Predikat Kategori:</div>
+                    <div class="flex justify-between"><span>≥ 90 : <strong>Excellent</strong></span> <span>≥ 83 : <strong>Great</strong></span> <span>&lt; 83 : <strong>Enough</strong></span></div>
+                </div>
+
+                <button onclick="restartExam()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl shadow transition">
+                    Kembali ke Halaman Login
+                </button>
+            </div>
+
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="bg-slate-800 text-slate-400 py-3 text-center text-xs border-t border-slate-700">
+            SMK Bhakti Persada Patebon Kendal &copy; 2026 | Berpikir logis, membuat keputusan, program jadi lebih cerdas.
+        </footer>
+    </div>
+
+    <!-- MODAL KONFIRMASI SUBMIT -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 space-y-4">
+            <div class="flex items-center space-x-3 text-amber-600">
+                <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                <h3 class="text-lg font-bold text-slate-800">Konfirmasi Selesai Ujian</h3>
+            </div>
+            <p id="confirm-modal-msg" class="text-sm text-slate-600">
+                Apakah Anda yakin ingin menyelesaikan ujian sekarang? Periksa kembali jawaban Anda.
+            </p>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button onclick="closeConfirmModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition">
+                    Periksa Kembali
+                </button>
+                <button onclick="submitExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-bold shadow transition">
+                    Ya, Selesaikan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT UTAMA -->
+    <script>
+        // Data Bank Soal (Materi IPO & IF THEN / IF THEN ELSE di Scratch)
+        // Part 1: Soal PG Kompleks (15 Soal, 6 Opsi A-F, Lebih dari 2 Jawaban Benar)
+        // Part 2: Soal Benar / Salah (5 Soal, Opsi Benar/Salah)
+        const examQuestions = [
+            // --- PG KOMPLEKS (SOAL 1 - 15) ---
+            {
+                id: 1,
+                type: 'complex',
+                text: "Manakah pernyataan yang BENAR mengenai konsep Input dalam konteks IPO (Input-Proses-Output) dan Scratch berdasarkan materi?",
+                options: [
+                    "Input adalah data atau informasi yang dimasukkan ke dalam algoritma.",
+                    "Pada Scratch, blok perintah 'ask [...] and wait' digunakan untuk mengambil input dari pengguna.",
+                    "Nilai input dari pengguna dapat disimpan ke dalam variabel seperti 'set x to answer'.",
+                    "Input selalu berupa hasil instruksi operasi matematika.",
+                    "Perintah 'say' di Scratch berfungsi sebagai elemen utama pemroses Input.",
+                    "Jawaban pengguna di Scratch otomatis tersimpan pada blok built-in 'answer'."
+                ],
+                correct: [0, 1, 2, 5] // >2 jawaban benar
+            },
+            {
+                id: 2,
+                type: 'complex',
+                text: "Berdasarkan materi IPO, manakah komponen atau contoh yang tergolong dalam tahap 'PROSES'?",
+                options: [
+                    "Langkah-langkah atau instruksi untuk mengolah data menjadi informasi.",
+                    "Perhitungan matematika seperti 5 x 2 = 10.",
+                    "Blok Scratch 'set hasil to (x * 2)'.",
+                    "Pesan teks yang muncul di bubble ucapan sprite Scratch.",
+                    "Proses mengubah data mentah dari pengguna menjadi variabel hasil.",
+                    "Pengisian teks oleh pengguna di kolom pertanyaan 'ask'."
+                ],
+                correct: [0, 1, 2, 4]
+            },
+            {
+                id: 3,
+                type: 'complex',
+                text: "Mengenai elemen 'OUTPUT' pada Scratch dan Algoritma, pernyataan mana saja yang TEPAT?",
+                options: [
+                    "Output adalah hasil atau informasi yang dihasilkan dari proses.",
+                    "Pada Scratch, blok perintah 'say' dapat digunakan untuk menampilkan output.",
+                    "Blok 'join [Hasilnya: ] [hasil]' digunakan untuk menggabungkan teks dan variabel pada output.",
+                    "Output adalah tahap paling awal dalam pengolahan algoritma IPO.",
+                    "Output di layar Scratch bisa ditampilkan selama durasi tertentu (contoh: 'for 2 seconds').",
+                    "Mengambil nilai jawaban dari keyboard pengguna merupakan fungsi dari Output."
+                ],
+                correct: [0, 1, 2, 4]
+            },
+            {
+                id: 4,
+                type: 'complex',
+                text: "Manakah pernyataan yang merupakan manfaat dari memahami konsep IPO (Input-Proses-Output) dalam pemrograman?",
+                options: [
+                    "Mempermudah dalam membuat alur algoritma yang terstruktur.",
+                    "Memahami alur logika pemrograman secara jelas dari awal sampai akhir.",
+                    "Menjadi dasar penting dan fundamental dalam belajar coding.",
+                    "Membuat program berjalan tanpa memerlukan logika dan variabel.",
+                    "Membantu mengidentifikasi data apa yang dibutuhkan dan hasil apa yang diharapkan.",
+                    "Menghilangkan kebutuhan penggunaan blok percabangan IF pada Scratch."
+                ],
+                correct: [0, 1, 2, 4]
+            },
+            {
+                id: 5,
+                type: 'complex',
+                text: "Apa saja kriteria utama dari blok kontrol 'IF THEN' di Scratch?",
+                options: [
+                    "Digunakan untuk menjalankan perintah jika kondisi yang diberikan bernilai TRUE (Benar).",
+                    "Jika kondisi bernilai SALAH (FALSE), maka perintah di dalam blok tidak akan dijalankan.",
+                    "Hanya membutuhkan satu jalur percabangan (tanpa blok else).",
+                    "Perintah di dalam blok akan selalu dijalankan baik kondisi benar maupun salah.",
+                    "Kondisi pada hexagonal slot harus menghasilkan nilai True atau False.",
+                    "Dapat menggunakan operator perbandingan seperti '>' atau '<'."
+                ],
+                correct: [0, 1, 2, 4, 5]
+            },
+            {
+                id: 6,
+                type: 'complex',
+                text: "Apa saja perbedaan dan karakteristik utama dari blok 'IF THEN ELSE' dibanding 'IF THEN' biasa?",
+                options: [
+                    "IF THEN ELSE memiliki dua cabang instruksi: satu untuk kondisi BENAR, satu untuk SALAH.",
+                    "Jika kondisi SALAH, program akan mengeksekusi blok di dalam bagian 'ELSE'.",
+                    "Strukturnya memungkinkan program memilih salah satu dari dua tindakan berbeda.",
+                    "Bagian 'ELSE' akan dijalankan jika kondisi pada bagian 'IF' bernilai TRUE.",
+                    "Sangat cocok digunakan untuk menentukan nilai terbesar dari 2 buah angka (x dan y).",
+                    "IF THEN ELSE tidak membutuhkan operator kondisi relasional."
+                ],
+                correct: [0, 1, 2, 4]
+            },
+            {
+                id: 7,
+                type: 'complex',
+                text: "Manakah operator perbandingan (relasional) berikut yang dapat digunakan dalam kondisi blok IF di Scratch?",
+                options: [
+                    "Operator Lebih Besar Dari ( > )",
+                    "Operator Lebih Kecil Dari ( < )",
+                    "Operator Sama Dengan ( = )",
+                    "Operator Lebih Besar Sama Dengan ( ≥ )",
+                    "Operator Tidak Sama Dengan ( ≠ )",
+                    "Operator Gabung Teks ( join )"
+                ],
+                correct: [0, 1, 2, 3, 4]
+            },
+            {
+                id: 8,
+                type: 'complex',
+                text: "Perhatikan contoh program Scratch: 'Jika nilai x > 10, tampilkan pesan X besar selama 2 detik'. Pernyataan mana yang BENAR?",
+                options: [
+                    "Jika nilai x adalah 15, Sprite Scratch akan mengatakan 'X besar'.",
+                    "Jika nilai x adalah 5, Sprite Scratch TIDAK akan menampilkan pesan 'X besar'.",
+                    "Kondisi yang diuji adalah ekspresi matematika relasional (x > 10).",
+                    "Jika nilai x adalah 10, Sprite Scratch akan langsung mengatakan 'X besar'.",
+                    "Blok yang digunakan pada contoh ini cukup menggunakan IF THEN biasa.",
+                    "Program ini mewajibkan penggunaan cabang 'ELSE'."
+                ],
+                correct: [0, 1, 2, 4]
+            },
+            {
+                id: 9,
+                type: 'complex',
+                text: "Perhatikan program membandingkan dua angka x dan y menggunakan IF THEN ELSE. Jika diproses dengan nilai x = 7 dan y = 4, apa yang terjadi?",
+                options: [
+                    "Kondisi (x > y) bernilai BENAR (TRUE) karena 7 > 4.",
+                    "Blok perintah di bagian 'IF' (cabang atas) akan dieksekusi.",
+                    "Sprite akan menampilkan pesan 'X lebih besar'.",
+                    "Blok perintah di bagian 'ELSE' akan dijalankan.",
+                    "Sprite akan menampilkan pesan 'Y lebih besar atau sama'.",
+                    "Nilai x disimulasikan sebagai angka yang lebih besar dari y."
+                ],
+                correct: [0, 1, 2, 5]
+            },
+            {
+                id: 10,
+                type: 'complex',
+                text: "Masih dengan program perbandingan x dan y menggunakan IF THEN ELSE. Jika disimulasikan nilai x = 3 dan y = 5, manakah pernyataan yang BENAR?",
+                options: [
+                    "Kondisi (x > y) bernilai SALAH (FALSE) karena 3 tidak lebih besar dari 5.",
+                    "Program melompati perintah pertama dan masuk ke bagian blok 'ELSE'.",
+                    "Sprite Scratch akan mengucapkan pesan 'Y lebih besar atau sama'.",
+                    "Hasil keluaran (output) program dipicu dari evaluasi kondisi bernilai FALSE.",
+                    "Sprite Scratch akan mengucapkan pesan 'X lebih besar'.",
+                    "Nilai variabel y terbukti lebih besar daripada nilai x."
+                ],
+                correct: [0, 1, 2, 3, 5]
+            },
+            {
+                id: 11,
+                type: 'complex',
+                text: "Dalam alur praktik program Scratch untuk menentukan nilai terbesar dari 2 angka (x dan y), urutan langkah manakah yang BENAR?",
+                options: [
+                    "Menanyakan nilai x dan menyimpannya ke variabel x.",
+                    "Menanyakan nilai y dan menyimpannya ke variabel y.",
+                    "Menggunakan blok IF THEN ELSE untuk membandingkan x dan y.",
+                    "Menampilkan hasil teks pesan sesuai hasil evaluasi kondisi.",
+                    "Mengubah nilai x menjadi string 'Hasilnya' sebelum proses percabangan.",
+                    "Melakukan pencetakan output 'say' sebelum membaca variabel dari user."
+                ],
+                correct: [0, 1, 2, 3]
+            },
+            {
+                id: 12,
+                type: 'complex',
+                text: "Manakah pernyataan di bawah ini yang sesuai dengan tips 'INGAT!' pada materi Scratch IF THEN ELSE?",
+                options: [
+                    "Kondisi pada blok IF harus menghasilkan nilai BENAR (TRUE) atau SALAH (FALSE).",
+                    "Operator yang dapat digunakan antara lain >, <, =, ≥, ≤, ≠.",
+                    "Blok IF membantu program membuat keputusan (decision making).",
+                    "Gunakan blok percabangan dengan bijak agar program menjadi lebih cerdas.",
+                    "Semua variabel harus diberi nilai konstan tanpa perlu input dari user.",
+                    "Semua jenis program Scratch wajib menggunakan minimal 5 blok ELSE."
+                ],
+                correct: [0, 1, 2, 3]
+            },
+            {
+                id: 13,
+                type: 'complex',
+                text: "Di bawah ini yang merupakan komponen blok perintah bawaan pada Scratch yang sering dipakai dalam implementasi alur IPO adalah:",
+                options: [
+                    "Blok 'when green flag clicked' (Trigger awal program).",
+                    "Blok 'ask [...] and wait' (Input).",
+                    "Blok 'set [var] to [value]' (Proses pengisian nilai variabel).",
+                    "Blok 'say [...] for [...] seconds' (Output).",
+                    "Blok 'broadcast message' untuk menggantikan nilai matematika.",
+                    "Blok hexagonal penguji kondisi seperti (x > y)."
+                ],
+                correct: [0, 1, 2, 3, 5]
+            },
+            {
+                id: 14,
+                type: 'complex',
+                text: "Dalam konteks pemrograman dasar (DPK PPLG), mengapa logika percabangan (IF-THEN / IF-THEN-ELSE) sangat krusial?",
+                options: [
+                    "Memungkinkan komputer mengambil keputusan berdasarkan kondisi tertentu.",
+                    "Membuat alur program fleksibel dan dinamis (tidak selalu urut dari atas ke bawah).",
+                    "Mampu menangani berbagai kemungkinan variasi input dari pengguna.",
+                    "Menjadikan aplikasi lebih cerdas dalam memproses data.",
+                    "Mengarahkan output yang berbeda tergantung apakah kondisi terpenuhi atau tidak.",
+                    "Memaksa komputer berhenti bekerja jika nilai input berupa angka genap."
+                ],
+                correct: [0, 1, 2, 3, 4]
+            },
+            {
+                id: 15,
+                type: 'complex',
+                text: "Manakah pernyataan yang BENAR mengenai variabel 'x', 'y', dan 'hasil' pada contoh simulasi Scratch materi IPO & IF-THEN-ELSE?",
+                options: [
+                    "Variabel digunakan sebagai tempat menyimpan data angka/informasi sementara.",
+                    "Pada modul IPO, variabel 'hasil' menyimpan hasil perhitungan perkalian (x * 2).",
+                    "Pada modul IF-THEN-ELSE, variabel x dan y memuat nilai angka yang dimasukkan pengguna.",
+                    "Nilai di dalam variabel tidak pernah bisa diubah selama program running.",
+                    "Variabel 'answer' memuat input paling terakhir yang diisikan pengguna pada dialog 'ask'.",
+                    "Variabel 'x' selalu bernilai otomatis 10 tanpa instruksi 'set'."
+                ],
+                correct: [0, 1, 2, 4]
+            },
+
+            // --- BENAR / SALAH (SOAL 16 - 20) ---
+            {
+                id: 16,
+                type: 'tf',
+                text: "Pada konsep IPO, instruksi 'set hasil to (x * 2)' dikategorikan sebagai bagian dari OUTPUT.",
+                options: ["Benar", "Salah"],
+                correct: [1] // Salah (Harusnya PROSES)
+            },
+            {
+                id: 17,
+                type: 'tf',
+                text: "Jika kondisi pada blok IF THEN bernilai SALAH (FALSE), maka perintah di dalam blok tersebut TIDAK akan dijalankan.",
+                options: ["Benar", "Salah"],
+                correct: [0] // Benar
+            },
+            {
+                id: 18,
+                type: 'tf',
+                text: "Perintah 'ask [Masukkan angka] and wait' pada Scratch berfungsi sebagai bagian INPUT dalam konsep IPO.",
+                options: ["Benar", "Salah"],
+                correct: [0] // Benar
+            },
+            {
+                id: 19,
+                type: 'tf',
+                text: "Pada blok IF THEN ELSE, jika kondisi pengujian bernilai SALAH, maka program akan mengeksekusi perintah di dalam bagian ELSE.",
+                options: ["Benar", "Salah"],
+                correct: [0] // Benar
+            },
+            {
+                id: 20,
+                type: 'tf',
+                text: "Kondisi di dalam slot blok IF pada Scratch boleh menghasilkan nilai selain BENAR (TRUE) atau SALAH (FALSE).",
+                options: ["Benar", "Salah"],
+                correct: [1] // Salah (Harus Boolean True/False)
+            }
+        ];
+
+        // State Aplikasi
+        let currentStudentNis = "";
+        let currentQuestionIndex = 0;
+        let userAnswers = {}; // Format: { questionId: [array index pilihan] }
+        let timerSeconds = 20 * 60; // 20 Menit = 1200 detik
+        let timerInterval = null;
+
+        // Init Load
+        window.onload = function() {
+            // Render grid navigasi awal
+            renderNavGrids();
+        };
+
+        // 1. HANDLER LOGIN
+        function handleLogin(e) {
+            e.preventDefault();
+            const nisInput = document.getElementById('input-nis').value.trim();
+            const passInput = document.getElementById('input-password').value.trim();
+            const errorDiv = document.getElementById('login-error');
+
+            if (nisInput !== "" && passInput === "dpk10") {
+                currentStudentNis = nisInput;
+                errorDiv.classList.add('hidden');
+
+                // Switch Halaman
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('exam-page').classList.remove('hidden');
+                document.getElementById('header-exam-info').classList.remove('hidden');
+                document.getElementById('user-display-nis').innerText = currentStudentNis;
+
+                // Reset State
+                currentQuestionIndex = 0;
+                userAnswers = {};
+                timerSeconds = 20 * 60;
+
+                // Start Exam & Timer
+                loadQuestion(currentQuestionIndex);
+                startTimer();
+            } else {
+                errorDiv.classList.remove('hidden');
+            }
+        }
+
+        // 2. TIMER HANDLER (20 MENIT)
+        function startTimer() {
+            clearInterval(timerInterval);
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                updateTimerDisplay();
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Waktu pengerjaan telah habis! Anda akan dikembalikan ke halaman login.");
+                    resetToLogin();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timerSeconds / 60);
+            const seconds = timerSeconds % 60;
+            const displayStr = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            document.getElementById('timer-display').innerText = displayStr;
+        }
+
+        function resetToLogin() {
+            clearInterval(timerInterval);
+            currentStudentNis = "";
+            userAnswers = {};
+            
+            // Show Login, Hide Exam & Result
+            document.getElementById('exam-page').classList.add('hidden');
+            document.getElementById('result-page').classList.add('hidden');
+            document.getElementById('header-exam-info').classList.add('hidden');
+            document.getElementById('login-page').classList.remove('hidden');
+
+            document.getElementById('input-nis').value = "";
+            document.getElementById('input-password').value = "";
+        }
+
+        // 3. RENDER SOAL & NAVIGASI
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const q = examQuestions[index];
+
+            // Header Soal
+            document.getElementById('question-number-title').innerText = `Soal ${index + 1} dari ${examQuestions.length}`;
+            
+            const badge = document.getElementById('badge-kategori');
+            const multiInfo = document.getElementById('multiple-select-info');
+
+            if (q.type === 'complex') {
+                badge.innerText = "Bagian 1: PG Kompleks";
+                badge.className = "bg-indigo-100 text-indigo-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider";
+                multiInfo.classList.remove('hidden');
+            } else {
+                badge.innerText = "Bagian 2: Benar / Salah";
+                badge.className = "bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider";
+                multiInfo.classList.add('hidden');
+            }
+
+            // Teks Soal
+            document.getElementById('question-text').innerText = `${index + 1}. ${q.text}`;
+
+            // Render Opsi Jawaban
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+
+            const selectedForThisQ = userAnswers[q.id] || [];
+            const optionLabels = ["A", "B", "C", "D", "E", "F"];
+
+            q.options.forEach((optText, optIdx) => {
+                const isChecked = selectedForThisQ.includes(optIdx);
+
+                const optWrapper = document.createElement('label');
+                optWrapper.className = `flex items-start p-4 rounded-xl border-2 cursor-pointer transition duration-150 ${
+                    isChecked 
+                    ? 'border-indigo-600 bg-indigo-50/50 shadow-sm' 
+                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                }`;
+
+                if (q.type === 'complex') {
+                    // Checkbox Style untuk PG Kompleks
+                    optWrapper.innerHTML = `
+                        <div class="flex items-center h-6 mr-3">
+                            <input type="checkbox" name="option" value="${optIdx}" ${isChecked ? 'checked' : ''} 
+                                onchange="toggleAnswer(${q.id}, ${optIdx})" 
+                                class="w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500">
+                        </div>
+                        <div class="text-sm md:text-base text-slate-700 leading-snug">
+                            <span class="font-bold mr-2 text-indigo-900">${optionLabels[optIdx]}.</span>${optText}
+                        </div>
+                    `;
+                } else {
+                    // Radio Style untuk Benar / Salah
+                    optWrapper.innerHTML = `
+                        <div class="flex items-center h-6 mr-3">
+                            <input type="radio" name="option" value="${optIdx}" ${isChecked ? 'checked' : ''} 
+                                onchange="selectSingleAnswer(${q.id}, ${optIdx})" 
+                                class="w-5 h-5 text-indigo-600 border-slate-300 focus:ring-indigo-500">
+                        </div>
+                        <div class="text-sm md:text-base font-semibold text-slate-700">
+                            ${optText}
+                        </div>
+                    `;
+                }
+
+                container.appendChild(optWrapper);
+            });
+
+            // Update Status Tombol Navigasi Prev/Next
+            document.getElementById('btn-prev').disabled = (index === 0);
+            
+            const btnNext = document.getElementById('btn-next');
+            if (index === examQuestions.length - 1) {
+                btnNext.innerHTML = `<span>Selesai</span> <i class="fa-solid fa-check"></i>`;
+                btnNext.onclick = confirmSubmit;
+            } else {
+                btnNext.innerHTML = `<span>Selanjutnya</span> <i class="fa-solid fa-chevron-right"></i>`;
+                btnNext.onclick = () => navigateQuestion(1);
+            }
+
+            renderNavGrids();
+        }
+
+        // Handler Pilihan PG Kompleks (Multiple Select)
+        function toggleAnswer(questionId, optionIndex) {
+            if (!userAnswers[questionId]) {
+                userAnswers[questionId] = [];
+            }
+
+            const idx = userAnswers[questionId].indexOf(optionIndex);
+            if (idx > -1) {
+                userAnswers[questionId].splice(idx, 1); // uncheck
+            } else {
+                userAnswers[questionId].push(optionIndex); // check
+            }
+
+            loadQuestion(currentQuestionIndex);
+        }
+
+        // Handler Pilihan Benar/Salah (Single Select)
+        function selectSingleAnswer(questionId, optionIndex) {
+            userAnswers[questionId] = [optionIndex];
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function navigateQuestion(direction) {
+            const newIndex = currentQuestionIndex + direction;
+            if (newIndex >= 0 && newIndex < examQuestions.length) {
+                loadQuestion(newIndex);
+            }
+        }
+
+        function jumpToQuestion(index) {
+            loadQuestion(index);
+        }
+
+        // Render Grid Navigasi Soal Kanan
+        function renderNavGrids() {
+            const gridPG = document.getElementById('nav-grid-pg');
+            const gridBS = document.getElementById('nav-grid-bs');
+
+            if (!gridPG || !gridBS) return;
+
+            gridPG.innerHTML = "";
+            gridBS.innerHTML = "";
+
+            examQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.innerText = idx + 1;
+
+                const isAnswered = userAnswers[q.id] && userAnswers[q.id].length > 0;
+                const isCurrent = idx === currentQuestionIndex;
+
+                let baseClass = "w-full aspect-square rounded-lg font-bold text-xs flex items-center justify-center transition border ";
+
+                if (isCurrent) {
+                    baseClass += "bg-indigo-600 text-white border-indigo-800 shadow-md ring-2 ring-indigo-300";
+                } else if (isAnswered) {
+                    baseClass += "bg-emerald-500 text-white border-emerald-600 hover:bg-emerald-600";
+                } else {
+                    baseClass += "bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200";
+                }
+
+                btn.className = baseClass;
+                btn.onclick = () => jumpToQuestion(idx);
+
+                if (q.type === 'complex') {
+                    gridPG.appendChild(btn);
+                } else {
+                    gridBS.appendChild(btn);
+                }
+            });
+        }
+
+        // 4. SUBMIT & PERHITUNGAN NILAI
+        function confirmSubmit() {
+            // Hitung berapa yang belum dijawab
+            let unanswered = 0;
+            examQuestions.forEach(q => {
+                if (!userAnswers[q.id] || userAnswers[q.id].length === 0) {
+                    unanswered++;
+                }
+            });
+
+            const msg = unanswered > 0 
+                ? `Masih ada ${unanswered} soal yang belum Anda jawab! Yakin ingin menyelesaikan asesmen?`
+                : `Apakah Anda yakin ingin menyelesaikan asesmen ini sekarang?`;
+
+            document.getElementById('confirm-modal-msg').innerText = msg;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        function submitExam() {
+            closeConfirmModal();
+            clearInterval(timerInterval);
+
+            // Hitung Skor
+            let totalScorePoints = 0;
+            let totalCorrectCount = 0;
+
+            examQuestions.forEach(q => {
+                const userAns = userAnswers[q.id] || [];
+                const correctAns = q.correct;
+
+                if (q.type === 'complex') {
+                    // Penilaian PG Kompleks: Pengurangan atau pembobotan proporsional
+                    // Pengguna dapat skor jika memilih opsi benar tanpa memilih opsi salah
+                    userAns.sort();
+                    correctAns.sort();
+
+                    const isExactMatch = userAns.length === correctAns.length && 
+                        userAns.every((val, index) => val === correctAns[index]);
+
+                    if (isExactMatch) {
+                        totalScorePoints += 5; // 15 soal * 5 poin = 75 poin maks
+                        totalCorrectCount++;
+                    } else {
+                        // Skor Parsial jika tidak ada salah pilih opsi (opsional)
+                        const hasWrongSelection = userAns.some(val => !correctAns.includes(val));
+                        if (!hasWrongSelection && userAns.length > 0) {
+                            const partialRatio = userAns.length / correctAns.length;
+                            totalScorePoints += (5 * partialRatio);
+                        }
+                    }
+                } else {
+                    // Penilaian Benar / Salah
+                    if (userAns.length === 1 && userAns[0] === correctAns[0]) {
+                        totalScorePoints += 5; // 5 soal * 5 poin = 25 poin maks
+                        totalCorrectCount++;
+                    }
+                }
+            });
+
+            // Total Maksimal Point = (15 * 5) + (5 * 5) = 100
+            const finalScore = Math.round(totalScorePoints);
+
+            // Tentukan Kategori
+            // >= 90 Excellent, >= 83 Great, < 83 Enough
+            let categoryText = "";
+            let categoryClass = "";
+            let iconMarkup = "";
+
+            if (finalScore >= 90) {
+                categoryText = "Excellent";
+                categoryClass = "bg-emerald-100 text-emerald-800 border border-emerald-300";
+                iconMarkup = `<div class="bg-emerald-100 text-emerald-600 rounded-full w-full h-full flex items-center justify-center"><i class="fa-solid fa-trophy"></i></div>`;
+            } else if (finalScore >= 83) {
+                categoryText = "Great";
+                categoryClass = "bg-blue-100 text-blue-800 border border-blue-300";
+                iconMarkup = `<div class="bg-blue-100 text-blue-600 rounded-full w-full h-full flex items-center justify-center"><i class="fa-solid fa-star"></i></div>`;
+            } else {
+                categoryText = "Enough";
+                categoryClass = "bg-amber-100 text-amber-800 border border-amber-300";
+                iconMarkup = `<div class="bg-amber-100 text-amber-600 rounded-full w-full h-full flex items-center justify-center"><i class="fa-solid fa-thumbs-up"></i></div>`;
+            }
+
+            // Hitung Sisa Waktu
+            const minutesLeft = Math.floor(timerSeconds / 60);
+            const secondsLeft = timerSeconds % 60;
+            const timeLeftStr = `${String(minutesLeft).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
+
+            // Populasikan Halaman Hasil
+            document.getElementById('res-nis').innerText = currentStudentNis;
+            document.getElementById('res-score').innerText = finalScore;
+            
+            const catBadge = document.getElementById('res-category');
+            catBadge.innerText = `Kategori: ${categoryText}`;
+            catBadge.className = `inline-block px-4 py-1.5 rounded-full text-sm font-bold uppercase tracking-wide ${categoryClass}`;
+
+            document.getElementById('result-badge-icon').innerHTML = iconMarkup;
+            document.getElementById('res-correct-count').innerText = `${totalCorrectCount} / ${examQuestions.length}`;
+            document.getElementById('res-time-left').innerText = timeLeftStr;
+
+            // Switch UI ke Result Page
+            document.getElementById('exam-page').classList.add('hidden');
+            document.getElementById('header-exam-info').classList.add('hidden');
+            document.getElementById('result-page').classList.remove('hidden');
+        }
+
+        function restartExam() {
+            resetToLogin();
+        }
+    </script>
+</body>
+</html>
