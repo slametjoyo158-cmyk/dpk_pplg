@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif PPLG: Variabel, Tipe Data & I/O Java</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#312e81',
+                        },
+                        scratch: {
+                            orange: '#FFAB19',
+                            blue: '#4C97FF',
+                            green: '#59C059',
+                            dark: '#333333'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar and smooth transitions */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        .code-glow {
+            box-shadow: 0 0 25px -5px rgba(99, 102, 241, 0.25);
+        }
+        .scratch-block {
+            border-radius: 8px;
+            box-shadow: inset 0 -3px 0 rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-white">
+
+    <!-- TOP NAVIGATION BAR -->
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-cyan-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-500/30">
+                        <i class="fa-solid me-0 fa-code"></i>
+                    </div>
+                    <div>
+                        <span class="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-brand-100">
+                            PPLG Java Learning Hub
+                        </span>
+                        <span class="hidden sm:inline-block text-xs px-2 py-0.5 ml-2 bg-brand-500/20 text-brand-300 border border-brand-500/30 rounded-full font-mono">
+                            Kelas X SMK
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 text-sm font-medium">
+                    <a href="#apersepsi" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-bridge text-amber-400 mr-1.5"></i>Scratch vs Java
+                    </a>
+                    <a href="#variabel" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-box-archive text-emerald-400 mr-1.5"></i>Variabel
+                    </a>
+                    <a href="#tipedata" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-layer-group text-cyan-400 mr-1.5"></i>Tipe Data
+                    </a>
+                    <a href="#inputoutput" class="px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition">
+                        <i class="fa-solid fa-terminal text-purple-400 mr-1.5"></i>Input / Output
+                    </a>
+                    <a href="#simulator" class="px-3 py-2 rounded-lg text-brand-300 bg-brand-500/10 border border-brand-500/30 hover:bg-brand-500/20 transition">
+                        <i class="fa-solid fa-play text-brand-400 mr-1.5"></i>Console Simulator
+                    </a>
+                </nav>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden border-b border-slate-800 bg-slate-900 px-4 pt-2 pb-4 space-y-1">
+            <a href="#apersepsi" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">1. Scratch vs Java</a>
+            <a href="#variabel" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">2. Variabel & Aturan</a>
+            <a href="#tipedata" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">3. Tipe Data</a>
+            <a href="#inputoutput" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">4. Input & Output</a>
+            <a href="#simulator" class="block px-3 py-2 rounded-lg text-brand-300 bg-brand-500/10">5. Console Simulator</a>
+            <a href="#latihan" class="block px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800">6. Latihan Praktikum</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="relative py-12 md:py-16 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-950 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-brand-900/30 via-slate-950/0 to-slate-950"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-3xl mx-auto">
+                <div class="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-xs font-semibold text-emerald-400 mb-6">
+                    <span class="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>Modul Interaktif PPLG - Kurikulum Merdeka</span>
+                </div>
+                <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-4 leading-tight">
+                    Transisi Sukses dari <span class="bg-clip-text text-transparent bg-gradient-to-r from-amber-400 to-orange-500">Scratch</span> ke Pemrograman <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-brand-400">Java</span>
+                </h1>
+                <p class="text-base sm:text-lg text-slate-400 mb-8 leading-relaxed">
+                    Pahami konsep dasar <strong>Variabel</strong>, <strong>Tipe Data</strong>, dan <strong>Input/Output (I/O)</strong> dengan perbandingan blok visual ke kode pemrograman berbasis teks industri.
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <a href="#simulator" class="px-6 py-3 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-semibold shadow-lg shadow-brand-600/30 transition transform hover:-translate-y-0.5 flex items-center">
+                        <i class="fa-solid fa-terminal mr-2"></i> Coba Interactive Terminal
+                    </a>
+                    <a href="#apersepsi" class="px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 font-semibold transition flex items-center">
+                        <i class="fa-solid fa-graduation-cap mr-2"></i> Mulai Pembelajaran
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-16">
+
+        <!-- SECTION 1: APERSEPSI & TRANSIKSI SCRATCH -->
+        <section id="apersepsi" class="scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    <i class="fa-solid fa-bridge text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">1. Apersepsi: Menghubungkan Scratch ke Java</h2>
+                    <p class="text-sm text-slate-400">Konsep dasarnya sama persis, hanya beda cara penulisan!</p>
+                </div>
+            </div>
+
+            <!-- Interactive Comparison Cards -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Scratch Box -->
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 px-4 py-1.5 bg-amber-500/20 text-amber-300 font-mono text-xs rounded-bl-xl font-bold border-l border-b border-amber-500/30">
+                        Scratch (Blok Visual)
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center">
+                        <i class="fa-solid fa-puzzle-piece text-amber-400 mr-2"></i> Logika di Scratch
+                    </h3>
+                    
+                    <div class="space-y-4 font-sans">
+                        <!-- Scratch Block 1 -->
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block mb-1">Membuka Variabel:</span>
+                            <div class="inline-block bg-scratch-orange text-white px-3 py-1.5 rounded-md font-semibold text-sm shadow-sm">
+                                buat variabel <span class="bg-black/20 px-1.5 py-0.5 rounded text-xs ml-1">namaSiswa</span>
+                            </div>
+                        </div>
+
+                        <!-- Scratch Block 2 -->
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block mb-1">Input Data:</span>
+                            <div class="inline-block bg-scratch-blue text-white px-3 py-1.5 rounded-md font-semibold text-sm shadow-sm">
+                                tanya <span class="bg-white text-slate-900 px-2 py-0.5 rounded text-xs">Masukkan Nama Anda</span> dan tunggu
+                            </div>
+                        </div>
+
+                        <!-- Scratch Block 3 -->
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block mb-1">Output Teks:</span>
+                            <div class="inline-block bg-scratch-blue text-white px-3 py-1.5 rounded-md font-semibold text-sm shadow-sm">
+                                katakan <span class="bg-scratch-green px-2 py-0.5 rounded text-xs">gabungkan [Halo ] (jawaban)</span> selama <span class="bg-white text-slate-900 px-1.5 py-0.5 rounded text-xs">2</span> detik
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Java Box -->
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 px-4 py-1.5 bg-cyan-500/20 text-cyan-300 font-mono text-xs rounded-bl-xl font-bold border-l border-b border-cyan-500/30">
+                        Java (Pemrograman Teks)
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-200 mb-4 flex items-center">
+                        <i class="fa-solid fa-code text-cyan-400 mr-2"></i> Kode Java Setara
+                    </h3>
+
+                    <div class="space-y-4 font-mono text-sm">
+                        <!-- Java Code 1 -->
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block font-sans mb-1">Deklarasi + Tipe Data Wajib:</span>
+                            <code class="text-brand-300"><span class="text-purple-400">String</span> namaSiswa;</code>
+                        </div>
+
+                        <!-- Java Code 2 -->
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block font-sans mb-1">Menggunakan Scanner:</span>
+                            <code class="text-slate-300">System.out.print(<span class="text-emerald-400">"Masukkan Nama Anda: "</span>);<br>
+                            namaSiswa = input.<span class="text-amber-300">nextLine()</span>;</code>
+                        </div>
+
+                        <!-- Java Code 3 -->
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <span class="text-xs text-slate-400 block font-sans mb-1">System.out.println & Konkat (+):</span>
+                            <code class="text-slate-300">System.out.println(<span class="text-emerald-400">"Halo "</span> + namaSiswa);</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key Differences Banner -->
+            <div class="mt-6 p-4 rounded-2xl bg-gradient-to-r from-brand-900/40 via-purple-900/20 to-slate-900 border border-brand-500/30 flex items-start space-x-4">
+                <div class="p-2 bg-brand-500/20 text-brand-400 rounded-lg shrink-0">
+                    <i class="fa-solid fa-lightbulb text-xl"></i>
+                </div>
+                <div class="text-sm">
+                    <h4 class="font-bold text-brand-200 mb-1">Perbedaan Utama yang Harus Diingat:</h4>
+                    <p class="text-slate-300">
+                        Di Scratch, variabel akan menyesuaikan angka/teks secara otomatis. Namun di <strong>Java</strong>, komputer membutuhkan kepastian jenis data sebelum membuat wadah memori (<strong>Tipe Data Terikat</strong>) dan setiap kalimat perintah wajib diakhiri dengan titik koma (<code>;</code>).
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: VARIABEL & ATURAN PENAMAAN -->
+        <section id="variabel" class="scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <i class="fa-solid fa-box-archive text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">2. Concept 1: Variabel & Aturan Penamaan</h2>
+                    <p class="text-sm text-slate-400">Variabel adalah nama tempat penyimpanan sementara di memori RAM komputer.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Concept Card -->
+                <div class="lg:col-span-1 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-white mb-3">Aturan Penamaan Java</h3>
+                        <ul class="space-y-3 text-sm text-slate-300">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1 mr-2 shrink-0"></i>
+                                <span><strong>Case-Sensitive:</strong> <code>nama</code> tidak sama dengan <code>Nama</code>.</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1 mr-2 shrink-0"></i>
+                                <span>Diawali huruf, <code>_</code>, atau <code>$</code>. <strong>Tidak boleh diawali angka!</strong></span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-check text-emerald-400 mt-1 mr-2 shrink-0"></i>
+                                <span>Gunakan gaya <strong>camelCase</strong> (contoh: <code>umurSiswa</code>, <code>totalHargaBarang</code>).</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-xmark text-rose-400 mt-1 mr-2 shrink-0"></i>
+                                <span>Tidak boleh menggunakan kata kunci kata bawaan Java (misal: <code>int</code>, <code>class</code>, <code>public</code>).</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400">
+                        💡 <em>Anatomi:</em> <code>TipeData namaVariabel = nilaiAwal;</code>
+                    </div>
+                </div>
+
+                <!-- Interactive Rule Checker Widget -->
+                <div class="lg:col-span-2 bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center">
+                        <i class="fa-solid fa-vial-circle-check text-emerald-400 mr-2"></i> Uji Keabsahan Nama Variabel Java
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4">
+                        Ketikkan calon nama variabel di bawah ini untuk menguji apakah nama tersebut valid menurut aturan Java:
+                    </p>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-mono text-slate-300 mb-2">Nama Variabel:</label>
+                            <div class="relative">
+                                <input type="text" id="var-tester-input" placeholder="Contoh: namaLengkap, 123siswa, int..." 
+                                       class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-slate-100 font-mono focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition">
+                                <span id="var-tester-icon" class="absolute right-4 top-3.5 text-lg"></span>
+                            </div>
+                        </div>
+
+                        <!-- Feedback Output -->
+                        <div id="var-tester-result" class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-sm hidden">
+                            <!-- Dynamic JS content -->
+                        </div>
+
+                        <!-- Quick Test Presets -->
+                        <div>
+                            <span class="text-xs text-slate-400 block mb-2">Klik contoh cepat untuk mencoba:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="testVar('namaSiswa')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-mono text-slate-300 border border-slate-700">namaSiswa</button>
+                                <button onclick="testVar('123jumlah')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-mono text-slate-300 border border-slate-700">123jumlah</button>
+                                <button onclick="testVar('total_harga')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-mono text-slate-300 border border-slate-700">total_harga</button>
+                                <button onclick="testVar('class')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-mono text-slate-300 border border-slate-700">class</button>
+                                <button onclick="testVar('umur#siswa')" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-xs font-mono text-slate-300 border border-slate-700">umur#siswa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: TIPE DATA JAVA -->
+        <section id="tipedata" class="scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                    <i class="fa-solid fa-layer-group text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">3. Concept 2: Tipe Data Java</h2>
+                    <p class="text-sm text-slate-400">Eksplorasi kategori tipe data primitif dan tipe data referensi (String).</p>
+                </div>
+            </div>
+
+            <!-- Tipe Data Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                <!-- Bilangan Bulat -->
+                <div class="bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 rounded-2xl p-5 transition group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-cyan-400 bg-cyan-500/10 px-2.5 py-1 rounded-full">Bilangan Bulat</span>
+                        <i class="fa-solid fa-hashtag text-slate-600 group-hover:text-cyan-400 transition"></i>
+                    </div>
+                    <h4 class="text-base font-bold text-white mb-2">byte, short, int, long</h4>
+                    <p class="text-xs text-slate-400 mb-3">Untuk menyimpan angka tanpa desimal. Yang paling sering dipakai adalah <code>int</code>.</p>
+                    <div class="bg-slate-950 p-2.5 rounded-xl font-mono text-xs text-cyan-300 border border-slate-800">
+                        int umur = 16;<br>
+                        long populasi = 8000000000L;
+                    </div>
+                </div>
+
+                <!-- Pecahan / Desimal -->
+                <div class="bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 rounded-2xl p-5 transition group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full">Angka Desimal</span>
+                        <i class="fa-solid fa-percent text-slate-600 group-hover:text-emerald-400 transition"></i>
+                    </div>
+                    <h4 class="text-base font-bold text-white mb-2">float & double</h4>
+                    <p class="text-xs text-slate-400 mb-3">Menyimpan angka berkoma/desimal. Standar utama adalah <code>double</code>.</p>
+                    <div class="bg-slate-950 p-2.5 rounded-xl font-mono text-xs text-emerald-300 border border-slate-800">
+                        double nilai = 88.5;<br>
+                        float ipk = 3.75f;
+                    </div>
+                </div>
+
+                <!-- Karakter & Logika -->
+                <div class="bg-slate-900/80 border border-slate-800 hover:border-purple-500/50 rounded-2xl p-5 transition group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-purple-400 bg-purple-500/10 px-2.5 py-1 rounded-full">Karakter & Logika</span>
+                        <i class="fa-solid fa-toggle-on text-slate-600 group-hover:text-purple-400 transition"></i>
+                    </div>
+                    <h4 class="text-base font-bold text-white mb-2">char & boolean</h4>
+                    <p class="text-xs text-slate-400 mb-3"><code>char</code> untuk 1 karakter ('A'), <code>boolean</code> bernilai true/false.</p>
+                    <div class="bg-slate-950 p-2.5 rounded-xl font-mono text-xs text-purple-300 border border-slate-800">
+                        char grade = 'A';<br>
+                        boolean isLulus = true;
+                    </div>
+                </div>
+
+                <!-- Teks (String) -->
+                <div class="bg-slate-900/80 border border-slate-800 hover:border-amber-500/50 rounded-2xl p-5 transition group">
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="text-xs font-bold text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full">Referensi Teks</span>
+                        <i class="fa-solid fa-font text-slate-600 group-hover:text-amber-400 transition"></i>
+                    </div>
+                    <h4 class="text-base font-bold text-white mb-2">String</h4>
+                    <p class="text-xs text-slate-400 mb-3">Tipe data non-primitif (Class) untuk deretan kata/kalimat. Dibungkus petik dua (" ").</p>
+                    <div class="bg-slate-950 p-2.5 rounded-xl font-mono text-xs text-amber-300 border border-slate-800">
+                        String nama = "Budi Santoso";
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Memory Drawer Visualizer -->
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+                <h3 class="text-lg font-bold text-white mb-3 flex items-center">
+                    <i class="fa-solid fa-microchip text-cyan-400 mr-2"></i> Visualisasi Laci Memori & Ukuran Tipe Data
+                </h3>
+                <p class="text-xs text-slate-400 mb-6">
+                    Setiap tipe data mengambil kapasitas memori yang berbeda di komputer. Pilih tipe data di bawah untuk melihat simulasi alokasi memorinya:
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2 mb-6" id="type-selector-buttons">
+                    <button onclick="selectDataType('byte')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition active" data-type="byte">byte (1B)</button>
+                    <button onclick="selectDataType('short')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition" data-type="short">short (2B)</button>
+                    <button onclick="selectDataType('int')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition" data-type="int">int (4B)</button>
+                    <button onclick="selectDataType('long')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition" data-type="long">long (8B)</button>
+                    <button onclick="selectDataType('float')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition" data-type="float">float (4B)</button>
+                    <button onclick="selectDataType('double')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition" data-type="double">double (8B)</button>
+                    <button onclick="selectDataType('char')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition" data-type="char">char (2B)</button>
+                    <button onclick="selectDataType('boolean')" class="type-btn p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-center border border-slate-700 transition" data-type="boolean">boolean (1b)</button>
+                </div>
+
+                <!-- Info Box Display -->
+                <div id="type-info-display" class="bg-slate-950 rounded-xl p-5 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <!-- Dynamic Info -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: INPUT & OUTPUT JAVA -->
+        <section id="inputoutput" class="scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                    <i class="fa-solid fa-terminal text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">4. Concept 3: Input dan Output (I/O)</h2>
+                    <p class="text-sm text-slate-400">Mengambil perintah dari pengguna via keyboard & menampilkan hasil ke konsol.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Output Explanation -->
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center">
+                        <i class="fa-solid fa-desktop text-purple-400 mr-2"></i> Menampilkan Output
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4">
+                        Java memiliki dua metode pencetakan standar ke layar konsol:
+                    </p>
+
+                    <div class="space-y-3 font-mono text-xs">
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <div class="text-purple-300 font-bold mb-1">System.out.println()</div>
+                            <p class="font-sans text-slate-400 text-xs">Mencetak teks lalu berpindah ke **garis baru** (newline).</p>
+                        </div>
+                        <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                            <div class="text-purple-300 font-bold mb-1">System.out.print()</div>
+                            <p class="font-sans text-slate-400 text-xs">Mencetak teks **tanpa** berpindah garis (cursor tetap di samping).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Scanner Explanation -->
+                <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+                    <h3 class="text-lg font-bold text-white mb-3 flex items-center">
+                        <i class="fa-solid fa-keyboard text-cyan-400 mr-2"></i> Menerima Input (`Scanner`)
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-3">
+                        Gunakan class <code>Scanner</code> dari library <code>java.util</code>:
+                    </p>
+
+                    <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 font-mono text-xs mb-3 text-slate-300">
+                        <span class="text-purple-400">import</span> java.util.Scanner;<br><br>
+                        Scanner input = <span class="text-purple-400">new</span> Scanner(System.in);
+                    </div>
+
+                    <!-- Scanner Method Lookup Table -->
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs font-mono">
+                            <thead class="bg-slate-950 text-slate-400 border-b border-slate-800">
+                                <tr>
+                                    <th class="p-2">Method Scanner</th>
+                                    <th class="p-2">Tipe Data Target</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800 text-slate-300">
+                                <tr><td class="p-2 text-cyan-300">nextLine()</td><td class="p-2 font-sans">String (1 Baris penuh)</td></tr>
+                                <tr><td class="p-2 text-cyan-300">nextInt()</td><td class="p-2 font-sans">int (Bilangan Bulat)</td></tr>
+                                <tr><td class="p-2 text-cyan-300">nextDouble()</td><td class="p-2 font-sans">double (Desimal)</td></tr>
+                                <tr><td class="p-2 text-cyan-300">nextBoolean()</td><td class="p-2 font-sans">boolean (true/false)</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 5: LIVE JAVA CONSOLE SIMULATOR -->
+        <section id="simulator" class="scroll-mt-20">
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="p-2.5 rounded-xl bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                        <i class="fa-solid fa-terminal text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold text-white">5. Interactive Java Console Terminal</h2>
+                        <p class="text-sm text-slate-400">Simulasikan eksekusi kode program Java langsung di browser!</p>
+                    </div>
+                </div>
+
+                <!-- Code Preset Selector -->
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs text-slate-400 hidden sm:inline">Pilih Program:</span>
+                    <select id="preset-selector" onchange="loadPreset(this.value)" class="bg-slate-900 border border-slate-700 text-slate-200 text-xs rounded-xl px-3 py-2 font-mono focus:outline-none focus:border-brand-500">
+                        <option value="datasiswa">DataSiswaPPLG.java (Praktikum I/O)</option>
+                        <option value="kasir">KantinPPLG.java (Aplikasi Kasir)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- IDE / Console Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <!-- Editor Side -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden code-glow flex flex-col h-[520px]">
+                    <!-- Editor Bar -->
+                    <div class="px-4 py-3 bg-slate-950 border-b border-slate-800 flex items-center justify-between shrink-0">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-3 h-3 rounded-full bg-rose-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-amber-500 inline-block"></span>
+                            <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span>
+                            <span id="active-filename" class="ml-2 font-mono text-xs text-slate-400">DataSiswaPPLG.java</span>
+                        </div>
+                        <button onclick="runSimulator()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs transition flex items-center shadow-md shadow-emerald-600/30">
+                            <i class="fa-solid fa-play mr-1.5"></i> Jalankan Program
+                        </button>
+                    </div>
+
+                    <!-- Code Text Area -->
+                    <div class="p-4 flex-grow overflow-auto bg-slate-950 font-mono text-xs leading-relaxed text-slate-300">
+                        <pre id="code-display" class="whitespace-pre"></pre>
+                    </div>
+                </div>
+
+                <!-- Live Terminal Console Side -->
+                <div class="lg:col-span-5 bg-black border border-slate-800 rounded-2xl overflow-hidden flex flex-col h-[520px]">
+                    <!-- Terminal Bar -->
+                    <div class="px-4 py-3 bg-slate-900 border-b border-slate-800 flex items-center justify-between shrink-0">
+                        <div class="flex items-center space-x-2">
+                            <i class="fa-solid fa-terminal text-xs text-emerald-400"></i>
+                            <span class="font-mono text-xs text-slate-300 font-bold">Console Output Window</span>
+                        </div>
+                        <button onclick="resetTerminal()" class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 transition">
+                            <i class="fa-solid fa-rotate-right mr-1"></i> Reset
+                        </button>
+                    </div>
+
+                    <!-- Terminal Output View -->
+                    <div id="terminal-screen" class="p-4 flex-grow font-mono text-xs overflow-y-auto space-y-2 text-emerald-400">
+                        <div class="text-slate-500 italic">[Klik tombol "Jalankan Program" untuk memulai terminal Java]</div>
+                    </div>
+
+                    <!-- Terminal Interactive Input Form -->
+                    <div class="p-3 bg-slate-900 border-t border-slate-800 shrink-0">
+                        <form id="terminal-input-form" onsubmit="handleTerminalInput(event)" class="flex gap-2">
+                            <span class="text-emerald-400 font-mono text-sm self-center">&gt;</span>
+                            <input type="text" id="terminal-input" placeholder="Ketik input lalu tekan Enter..." disabled 
+                                   class="flex-grow bg-black border border-slate-700 rounded-lg px-3 py-2 text-slate-100 font-mono text-xs focus:outline-none focus:border-emerald-500 disabled:opacity-50">
+                            <button type="submit" id="terminal-submit-btn" disabled class="px-3 py-2 bg-slate-800 text-slate-300 rounded-lg text-xs font-mono disabled:opacity-50 hover:bg-slate-700">Kirim</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 6: LATIHAN PRAKTIKUM & QUIZ -->
+        <section id="latihan" class="scroll-mt-20">
+            <div class="flex items-center space-x-3 mb-6">
+                <div class="p-2.5 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
+                    <i class="fa-solid fa-pen-ruler text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold text-white">6. Latihan Mandiri & Evaluasi Pemahaman</h2>
+                    <p class="text-sm text-slate-400">Uji pemahamanmu dengan kuis interaktif singkat di bawah ini!</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Task Card -->
+                <div class="lg:col-span-1 bg-slate-900/80 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+                    <div>
+                        <div class="inline-flex px-2.5 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold mb-3 border border-amber-500/20">
+                            Soal Praktikum
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">Aplikasi Struk Kasir Kantin PPLG</h3>
+                        <p class="text-xs text-slate-300 mb-4 leading-relaxed">
+                            Buatlah class Java bernama <code>KantinPPLG</code> yang meminta input:
+                        </p>
+                        <ol class="list-decimal list-inside text-xs text-slate-400 space-y-1.5 font-mono">
+                            <li>Nama Pembeli (String)</li>
+                            <li>Nama Makanan (String)</li>
+                            <li>Harga Makanan (int)</li>
+                            <li>Jumlah Beli (int)</li>
+                        </ol>
+                        <p class="text-xs text-slate-300 mt-4">
+                            Hitung Total = <code>Harga * Jumlah</code> dan tampilkan struk nota pembeli secara rapi!
+                        </p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-800">
+                        <button onclick="loadPreset('kasir'); document.getElementById('simulator').scrollIntoView({behavior: 'smooth'});" class="w-full py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-semibold text-xs rounded-xl transition flex items-center justify-center">
+                            <i class="fa-solid fa-code mr-2"></i> Buka Solusi di Simulator
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Interactive Quiz Widget -->
+                <div class="lg:col-span-2 bg-slate-900/80 border border-slate-800 rounded-2xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-bold text-white">Quiz Singkat Tipe Data & I/O</h3>
+                        <span id="quiz-score" class="text-xs font-mono bg-slate-800 px-3 py-1 rounded-full text-brand-300 border border-slate-700">Skor: 0 / 3</span>
+                    </div>
+
+                    <div id="quiz-container" class="space-y-6">
+                        <!-- Q1 -->
+                        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+                            <p class="text-xs font-semibold text-slate-200 mb-3">1. Tipe data Java manakah yang paling tepat digunakan untuk menyimpan nilai IPK siswa (misal: 3.85)?</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="checkAnswer(1, 'A', false, this)" class="q-btn-1 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">A. int</button>
+                                <button onclick="checkAnswer(1, 'B', true, this)" class="q-btn-1 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">B. double</button>
+                                <button onclick="checkAnswer(1, 'C', false, this)" class="q-btn-1 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">C. String</button>
+                                <button onclick="checkAnswer(1, 'D', false, this)" class="q-btn-1 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">D. boolean</button>
+                            </div>
+                        </div>
+
+                        <!-- Q2 -->
+                        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+                            <p class="text-xs font-semibold text-slate-200 mb-3">2. Method Scanner manakah yang digunakan untuk membaca input angka bulat (integer)?</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="checkAnswer(2, 'A', false, this)" class="q-btn-2 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">A. input.nextLine()</button>
+                                <button onclick="checkAnswer(2, 'B', true, this)" class="q-btn-2 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">B. input.nextInt()</button>
+                                <button onclick="checkAnswer(2, 'C', false, this)" class="q-btn-2 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">C. input.readInt()</button>
+                                <button onclick="checkAnswer(2, 'D', false, this)" class="q-btn-2 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">D. input.nextDouble()</button>
+                            </div>
+                        </div>
+
+                        <!-- Q3 -->
+                        <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+                            <p class="text-xs font-semibold text-slate-200 mb-3">3. Penulisan nama variabel manakah yang **TIDAK VALID** dalam Java?</p>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="checkAnswer(3, 'A', false, this)" class="q-btn-3 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">A. namaLengkap</button>
+                                <button onclick="checkAnswer(3, 'B', false, this)" class="q-btn-3 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">B. _umur</button>
+                                <button onclick="checkAnswer(3, 'C', true, this)" class="q-btn-3 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">C. 123nama</button>
+                                <button onclick="checkAnswer(3, 'D', false, this)" class="q-btn-3 text-left p-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-xs text-slate-300 border border-slate-700 font-mono">D. totalGaji</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-16 bg-slate-900 border-t border-slate-800 py-8 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="mb-2">Modul Pembelajaran Dasar-Dasar Keahlian PPLG - Konsentrasi Pengembangan Perangkat Lunak dan Gim</p>
+            <p>Dibuat untuk pembelajaran interaktif siswa SMK Kelas X</p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        // Mobile Menu Toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // ==========================================
+        // 1. VARIABLE NAME RULE TESTER LOGIC
+        // ==========================================
+        const reservedKeywords = [
+            'abstract', 'assert', 'boolean', 'break', 'byte', 'case', 'catch', 'char', 'class', 'const',
+            'continue', 'default', 'do', 'double', 'else', 'enum', 'extends', 'final', 'finally', 'float',
+            'for', 'goto', 'if', 'implements', 'import', 'instanceof', 'int', 'interface', 'long', 'native',
+            'new', 'package', 'private', 'protected', 'public', 'return', 'short', 'static', 'strictfp', 'super',
+            'switch', 'synchronized', 'this', 'throw', 'throws', 'transient', 'try', 'void', 'volatile', 'while'
+        ];
+
+        function testVar(customVal) {
+            const inputEl = document.getElementById('var-tester-input');
+            if (customVal !== undefined) {
+                inputEl.value = customVal;
+            }
+            validateVariable(inputEl.value.trim());
+        }
+
+        document.getElementById('var-tester-input').addEventListener('input', function(e) {
+            validateVariable(e.target.value.trim());
+        });
+
+        function validateVariable(val) {
+            const resultEl = document.getElementById('var-tester-result');
+            const iconEl = document.getElementById('var-tester-icon');
+
+            if (!val) {
+                resultEl.classList.add('hidden');
+                iconEl.innerHTML = '';
+                return;
+            }
+
+            resultEl.classList.remove('hidden');
+
+            // Rules Validation
+            let isValid = true;
+            let reason = '';
+
+            if (reservedKeywords.includes(val)) {
+                isValid = false;
+                reason = `<strong>"${val}"</strong> adalah kata kunci bawaan Java (Reserved Keyword) sehingga tidak boleh dipakai sebagai nama variabel.`;
+            } else if (/^\d/.test(val)) {
+                isValid = false;
+                reason = `Nama variabel tidak boleh diawali oleh angka (<code>${val[0]}</code>). Diganti contoh: <code>a${val}</code>.`;
+            } else if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(val)) {
+                isValid = false;
+                reason = `Mengandung karakter ilegal (seperti spasi, simbol #, -, @). Hanya huruf, angka, <code>_</code>, atau <code>$</code> yang diizinkan.`;
+            } else {
+                isValid = true;
+                reason = `Penulisan nama variabel <code>${val}</code> **VALID** dan sesuai standar sintaks Java!`;
+            }
+
+            if (isValid) {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+                resultEl.className = 'p-4 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-200 text-xs leading-relaxed';
+                resultEl.innerHTML = `<span class="font-bold text-emerald-400 block mb-1">✅ VALID!</span> ${reason}`;
+            } else {
+                iconEl.innerHTML = '<i class="fa-solid fa-circle-xmark text-rose-400"></i>';
+                resultEl.className = 'p-4 rounded-xl bg-rose-950/40 border border-rose-500/30 text-rose-200 text-xs leading-relaxed';
+                resultEl.innerHTML = `<span class="font-bold text-rose-400 block mb-1">❌ TIDAK VALID!</span> ${reason}`;
+            }
+        }
+
+        // ==========================================
+        // 2. DATA TYPE MEMORY VISUALIZER LOGIC
+        // ==========================================
+        const dataTypesInfo = {
+            'byte': {
+                size: '1 Byte (8-bit)',
+                range: '-128 s.d. 127',
+                example: 'byte umur = 16;',
+                desc: 'Tipe bilangan bulat terkecil. Hemat memori untuk angka skala kecil.'
+            },
+            'short': {
+                size: '2 Byte (16-bit)',
+                range: '-32,768 s.d. 32,767',
+                example: 'short jumlahSiswa = 320;',
+                desc: 'Tipe bilangan bulat menengah.'
+            },
+            'int': {
+                size: '4 Byte (32-bit)',
+                range: '-2,147,483,648 s.d. 2,147,483,647',
+                example: 'int harga = 50000;',
+                desc: 'Pilihan standar utama untuk bilangan bulat di Java.'
+            },
+            'long': {
+                size: '8 Byte (64-bit)',
+                range: 'Sangat Besar (-9 Triliun s.d. 9 Triliun+)',
+                example: 'long populasi = 8000000000L;',
+                desc: 'Digunakan untuk angka bulat raksasa (wajib akhiri huruf L).'
+            },
+            'float': {
+                size: '4 Byte (32-bit)',
+                range: 'Presisi 6-7 digit desimal',
+                example: 'float nilai = 85.5f;',
+                desc: 'Pecahan desimal presisi tunggal (wajib akhiri huruf f).'
+            },
+            'double': {
+                size: '8 Byte (64-bit)',
+                range: 'Presisi 15 digit desimal',
+                example: 'double pi = 3.1415926535;',
+                desc: 'Pilihan standar utama untuk pecahan/desimal presisi tinggi.'
+            },
+            'char': {
+                size: '2 Byte (16-bit)',
+                range: '1 Karakter Tunggal Unicode',
+                example: 'char nilaiHuruf = \'A\';',
+                desc: 'Menyimpan satu huruf/simbol tunggal dengan petik tunggal (\' \').'
+            },
+            'boolean': {
+                size: '1 bit',
+                range: 'true atau false',
+                example: 'boolean isLulus = true;',
+                desc: 'Menyimpan status logika kebenaran.'
+            }
+        };
+
+        function selectDataType(typeName) {
+            const buttons = document.querySelectorAll('.type-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('data-type') === typeName) {
+                    btn.classList.add('bg-brand-600', 'text-white', 'border-brand-500');
+                    btn.classList.remove('bg-slate-800', 'text-slate-300');
+                } else {
+                    btn.classList.remove('bg-brand-600', 'text-white', 'border-brand-500');
+                    btn.classList.add('bg-slate-800', 'text-slate-300');
+                }
+            });
+
+            const data = dataTypesInfo[typeName];
+            const display = document.getElementById('type-info-display');
+            display.innerHTML = `
+                <div>
+                    <div class="flex items-center space-x-2 mb-1">
+                        <span class="font-mono text-base font-bold text-cyan-400">${typeName}</span>
+                        <span class="text-xs bg-slate-800 text-slate-300 px-2 py-0.5 rounded border border-slate-700">${data.size}</span>
+                    </div>
+                    <p class="text-xs text-slate-300 mb-2">${data.desc}</p>
+                    <div class="text-xs text-slate-400"><strong>Rentang Nilai:</strong> ${data.range}</div>
+                </div>
+                <div class="shrink-0 bg-slate-900 px-4 py-3 rounded-xl border border-slate-800 font-mono text-xs text-emerald-300">
+                    ${data.example}
+                </div>
+            `;
+        }
+
+        // Initialize default select
+        selectDataType('int');
+
+        // ==========================================
+        // 3. JAVA CONSOLE SIMULATOR LOGIC
+        // ==========================================
+        const codePresets = {
+            'datasiswa': {
+                filename: 'DataSiswaPPLG.java',
+                code: `import java.util.Scanner;
+
+public class DataSiswaPPLG {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+        
+        System.out.println("=== FORM INPUT DATA SISWA PPLG ===");
+        
+        System.out.print("Masukkan Nama Lengkap : ");
+        String nama = input.nextLine();
+
+        System.out.print("Masukkan Umur        : ");
+        int umur = input.nextInt();
+
+        System.out.print("Masukkan Tinggi (cm) : ");
+        double tinggi = input.nextDouble();
+
+        System.out.println("\\n==================================");
+        System.out.println("        HASIL BIODATA SISWA       ");
+        System.out.println("==================================");
+        System.out.println("Nama Lengkap  : " + nama);
+        System.out.println("Umur          : " + umur + " tahun");
+        System.out.println("Tinggi Badan  : " + tinggi + " cm");
+        System.out.println("==================================");
+
+        input.close();
+    }
+}`,
+                steps: [
+                    { prompt: "=== FORM INPUT DATA SISWA PPLG ===\nMasukkan Nama Lengkap : ", type: "string", var: "nama" },
+                    { prompt: "Masukkan Umur        : ", type: "int", var: "umur" },
+                    { prompt: "Masukkan Tinggi (cm) : ", type: "double", var: "tinggi" }
+                ],
+                onComplete: (data) => {
+                    return `\n==================================\n` +
+                           `        HASIL BIODATA SISWA       \n` +
+                           `==================================\n` +
+                           `Nama Lengkap  : ${data.nama}\n` +
+                           `Umur          : ${data.umur} tahun\n` +
+                           `Tinggi Badan  : ${data.tinggi} cm\n` +
+                           `==================================\n` +
+                           `[Program selesai dengan kode status 0]`;
+                }
+            },
+            'kasir': {
+                filename: 'KantinPPLG.java',
+                code: `import java.util.Scanner;
+
+public class KantinPPLG {
+    public static void main(String[] args) {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("=== KANTIN PPLG - STRUK KASIR ===");
+
+        System.out.print("Nama Pembeli   : ");
+        String pembeli = input.nextLine();
+
+        System.out.print("Nama Makanan   : ");
+        String makanan = input.nextLine();
+
+        System.out.print("Harga Satuan   : ");
+        int harga = input.nextInt();
+
+        System.out.print("Jumlah Beli    : ");
+        int jumlah = input.nextInt();
+
+        int total = harga * jumlah;
+
+        System.out.println("\\n----------------------------------");
+        System.out.println("NOTA PEMBAYARAN");
+        System.out.println("Pembeli  : " + pembeli);
+        System.out.println("Pesanan  : " + makanan + " x" + jumlah);
+        System.out.println("TOTAL    : Rp " + total);
+        System.out.println("----------------------------------");
+
+        input.close();
+    }
+}`,
+                steps: [
+                    { prompt: "=== KANTIN PPLG - STRUK KASIR ===\nNama Pembeli   : ", type: "string", var: "pembeli" },
+                    { prompt: "Nama Makanan   : ", type: "string", var: "makanan" },
+                    { prompt: "Harga Satuan   : ", type: "int", var: "harga" },
+                    { prompt: "Jumlah Beli    : ", type: "int", var: "jumlah" }
+                ],
+                onComplete: (data) => {
+                    const total = parseInt(data.harga || 0) * parseInt(data.jumlah || 0);
+                    return `\n----------------------------------\n` +
+                           `NOTA PEMBAYARAN\n` +
+                           `Pembeli  : ${data.pembeli}\n` +
+                           `Pesanan  : ${data.makanan} x${data.jumlah}\n` +
+                           `TOTAL    : Rp ${total.toLocaleString('id-ID')}\n` +
+                           `----------------------------------\n` +
+                           `[Program selesai dengan kode status 0]`;
+                }
+            }
+        };
+
+        let currentPresetKey = 'datasiswa';
+        let currentStepIndex = 0;
+        let userInputData = {};
+        let isSimulatorRunning = false;
+
+        function loadPreset(key) {
+            currentPresetKey = key;
+            const preset = codePresets[key];
+            document.getElementById('active-filename').innerText = preset.filename;
+            document.getElementById('code-display').innerText = preset.code;
+            resetTerminal();
+        }
+
+        function resetTerminal() {
+            isSimulatorRunning = false;
+            currentStepIndex = 0;
+            userInputData = {};
+            const screen = document.getElementById('terminal-screen');
+            screen.innerHTML = '<div class="text-slate-500 italic">[Klik tombol "Jalankan Program" untuk memulai terminal Java]</div>';
+            
+            document.getElementById('terminal-input').value = '';
+            document.getElementById('terminal-input').disabled = true;
+            document.getElementById('terminal-submit-btn').disabled = true;
+        }
+
+        function runSimulator() {
+            resetTerminal();
+            isSimulatorRunning = true;
+            const screen = document.getElementById('terminal-screen');
+            screen.innerHTML = '<div class="text-slate-400">[Compiling & Running Java Program...]</div><br>';
+            
+            document.getElementById('terminal-input').disabled = false;
+            document.getElementById('terminal-submit-btn').disabled = false;
+            document.getElementById('terminal-input').focus();
+
+            promptNextStep();
+        }
+
+        function promptNextStep() {
+            const preset = codePresets[currentPresetKey];
+            if (currentStepIndex < preset.steps.length) {
+                const step = preset.steps[currentStepIndex];
+                appendTerminalOutput(step.prompt, false);
+            } else {
+                // Completed
+                const resultText = preset.onComplete(userInputData);
+                appendTerminalOutput(resultText, true);
+                document.getElementById('terminal-input').disabled = true;
+                document.getElementById('terminal-submit-btn').disabled = true;
+                isSimulatorRunning = false;
+            }
+        }
+
+        function handleTerminalInput(e) {
+            e.preventDefault();
+            if (!isSimulatorRunning) return;
+
+            const inputEl = document.getElementById('terminal-input');
+            const val = inputEl.value.trim();
+
+            if (!val) return;
+
+            const preset = codePresets[currentPresetKey];
+            const currentStep = preset.steps[currentStepIndex];
+
+            // Append entered value to terminal view
+            appendTerminalOutput(val + '\n', true);
+
+            // Store data
+            userInputData[currentStep.var] = val;
+
+            inputEl.value = '';
+            currentStepIndex++;
+
+            setTimeout(() => {
+                promptNextStep();
+            }, 300);
+        }
+
+        function appendTerminalOutput(text, isUser = false) {
+            const screen = document.getElementById('terminal-screen');
+            const span = document.createElement('span');
+            span.className = isUser ? 'text-amber-300 font-bold' : 'text-emerald-400 whitespace-pre-wrap';
+            span.innerText = text;
+            screen.appendChild(span);
+            screen.scrollTop = screen.scrollHeight;
+        }
+
+        // Initialize preset on load
+        loadPreset('datasiswa');
+
+        // ==========================================
+        // 4. QUIZ LOGIC
+        // ==========================================
+        let quizAnswers = { 1: false, 2: false, 3: false };
+
+        function checkAnswer(questionNum, option, isCorrect, btnElement) {
+            const btns = document.querySelectorAll(`.q-btn-${questionNum}`);
+            btns.forEach(b => {
+                b.disabled = true;
+                b.classList.remove('hover:bg-slate-800');
+            });
+
+            if (isCorrect) {
+                btnElement.classList.add('bg-emerald-950', 'text-emerald-300', 'border-emerald-500');
+                quizAnswers[questionNum] = true;
+            } else {
+                btnElement.classList.add('bg-rose-950', 'text-rose-300', 'border-rose-500');
+            }
+
+            // Update score
+            const score = Object.values(quizAnswers).filter(Boolean).length;
+            document.getElementById('quiz-score').innerText = `Skor: ${score} / 3`;
+        }
+    </script>
+</body>
+</html>
