@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asesmen Pemrograman Java - Input & Output</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .code-font { font-family: 'Fira Code', monospace; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-white">
+
+    <!-- Top Header Navigation -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-brand-600 flex items-center justify-center text-white font-bold text-xl shadow-md shadow-brand-500/20">
+                    <i class="fa-solid me-0 fa-code"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-900 text-base sm:text-lg leading-tight">Ujian Asesmen Java</h1>
+                    <p class="text-xs text-slate-500 font-medium">Materi: Input & Output Scanner</p>
+                </div>
+            </div>
+
+            <!-- Quiz Controls Header Info (Shown during Exam) -->
+            <div id="headerExamInfo" class="hidden flex items-center space-x-4">
+                <!-- Code Reference Button -->
+                <button onclick="toggleCodeModal(true)" class="inline-flex items-center space-x-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-semibold transition">
+                    <i class="fa-solid fa-file-code text-brand-600"></i>
+                    <span class="hidden sm:inline">Lihat Kode Java</span>
+                </button>
+
+                <!-- Timer Badge -->
+                <div id="timerContainer" class="flex items-center space-x-2 bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold font-mono">
+                    <i class="fa-regular fa-clock text-amber-600 animate-pulse"></i>
+                    <span id="timerText">20:00</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-grow w-full">
+
+        <!-- ================= LOGIN SCREEN ================= -->
+        <div id="screenLogin" class="max-w-xl mx-auto">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+                <div class="bg-gradient-to-r from-brand-600 to-brand-700 p-6 text-white text-center">
+                    <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-sm">
+                        <i class="fa-solid fa-user-graduate text-3xl text-white"></i>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-bold">Identitas Peserta Ujian</h2>
+                    <p class="text-brand-100 text-xs sm:text-sm mt-1">Silakan masukkan Nama Lengkap dan NIS Anda untuk memulai.</p>
+                </div>
+
+                <form id="formLogin" onsubmit="handleStartExam(event)" class="p-6 sm:p-8 space-y-5">
+                    <div>
+                        <label for="inputNama" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nama Lengkap Siswa</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <input type="text" id="inputNama" required placeholder="Contoh: Ahmad Rizki"
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm font-medium transition">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="inputNis" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nomor Induk Siswa (NIS)</label>
+                        <div class="relative">
+                            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <i class="fa-solid fa-id-card"></i>
+                            </span>
+                            <input type="number" id="inputNis" required placeholder="Contoh: 20241001"
+                                class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-brand-500 text-sm font-medium transition">
+                        </div>
+                    </div>
+
+                    <!-- Exam Rules Card -->
+                    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 space-y-2">
+                        <p class="font-bold flex items-center text-amber-800">
+                            <i class="fa-solid fa-triangle-exclamation mr-2 text-amber-600"></i> Tata Tertib & Ketentuan Ujian:
+                        </p>
+                        <ul class="list-disc list-inside space-y-1 text-amber-800/90 leading-relaxed pl-1">
+                            <li>Jumlah soal: <strong>20 Pilihan Ganda (5 Opsi A, B, C, D, E)</strong>.</li>
+                            <li>Waktu pengerjaan: <strong>20 Menit</strong>.</li>
+                            <li class="font-bold text-red-600">SISTEM ANTI-CURANG: Dilarang mengganti tab browser/aplikasi! Jika Anda berpindah tab, ujian akan DIRESET otomatis ke awal.</li>
+                        </ul>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 active:bg-brand-800 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-brand-500/30 transition duration-200 flex items-center justify-center space-x-2 text-sm">
+                        <span>Mulai Kerjakan Asesmen</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= EXAM SCREEN ================= -->
+        <div id="screenExam" class="hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+
+                <!-- Left Column: Question Navigator & Info -->
+                <div class="lg:col-span-1 space-y-6 order-2 lg:order-1">
+                    <!-- Student Info Box -->
+                    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <div class="flex items-center space-x-3 mb-3">
+                            <div class="w-9 h-9 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center font-bold text-sm">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <p id="studentDisplayName" class="font-bold text-slate-900 text-sm truncate">Siswa</p>
+                                <p id="studentDisplayNis" class="text-xs text-slate-500 font-mono">NIS: -</p>
+                            </div>
+                        </div>
+                        <button onclick="toggleCodeModal(true)" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-code text-brand-600"></i>
+                            <span>Buka Snippet Kode Java</span>
+                        </button>
+                    </div>
+
+                    <!-- Question Grid Palette -->
+                    <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+                        <h3 class="font-bold text-slate-800 text-xs uppercase tracking-wider mb-3 flex items-center justify-between">
+                            <span>Navigasi Soal</span>
+                            <span id="answeredCount" class="text-brand-600 font-mono text-xs">0/20 Terjawab</span>
+                        </h3>
+                        <div id="questionGrid" class="grid grid-cols-5 gap-2">
+                            <!-- Question Number Buttons standard JS generated -->
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-around text-[10px] text-slate-500 font-medium">
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 bg-brand-600 rounded-full mr-1"></span> Aktif</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 bg-emerald-500 rounded-full mr-1"></span> Terjawab</span>
+                            <span class="flex items-center"><span class="w-2.5 h-2.5 bg-slate-200 rounded-full mr-1"></span> Belum</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Question Content Box -->
+                <div class="lg:col-span-3 order-1 lg:order-2">
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8 flex flex-col justify-between min-h-[500px]">
+                        <div>
+                            <!-- Header Question Number -->
+                            <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-100">
+                                <span class="bg-brand-50 text-brand-700 px-3 py-1 rounded-full text-xs font-bold tracking-wide">
+                                    Soal Nomor <span id="currentQNumber">1</span> dari 20
+                                </span>
+                                <span class="text-xs text-slate-400 font-medium">Pilihan Ganda (5 Opsi)</span>
+                            </div>
+
+                            <!-- Question Text -->
+                            <div id="questionText" class="text-slate-800 font-semibold text-base sm:text-lg leading-relaxed mb-6">
+                                Loading soal...
+                            </div>
+
+                            <!-- Options List -->
+                            <div id="optionsContainer" class="space-y-3">
+                                <!-- Option Radio Buttons JS Generated -->
+                            </div>
+                        </div>
+
+                        <!-- Bottom Navigation Buttons -->
+                        <div class="flex items-center justify-between pt-8 mt-8 border-t border-slate-100">
+                            <button id="btnPrev" onclick="navigateQuestion(-1)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center space-x-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                                <i class="fa-solid fa-arrow-left text-xs"></i>
+                                <span>Sebelumnya</span>
+                            </button>
+
+                            <button id="btnNext" onclick="navigateQuestion(1)" class="bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition flex items-center space-x-2">
+                                <span>Berikutnya</span>
+                                <i class="fa-solid fa-arrow-right text-xs"></i>
+                            </button>
+
+                            <button id="btnFinish" onclick="confirmFinishExam()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2.5 rounded-xl font-bold text-sm transition flex items-center space-x-2 shadow-lg shadow-emerald-600/20">
+                                <i class="fa-solid fa-check-circle"></i>
+                                <span>Selesaikan Ujian</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= RESULT SCREEN ================= -->
+        <div id="screenResult" class="hidden max-w-4xl mx-auto space-y-6">
+            <!-- Summary Score Card -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden">
+                <div id="resultHeaderBg" class="bg-gradient-to-r from-brand-600 to-brand-800 p-8 text-white text-center relative">
+                    <h2 class="text-2xl font-extrabold mb-1">Hasil Asesmen Pemrograman Java</h2>
+                    <p class="text-brand-100 text-xs sm:text-sm">Laporan Nilai & Evaluasi Jawaban</p>
+
+                    <!-- Score Badge Circle -->
+                    <div class="mt-6 inline-flex flex-col items-center justify-center w-32 h-32 rounded-full bg-white text-slate-900 shadow-2xl border-4 border-white/20">
+                        <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Nilai Akhir</span>
+                        <span id="finalScore" class="text-4xl font-extrabold text-brand-600">0</span>
+                        <span class="text-[10px] text-slate-400 font-semibold">/ 100</span>
+                    </div>
+                </div>
+
+                <div class="p-6 sm:p-8 bg-slate-50 border-b border-slate-200 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-medium">Siswa</p>
+                        <p id="resNama" class="font-bold text-slate-800 text-sm mt-0.5 truncate">-</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-medium">NIS</p>
+                        <p id="resNis" class="font-bold text-slate-800 text-sm mt-0.5 font-mono">-</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-medium">Benar / Salah</p>
+                        <p class="font-bold text-sm mt-0.5"><span id="resBenar" class="text-emerald-600">0</span> / <span id="resSalah" class="text-rose-600">0</span></p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                        <p class="text-xs text-slate-500 font-medium">Status Hasil</p>
+                        <p id="resStatus" class="font-extrabold text-sm mt-0.5 uppercase tracking-wide text-emerald-600">LULUS</p>
+                    </div>
+                </div>
+
+                <div class="p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-xs text-slate-500">
+                        * Nilai standar ketuntasan minimal (KKM) asesmen ini adalah <strong>70</strong>.
+                    </p>
+                    <button onclick="restartExam()" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-bold py-2.5 px-6 rounded-xl transition flex items-center justify-center space-x-2 text-sm">
+                        <i class="fa-solid fa-rotate-right"></i>
+                        <span>Ulangi Ujian</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Evaluation Section -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+                <h3 class="text-lg font-bold text-slate-900 mb-6 flex items-center">
+                    <i class="fa-solid fa-list-check text-brand-600 mr-2"></i> Pembahasan Soal & Kunci Jawaban
+                </h3>
+                <div id="reviewContainer" class="space-y-6">
+                    <!-- Review JS Generated -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
+        &copy; Modul Asesmen Java - Input Output Scanner | Berbasis Web & Anti-Cheating
+    </footer>
+
+    <!-- ================= MODAL KODE JAVA REFERENCE ================= -->
+    <div id="modalCode" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 text-slate-100 rounded-2xl border border-slate-700 max-w-3xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+            <!-- Modal Header -->
+            <div class="p-4 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-rose-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-amber-500"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+                    <span class="text-xs font-mono text-slate-400 ml-2">Data_Siswa.java</span>
+                </div>
+                <button onclick="toggleCodeModal(false)" class="text-slate-400 hover:text-white transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <!-- Modal Body (Code syntax) -->
+            <div class="p-4 overflow-y-auto font-mono text-xs sm:text-sm leading-relaxed text-emerald-400 bg-slate-950">
+                <pre class="code-font whitespace-pre"><code>package Latihan_input_Output;
+import java.util.*;
+
+/**
+ *
+ * @author WINDOWS
+ */
+public class Data_Siswa {
+
+    public static void main(String[] args) {
+        // TODO code application logic here
+        Scanner input = new Scanner(System.in);
+
+        //1. membuat variabel nama,nis,kelas
+        String nama;
+        int nis;
+        String Kelas;
+
+        //2.input nama
+        System.out.print("masukan nama anda :");
+        nama=input.nextLine();
+
+        //3. input nis
+        System.out.print("masukan NIS anda :");
+        nis=input.nextInt();
+
+        //input NextLine setelah nextInt untuk mencegah kursor loncat ke selesai.
+        input.nextLine();
+
+        //4. input kelas
+        System.out.print("masukan NIS anda :");
+        Kelas=input.nextLine();
+
+        //5. Output Tampilkan Data Siswa
+        System.out.println("Informasi Data Siswa");
+        System.out.println("Nama anda adalah " +nama);
+        System.out.println("NIS anda adalah " +nis);
+        System.out.println("Kelas anda adalah " +Kelas);
+
+    }//Akhir main
+}//Akhir class Data_Siswa</code></pre>
+            </div>
+            <!-- Modal Footer -->
+            <div class="p-3 bg-slate-800 border-t border-slate-700 text-right">
+                <button onclick="toggleCodeModal(false)" class="bg-brand-600 hover:bg-brand-700 text-white font-semibold text-xs px-4 py-2 rounded-lg transition">
+                    Tutup Tampilan Kode
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODAL ANTI-CHEAT RESET WARNING ================= -->
+    <div id="modalAntiCheat" class="fixed inset-0 z-50 bg-rose-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center space-y-4 shadow-2xl border border-rose-200">
+            <div class="w-16 h-16 bg-rose-100 text-rose-600 rounded-full flex items-center justify-center mx-auto text-2xl animate-bounce">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-slate-900">Ujian Direset! (Anti-Cheat)</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+                Sistem mendeteksi bahwa Anda telah <strong>berpindah tab / meninggalkan jendela browser</strong>. Sesuai ketentuan, ujian Anda telah direset otomatis ke halaman awal.
+            </p>
+            <button onclick="acknowledgeAntiCheatReset()" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 rounded-xl text-sm transition">
+                Saya Mengerti & Kembali ke Login
+            </button>
+        </div>
+    </div>
+
+    <!-- SCRIPT LOGIC -->
+    <script>
+        // 20 Questions Data directly based on the provided Java Code
+        const questions = [
+            {
+                id: 1,
+                question: "Berdasarkan kode program Java di atas, berada dalam package manakah kelas Data_Siswa?",
+                options: [
+                    "A. package java.util;",
+                    "B. package Latihan_input_Output;",
+                    "C. package Data_Siswa;",
+                    "D. package Input_Output;",
+                    "E. package WINDOWS;"
+                ],
+                answer: 1, // Index B
+                explanation: "Baris pertama kode program menyatakan 'package Latihan_input_Output;', yang menunjukkan nama package dari kelas tersebut."
+            },
+            {
+                id: 2,
+                question: "Kelas 'Scanner' yang digunakan untuk membaca masukan pengguna berasal dari package Java mana?",
+                options: [
+                    "A. java.io.*",
+                    "B. java.lang.*",
+                    "C. java.util.*",
+                    "D. java.text.*",
+                    "E. java.system.*"
+                ],
+                answer: 2, // Index C
+                explanation: "Kelas Scanner adalah bagian dari paket utilitas Java yang diimpor dengan perintah 'import java.util.*;'."
+            },
+            {
+                id: 3,
+                question: "Sintaks 'Scanner input = new Scanner(System.in);' berfungsi untuk...",
+                options: [
+                    "A. Menutup koneksi input dari konsol",
+                    "B. Mengubah tipe data String menjadi Integer",
+                    "C. Membuat objek Scanner baru dengan nama 'input' untuk membaca masukan konsol",
+                    "D. Menampilkan teks output ke layar pengguna",
+                    "E. Mengimpor pustaka Java secara otomatis"
+                ],
+                answer: 2, // Index C
+                explanation: "Perintah tersebut menginstansiasi objek baru dari kelas Scanner bernama 'input' dengan aliran masukan standar System.in (keyboard)."
+            },
+            {
+                id: 4,
+                question: "Tipe data yang digunakan untuk mendeklarasikan variabel 'nama' dan 'Kelas' pada program adalah...",
+                options: [
+                    "A. int",
+                    "B. char",
+                    "C. float",
+                    "D. String",
+                    "E. double"
+                ],
+                answer: 3, // Index D
+                explanation: "Variabel 'nama' dan 'Kelas' dideklarasikan dengan tipe data 'String' karena menyimpan sekumpulan karakter berupa teks."
+            },
+            {
+                id: 5,
+                question: "Tipe data yang digunakan untuk mendeklarasikan variabel 'nis' pada program adalah...",
+                options: [
+                    "A. String",
+                    "B. int",
+                    "C. boolean",
+                    "D. long",
+                    "E. char"
+                ],
+                answer: 1, // Index B
+                explanation: "Variabel 'nis' dideklarasikan dengan 'int nis;' yang berarti tipe data bilangan bulat (integer)."
+            },
+            {
+                id: 6,
+                question: "Metode Scanner yang digunakan untuk membaca input bilangan bulat NIS pada kode tersebut adalah...",
+                options: [
+                    "A. input.nextLine()",
+                    "B. input.nextInt()",
+                    "C. input.nextString()",
+                    "D. input.readInt()",
+                    "E. input.nextFloat()"
+                ],
+                answer: 1, // Index B
+                explanation: "Metode 'nextInt()' pada kelas Scanner khusus digunakan untuk mengambil masukan bernilai numerik integer."
+            },
+            {
+                id: 7,
+                question: "Mengapa instruksi 'input.nextLine();' ditambahkan tepat setelah baris 'nis=input.nextInt();'?",
+                options: [
+                    "A. Untuk mengosongkan nilai variabel nis",
+                    "B. Untuk mengubah nis menjadi teks string",
+                    "C. Untuk membersihkan karakter newline (ENTER) tersisa di buffer masukan",
+                    "D. Untuk memaksa pengguna memasukkan NIS ulang",
+                    "E. Untuk menghentikan eksekusi program"
+                ],
+                answer: 2, // Index C
+                explanation: "Setelah 'nextInt()', tombol ENTER (newline) masih tersisa di buffer input. Panggilan 'input.nextLine()' diperlukan untuk mengonsumsi newline tersebut agar input berikutnya tidak terlewati."
+            },
+            {
+                id: 8,
+                question: "Apa akibatnya jika baris 'input.nextLine();' setelah 'input.nextInt()' dihapus dari kode program?",
+                options: [
+                    "A. Program akan mengalami error kompilasi (syntax error)",
+                    "B. Input kelas akan terlewati (loncat) karena nextLine() membaca sisa karakter newline",
+                    "C. Program akan crash saat dijalankan",
+                    "D. Variabel nama akan terhapus otomatis",
+                    "E. Nilai nis akan menjadi null"
+                ],
+                answer: 1, // Index B
+                explanation: "Tanpa pembersihan buffer, perintah 'input.nextLine()' untuk variabel 'Kelas' akan langsung membaca karakter newline yang tersisa, sehingga kursor seolah-olah meloncat melewati proses input kelas."
+            },
+            {
+                id: 9,
+                question: "Perhatikan deklarasi 'String Kelas;'. Manakah pernyataan yang BENAR mengenai sifat case-sensitivity di Java?",
+                options: [
+                    "A. 'Kelas' dan 'kelas' dianggap variabel yang sama",
+                    "B. Variabel 'Kelas' pasti error karena menggunakan huruf kapital",
+                    "C. Java bersifat case-sensitive, sehingga 'Kelas' dan 'kelas' adalah dua identifier yang berbeda",
+                    "D. Huruf kapital hanya boleh digunakan untuk nama metode",
+                    "E. 'String Kelas' adalah variabel otomatis berstatus publik"
+                ],
+                answer: 2, // Index C
+                explanation: "Bahasa Java bersifat case-sensitive (membedakan huruf besar dan kecil). Variabel 'Kelas' dan 'kelas' dianggap dua nama variabel yang berbeda."
+            },
+            {
+                id: 10,
+                question: "Perhatikan langkah ke-4 pada kode program: System.out.print(\"masukan NIS anda :\"); Kelas=input.nextLine();. Kekurangan/kesalahan tampilan pada baris tersebut adalah...",
+                options: [
+                    "A. Variabel Kelas tidak bisa menyimpan string",
+                    "B. Perintah print harus diganti menjadi println agar tidak error",
+                    "C. Teks prompt salah ketik (menampilkan 'masukan NIS anda :' padahal meminta input Kelas)",
+                    "D. Metode nextLine() dilarang untuk variabel Kelas",
+                    "E. Variabel Kelas belum dideklarasikan"
+                ],
+                answer: 2, // Index C
+                explanation: "Pada bagian langkah 4 (input kelas), cetakan prompt masih tertulis 'masukan NIS anda :' (typo cetakan dari pembuat kode), seharusnya 'masukan kelas anda :'."
+            },
+            {
+                id: 11,
+                question: "Perbedaan utama antara 'System.out.print()' dan 'System.out.println()' pada Java adalah...",
+                options: [
+                    "A. print() menambahkan garis baru setelah mencetak, sedangkan println() tidak",
+                    "B. println() menambahkan ganti baris (newline) setelah mencetak, sedangkan print() tidak",
+                    "C. print() khusus angka, sedangkan println() khusus teks String",
+                    "D. println() hanya bisa dipanggil di dalam package java.util",
+                    "E. Tidak ada perbedaan sama sekali"
+                ],
+                answer: 1, // Index B
+                explanation: "System.out.println() mencetak teks lalu berpindah ke baris baru (newline), sedangkan System.out.print() mencetak teks tanpa ganti baris di akhir."
+            },
+            {
+                id: 12,
+                question: "Pada instruksi 'System.out.println(\"Nama anda adalah \" + nama);', fungsi simbol '+' adalah...",
+                options: [
+                    "A. Operasi penjumlahan aritmatika angka",
+                    "B. Operator logika boolean AND",
+                    "C. Penggabungan string (concatenation) antara teks literal dan nilai variabel nama",
+                    "D. Pengalokasian memori baru untuk variabel nama",
+                    "E. Membandingkan kesamaan dua string"
+                ],
+                answer: 2, // Index C
+                explanation: "Simbol '+' dalam konteks string digunakan untuk melakukan penggabungan string (concatenation) dengan variabel."
+            },
+            {
+                id: 13,
+                question: "Sintaks 'public static void main(String[] args)' pada kode tersebut berfungsi sebagai...",
+                options: [
+                    "A. Konstruktor utama dari kelas Data_Siswa",
+                    "B. Metode utama (main method) yang menjadi titik awal eksekusi program Java",
+                    "C. Perintah impor package Java",
+                    "D. Tempat deklarasi variabel global",
+                    "E. Fungsi penutup dari program Java"
+                ],
+                answer: 1, // Index B
+                explanation: "Main method 'public static void main(String[] args)' adalah metode utama yang pertama kali dicari dan dieksekusi oleh Java Virtual Machine (JVM)."
+            },
+            {
+                id: 14,
+                question: "Jika pengguna memasukkan huruf 'ABC' ketika program menjalankan 'nis = input.nextInt();', apakah yang akan terjadi?",
+                options: [
+                    "A. Nilai nis otomatis menjadi 0",
+                    "B. Program tetap berjalan normal",
+                    "C. Terjadi runtime error berupa 'InputMismatchException'",
+                    "D. Terjadi error 'NullPointerException'",
+                    "E. Program meminta input ulang secara otomatis"
+                ],
+                answer: 2, // Index C
+                explanation: "Jika tipe input tidak sesuai dengan yang diharapkan (menerima huruf saat menantikan angka integer untuk nextInt()), Java melempar exception 'InputMismatchException'."
+            },
+            {
+                id: 15,
+                question: "Parameter 'System.in' pada pembuatan Scanner menyatakan...",
+                options: [
+                    "A. Standar keluaran (output) ke layar",
+                    "B. Standar masukan (input) dari perangkat keyboard",
+                    "C. Berkas/file eksternal pada harddisk",
+                    "D. Alamat memori RAM",
+                    "E. Koneksi jaringan lokal"
+                ],
+                answer: 1, // Index B
+                explanation: "System.in merepresentasikan standar input stream, yang umumnya terhubung ke perangkat keyboard pada konsol."
+            },
+            {
+                id: 16,
+                question: "Jika pengguna memasukkan nama = 'Budi', nis = '12345', dan kelas = 'X RPL 1', maka output pada baris kedua kelompok informasi adalah...",
+                options: [
+                    "A. Informasi Data Siswa",
+                    "B. Nama anda adalah Budi",
+                    "C. NIS anda adalah 12345",
+                    "D. Kelas anda adalah X RPL 1",
+                    "E. masukan NIS anda : 12345"
+                ],
+                answer: 2, // Index C
+                explanation: "Urutan output informasi data siswa: (1) 'Informasi Data Siswa', (2) 'Nama anda adalah Budi', (3) 'NIS anda adalah 12345', (4) 'Kelas anda adalah X RPL 1'. Baris kedua keluaran data adalah 'Nama anda adalah Budi', dan baris ketiga adalah 'NIS anda adalah 12345'."
+            },
+            {
+                id: 17,
+                question: "Pernyataan 'import java.util.*;' menggunakan tanda asterisk (*). Apa arti tanda asterisk tersebut?",
+                options: [
+                    "A. Mengimpor hanya kelas Scanner saja",
+                    "B. Mengimpor seluruh kelas yang ada di dalam paket java.util",
+                    "C. Menandukan bahwa pustaka bersifat opsional",
+                    "D. Membuat variabel pointer acak",
+                    "E. Menandai kelas utama"
+                ],
+                answer: 1, // Index B
+                explanation: "Tanda bintang (*) pada perintah import menginstruksikan Java untuk mengimpor semua kelas utilitas yang berada dalam package java.util."
+            },
+            {
+                id: 18,
+                question: "Fungsi dari simbol '//' seperti pada '//1. membuat variabel nama,nis,kelas' adalah...",
+                options: [
+                    "A. Menjalankan perintah kompilasi khusus",
+                    "B. Menandai komentar satu baris (single-line comment) yang diabaikan oleh kompiler",
+                    "C. Membagi nilai numerik variabel",
+                    "D. Menggabungkan dua kelas Java",
+                    "E. Membuka blok program baru"
+                ],
+                answer: 1, // Index B
+                explanation: "Tanda '//' digunakan untuk menulis komentar satu baris di Java. Komentar ini ditujukan untuk pembaca kode dan akan diabaikan oleh kompiler."
+            },
+            {
+                id: 19,
+                question: "Manakah metode yang sebaiknya dipanggil setelah penggunaan objek Scanner selesai untuk mencegah kebocoran resource (resource leak)?",
+                options: [
+                    "A. input.stop()",
+                    "B. input.clear()",
+                    "C. input.close()",
+                    "D. input.exit()",
+                    "E. input.delete()"
+                ],
+                answer: 2, // Index C
+                explanation: "Praktik terbaik (best practice) dalam Pemrograman Java setelah selesai membaca input adalah memanggil 'input.close()' untuk menutup stream Scanner."
+            },
+            {
+                id: 20,
+                question: "Bagaimanakah urutan alur eksekusi logika yang benar pada program Data_Siswa di atas?",
+                options: [
+                    "A. Deklarasi Variabel -> Input Nama -> Input NIS -> Input Kelas -> Output Informasi Data Siswa",
+                    "B. Output Informasi Data Siswa -> Input Nama -> Input NIS -> Input Kelas -> Deklarasi Variabel",
+                    "C. Input Nama -> Input NIS -> Input Kelas -> Output Data -> Deklarasi Variabel",
+                    "D. Deklarasi Variabel -> Output Informasi -> Input Nama -> Input NIS -> Input Kelas",
+                    "E. Input NIS -> Input Nama -> Input Kelas -> Deklarasi -> Output Data"
+                ],
+                answer: 0, // Index A
+                explanation: "Alur program berjalan secara sekuensial: Deklarasi variabel (nama, nis, Kelas) -> Membaca Input Nama -> Membaca Input NIS -> Membaca Input Kelas -> Mencetak Output Informasi Data Siswa."
+            }
+        ];
+
+        let state = 'login'; // 'login', 'exam', 'result'
+        let studentData = { nama: '', nis: '' };
+        let userAnswers = new Array(questions.length).fill(null);
+        let currentQuestionIndex = 0;
+        let timerInterval = null;
+        let timeLeft = 20 * 60; // 20 minutes in seconds
+
+        // Anti-cheat: Detect tab switch or window blur
+        function handleAntiCheatTrigger() {
+            if (state === 'exam') {
+                clearInterval(timerInterval);
+                document.getElementById('modalAntiCheat').classList.remove('hidden');
+            }
+        }
+
+        // Listener for tab switching or minimizing
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                handleAntiCheatTrigger();
+            }
+        });
+
+        window.addEventListener('blur', () => {
+            if (state === 'exam') {
+                handleAntiCheatTrigger();
+            }
+        });
+
+        function acknowledgeAntiCheatReset() {
+            document.getElementById('modalAntiCheat').classList.add('hidden');
+            resetExamToLogin();
+        }
+
+        function resetExamToLogin() {
+            clearInterval(timerInterval);
+            state = 'login';
+            userAnswers = new Array(questions.length).fill(null);
+            currentQuestionIndex = 0;
+            timeLeft = 20 * 60;
+
+            document.getElementById('headerExamInfo').classList.add('hidden');
+            document.getElementById('screenExam').classList.add('hidden');
+            document.getElementById('screenResult').classList.add('hidden');
+            document.getElementById('screenLogin').classList.remove('hidden');
+            document.getElementById('formLogin').reset();
+        }
+
+        function handleStartExam(event) {
+            event.preventDefault();
+            const nama = document.getElementById('inputNama').value.trim();
+            const nis = document.getElementById('inputNis').value.trim();
+
+            if (!nama || !nis) return;
+
+            studentData = { nama, nis };
+
+            // Update UI elements
+            document.getElementById('studentDisplayName').innerText = nama;
+            document.getElementById('studentDisplayNis').innerText = 'NIS: ' + nis;
+
+            // Switch Screen
+            state = 'exam';
+            document.getElementById('screenLogin').classList.add('hidden');
+            document.getElementById('screenExam').classList.remove('hidden');
+            document.getElementById('headerExamInfo').classList.remove('hidden');
+
+            // Render Palette and First Question
+            renderQuestionGrid();
+            loadQuestion(0);
+
+            // Start Timer
+            startTimer();
+        }
+
+        function startTimer() {
+            timeLeft = 20 * 60;
+            updateTimerDisplay();
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    alert("Waktu ujian telah habis! Jawaban Anda akan dikirimkan otomatis.");
+                    submitExam();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            const formatted = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            const timerText = document.getElementById('timerText');
+            const timerContainer = document.getElementById('timerContainer');
+
+            timerText.innerText = formatted;
+
+            // Change color if time < 3 mins
+            if (timeLeft < 180) {
+                timerContainer.className = "flex items-center space-x-2 bg-rose-50 border border-rose-200 text-rose-700 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold font-mono animate-pulse";
+            } else {
+                timerContainer.className = "flex items-center space-x-2 bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-lg text-xs sm:text-sm font-bold font-mono";
+            }
+        }
+
+        function renderQuestionGrid() {
+            const grid = document.getElementById('questionGrid');
+            grid.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => loadQuestion(idx);
+
+                let bgClass = "bg-slate-100 text-slate-700 hover:bg-slate-200";
+                if (userAnswers[idx] !== null) {
+                    bgClass = "bg-emerald-500 text-white font-bold";
+                }
+                if (idx === currentQuestionIndex) {
+                    bgClass = "bg-brand-600 text-white font-bold ring-2 ring-brand-300 shadow-md";
+                }
+
+                btn.className = `w-full h-10 rounded-lg text-xs flex items-center justify-center transition font-semibold ${bgClass}`;
+                btn.innerText = idx + 1;
+                grid.appendChild(btn);
+            });
+
+            // Update answered count label
+            const answered = userAnswers.filter(a => a !== null).length;
+            document.getElementById('answeredCount').innerText = `${answered}/20 Terjawab`;
+        }
+
+        function loadQuestion(index) {
+            currentQuestionIndex = index;
+            const q = questions[index];
+
+            document.getElementById('currentQNumber').innerText = index + 1;
+            document.getElementById('questionText').innerText = q.question;
+
+            // Options rendering
+            const container = document.getElementById('optionsContainer');
+            container.innerHTML = '';
+
+            q.options.forEach((optText, optIdx) => {
+                const isSelected = userAnswers[index] === optIdx;
+                const optElement = document.createElement('label');
+                optElement.className = `flex items-center p-4 rounded-xl border-2 cursor-pointer transition ${
+                    isSelected 
+                    ? 'border-brand-500 bg-brand-50/60 text-brand-900 font-semibold shadow-sm' 
+                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 text-slate-700'
+                }`;
+
+                optElement.innerHTML = `
+                    <input type="radio" name="optionChoice" value="${optIdx}" ${isSelected ? 'checked' : ''} 
+                           onchange="selectOption(${optIdx})" class="w-4 h-4 text-brand-600 focus:ring-brand-500">
+                    <span class="ml-3 text-sm leading-relaxed">${optText}</span>
+                `;
+                container.appendChild(optElement);
+            });
+
+            // Navigation buttons state
+            document.getElementById('btnPrev').disabled = index === 0;
+
+            if (index === questions.length - 1) {
+                document.getElementById('btnNext').classList.add('hidden');
+                document.getElementById('btnFinish').classList.remove('hidden');
+            } else {
+                document.getElementById('btnNext').classList.remove('hidden');
+                document.getElementById('btnFinish').classList.add('hidden');
+            }
+
+            renderQuestionGrid();
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            renderQuestionGrid();
+            // Re-render choices styling
+            loadQuestion(currentQuestionIndex);
+        }
+
+        function navigateQuestion(direction) {
+            const target = currentQuestionIndex + direction;
+            if (target >= 0 && target < questions.length) {
+                loadQuestion(target);
+            }
+        }
+
+        function confirmFinishExam() {
+            const unanswered = userAnswers.filter(a => a === null).length;
+            let message = "Apakah Anda yakin ingin menyelesaikan ujian ini?";
+            if (unanswered > 0) {
+                message = `Masih ada ${unanswered} soal yang belum Anda jawab. Yakin ingin mengirimkan jawaban?`;
+            }
+
+            if (confirm(message)) {
+                submitExam();
+            }
+        }
+
+        function submitExam() {
+            clearInterval(timerInterval);
+            state = 'result';
+
+            // Calculate Score
+            let correctCount = 0;
+            questions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.answer) {
+                    correctCount++;
+                }
+            });
+
+            const wrongCount = questions.length - correctCount;
+            const score = Math.round((correctCount / questions.length) * 100);
+            const isPassed = score >= 70;
+
+            // Render Result UI
+            document.getElementById('resNama').innerText = studentData.nama;
+            document.getElementById('resNis').innerText = studentData.nis;
+            document.getElementById('resBenar').innerText = correctCount;
+            document.getElementById('resSalah').innerText = wrongCount;
+            document.getElementById('finalScore').innerText = score;
+
+            const resStatus = document.getElementById('resStatus');
+            const resHeaderBg = document.getElementById('resultHeaderBg');
+
+            if (isPassed) {
+                resStatus.innerText = "LULUS";
+                resStatus.className = "font-extrabold text-sm mt-0.5 uppercase tracking-wide text-emerald-600";
+                resHeaderBg.className = "bg-gradient-to-r from-emerald-600 to-teal-800 p-8 text-white text-center relative";
+            } else {
+                resStatus.innerText = "TIDAK LULUS";
+                resStatus.className = "font-extrabold text-sm mt-0.5 uppercase tracking-wide text-rose-600";
+                resHeaderBg.className = "bg-gradient-to-r from-rose-600 to-rose-800 p-8 text-white text-center relative";
+            }
+
+            // Render Detailed Review
+            renderReviewList();
+
+            // Switch Screen
+            document.getElementById('headerExamInfo').classList.add('hidden');
+            document.getElementById('screenExam').classList.add('hidden');
+            document.getElementById('screenResult').classList.remove('hidden');
+        }
+
+        function renderReviewList() {
+            const container = document.getElementById('reviewContainer');
+            container.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const userChoice = userAnswers[idx];
+                const isCorrect = userChoice === q.answer;
+
+                const card = document.createElement('div');
+                card.className = `p-5 rounded-xl border ${
+                    isCorrect ? 'bg-emerald-50/50 border-emerald-200' : 'bg-rose-50/50 border-rose-200'
+                } space-y-3`;
+
+                const userAnsText = userChoice !== null ? q.options[userChoice] : "Tidak Dijawab";
+                const correctAnsText = q.options[q.answer];
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center space-x-2">
+                            <span class="w-6 h-6 rounded-full ${isCorrect ? 'bg-emerald-500' : 'bg-rose-500'} text-white text-xs font-bold flex items-center justify-center">
+                                ${idx + 1}
+                            </span>
+                            <span class="font-bold text-sm ${isCorrect ? 'text-emerald-900' : 'text-rose-900'}">
+                                ${isCorrect ? 'Jawaban Benar' : 'Jawaban Salah / Kurang Tepat'}
+                            </span>
+                        </div>
+                        <span class="text-xs font-mono font-bold ${isCorrect ? 'text-emerald-700' : 'text-rose-700'}">
+                            ${isCorrect ? '+5 Poin' : '0 Poin'}
+                        </span>
+                    </div>
+
+                    <p class="text-slate-800 font-semibold text-sm leading-relaxed">${q.question}</p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-2">
+                        <div class="p-2.5 rounded-lg ${isCorrect ? 'bg-emerald-100/70 text-emerald-900' : 'bg-rose-100/70 text-rose-900'}">
+                            <span class="font-bold block text-[10px] uppercase opacity-75">Jawaban Anda:</span>
+                            <span>${userAnsText}</span>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-emerald-100/70 text-emerald-900">
+                            <span class="font-bold block text-[10px] uppercase opacity-75">Kunci Jawaban:</span>
+                            <span>${correctAnsText}</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-2 p-3 bg-white rounded-lg border border-slate-200/80 text-xs text-slate-600 leading-relaxed">
+                        <strong class="text-slate-800">Pembahasan:</strong> ${q.explanation}
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function restartExam() {
+            resetExamToLogin();
+        }
+
+        function toggleCodeModal(show) {
+            const modal = document.getElementById('modalCode');
+            if (show) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
