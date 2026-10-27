@@ -38,7 +38,6 @@
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
         .code-font { font-family: 'Fira Code', monospace; }
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
@@ -57,32 +56,20 @@
     <header class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800 sticky top-0 z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-cyan-500/30">
-                    <i class="fa-solid fa-laptop-code"></i>
-                </div>
-                <div>
-                    <h1 class="font-bold text-white text-base sm:text-lg leading-tight flex items-center">
-                        Quest Java: Toko Laptop <span class="ml-2 text-[10px] bg-cyan-950 text-cyan-400 border border-cyan-800 px-2 py-0.5 rounded-full uppercase tracking-wider">3 Level RPG</span>
-                    </h1>
-                    <p class="text-xs text-slate-400">PG Standard, Benar/Salah, & PG Kompleks (Total 30 Soal)</p>
-                </div>
-            </div>
+                <button onclick="shareApplicationLink()" class="bg-cyan-950 hover:bg-cyan-900 border border-cyan-700 text-xs font-semibold px-3.5 py-2 rounded-xl transition flex items-center space-x-2 text-cyan-300 shadow-md">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Bagikan Link / Salin URL</span>
+                </button>
 
-            <div class="flex items-center space-x-3">
-                <!-- Teacher Dashboard Button Toggle -->
                 <button onclick="toggleTeacherDashboard(true)" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold px-3 py-2 rounded-xl transition flex items-center space-x-2 text-cyan-400">
                     <i class="fa-solid fa-user-shield"></i>
                     <span class="hidden sm:inline">Dashboard Guru</span>
                 </button>
 
-                <!-- Timer & Hearts (In Exam Mode) -->
                 <div id="headerExamStats" class="hidden flex items-center space-x-3">
-                    <!-- Lives indicator -->
                     <div id="livesContainer" class="flex items-center space-x-1 bg-rose-950/50 border border-rose-800/80 px-3 py-1.5 rounded-xl text-rose-400 text-sm font-bold">
-                        <!-- Hearts generated dynamically -->
                     </div>
 
-                    <!-- Timer Badge (45 mins) -->
                     <div id="timerContainer" class="flex items-center space-x-2 bg-slate-800 border border-slate-700 text-amber-400 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-mono font-bold">
                         <i class="fa-regular fa-clock animate-spin text-amber-500"></i>
                         <span id="timerText">45:00</span>
@@ -134,7 +121,6 @@
                         </div>
                     </div>
 
-                    <!-- Game Rules -->
                     <div class="bg-slate-950/60 border border-slate-800 rounded-2xl p-4 text-xs space-y-2">
                         <div class="font-bold text-cyan-400 flex items-center space-x-2">
                             <i class="fa-solid fa-shield-halved"></i>
@@ -161,9 +147,7 @@
         <div id="screenQuest" class="hidden">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                <!-- Left Column: Case Story & Live Java Code Preview (5 cols) -->
                 <div class="lg:col-span-5 space-y-6">
-                    <!-- Mission Box -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm">
                         <div class="flex items-center space-x-3 mb-3">
                             <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-800 text-cyan-400 flex items-center justify-center font-bold text-sm">
@@ -181,7 +165,6 @@
                         </p>
                     </div>
 
-                    <!-- Realtime Java Code Blueprint Viewer -->
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
                         <div class="bg-slate-950 px-4 py-3 border-b border-slate-800 flex items-center justify-between">
                             <span class="text-xs font-mono text-cyan-400 font-bold flex items-center">
@@ -230,12 +213,10 @@
                     </div>
                 </div>
 
-                <!-- Right Column: Interactive Quest Challenge (7 cols) -->
                 <div class="lg:col-span-7">
                     <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-xl flex flex-col justify-between min-h-[550px] relative">
 
                         <div>
-                            <!-- Quest Header -->
                             <div class="flex items-center justify-between pb-4 mb-6 border-b border-slate-800">
                                 <div class="flex items-center space-x-2">
                                     <span id="badgeStage" class="bg-cyan-950 text-cyan-400 border border-cyan-800 px-3 py-1 rounded-full text-xs font-bold tracking-wide">
@@ -250,7 +231,6 @@
                                 </div>
                             </div>
 
-                            <!-- Question Challenge Title & Prompt -->
                             <div class="space-y-3 mb-6">
                                 <h4 id="questionTitle" class="text-white font-bold text-lg sm:text-xl">
                                     Judul Soal
@@ -264,18 +244,13 @@
                                 </p>
                             </div>
 
-                            <!-- Options List Container -->
                             <div id="optionsContainer" class="space-y-3">
-                                <!-- Choices rendered dynamically -->
                             </div>
                         </div>
 
-                        <!-- Feedback Message Area -->
                         <div id="feedbackBox" class="hidden mt-4 p-4 rounded-xl border text-xs font-medium transition duration-200">
-                            <!-- Feedback message JS -->
                         </div>
 
-                        <!-- Action Buttons -->
                         <div class="flex items-center justify-between pt-6 mt-6 border-t border-slate-800">
                             <button id="btnHint" onclick="showHint()" class="text-xs text-slate-400 hover:text-cyan-400 transition flex items-center space-x-1.5">
                                 <i class="fa-regular fa-lightbulb"></i>
@@ -304,7 +279,6 @@
                     <h2 class="text-2xl sm:text-3xl font-black uppercase tracking-wide">Petualangan Selesai!</h2>
                     <p class="text-slate-900 font-semibold text-xs sm:text-sm mt-1">Laporan Hasil Asesmen Pemrograman Java (3 Level)</p>
 
-                    <!-- Score Badge Circle -->
                     <div class="mt-6 inline-flex flex-col items-center justify-center w-36 h-36 rounded-full bg-slate-950 text-white shadow-2xl border-4 border-slate-800">
                         <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Nilai Akhir</span>
                         <span id="finalScore" class="text-4xl font-black text-cyan-400">0</span>
@@ -313,7 +287,6 @@
                 </div>
 
                 <div class="p-6 sm:p-8 space-y-6">
-                    <!-- Student details & status -->
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
                         <div class="bg-slate-950 p-3.5 rounded-xl border border-slate-800">
                             <p class="text-[11px] text-slate-500 font-medium">Nama Siswa</p>
@@ -338,7 +311,6 @@
                         <span>Menyimpan skor ke Google Firebase Database...</span>
                     </div>
 
-                    <!-- Action buttons -->
                     <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
                         <button onclick="resetToLogin()" class="w-full sm:w-auto bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-6 rounded-xl transition flex items-center justify-center space-x-2 text-sm">
                             <i class="fa-solid fa-rotate-right"></i>
@@ -351,7 +323,6 @@
 
     </main>
 
-    <!-- Footer -->
     <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
         Media Pembelajaran Interaktif Pemrograman Java &copy; Toko Laptop Diskon RPG Edition
     </footer>
@@ -359,7 +330,6 @@
     <!-- ================= 4. DASHBOARD GURU MODAL ================= -->
     <div id="modalTeacherDashboard" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
-            <!-- Modal Header -->
             <div class="p-5 bg-slate-950 border-b border-slate-800 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div class="w-9 h-9 rounded-xl bg-cyan-950 text-cyan-400 flex items-center justify-center font-bold">
@@ -375,7 +345,6 @@
                 </button>
             </div>
 
-            <!-- Toolbar & Export -->
             <div class="p-4 bg-slate-900 border-b border-slate-800 flex flex-wrap items-center justify-between gap-3">
                 <div class="text-xs text-slate-400">
                     Total Sesi Mencoba: <span id="totalAttemptCount" class="text-cyan-400 font-bold font-mono">0</span> Siswa
@@ -386,7 +355,6 @@
                 </button>
             </div>
 
-            <!-- Table Container -->
             <div class="p-4 overflow-x-auto overflow-y-auto flex-grow bg-slate-950">
                 <table class="w-full text-left border-collapse text-xs text-slate-300">
                     <thead>
@@ -401,7 +369,6 @@
                         </tr>
                     </thead>
                     <tbody id="tableBodyScores" class="divide-y divide-slate-800 font-medium">
-                        <!-- Data rows dynamically inserted from Firebase -->
                         <tr>
                             <td colspan="7" class="p-6 text-center text-slate-500 italic">Memuat data dari Firebase...</td>
                         </tr>
@@ -409,13 +376,17 @@
                 </table>
             </div>
 
-            <!-- Modal Footer -->
             <div class="p-4 bg-slate-950 border-t border-slate-800 text-right">
                 <button onclick="toggleTeacherDashboard(false)" class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2 rounded-xl transition">
                     Tutup Dashboard
                 </button>
             </div>
         </div>
+    </div>
+
+    <div id="toastNotification" class="fixed bottom-6 right-6 z-50 bg-cyan-500 text-slate-950 font-bold px-4 py-3 rounded-2xl shadow-xl flex items-center space-x-3 transition transform translate-y-20 opacity-0 pointer-events-none">
+        <i class="fa-solid fa-circle-check text-lg"></i>
+        <span id="toastText" class="text-xs">Link berhasil disalin! Kirimkan ke siswa Anda.</span>
     </div>
 
     <!-- ================= 5. ANTI CHEAT RESET WARNING MODAL ================= -->
@@ -434,580 +405,123 @@
         </div>
     </div>
 
-    <!-- Firebase System Modules -->
+    <!-- Firebase System Modules using explicit CDN imports -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, collection, addDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global variable setups following guidelines
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'java-diskon-laptop-app';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-            apiKey: "demo-api-key",
-            authDomain: "demo-app.firebaseapp.com",
-            projectId: "demo-app",
-            storageBucket: "demo-app.appspot.com",
-            messagingSenderId: "123456789",
-            appId: "1:123456789:web:abcdef"
+            apiKey: "GANTI_DENGAN_API_KEY_FIREBASE_ANDA",
+            authDomain: "GANTI_WITH_PROJECT_ID.firebaseapp.com",
+            projectId: "GANTI_WITH_PROJECT_ID",
+            storageBucket: "GANTI_WITH_PROJECT_ID.appspot.com",
+            messagingSenderId: "GANTI_WITH_SENDER_ID",
+            appId: "GANTI_WITH_APP_ID"
         };
 
         let app, db, auth;
-        let currentUser = null;
         let fetchedScoresData = [];
-
-        // Attach FireStore helper functions to global window object
-        window.saveResultToFirestore = async function(studentData, score, livesLeft, maxLevelReached) {
-            if (!db || !currentUser) return false;
-
-            try {
-                const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'student_assessment_results');
-                
-                const now = new Date();
-                const formattedDate = now.toLocaleDateString('id-ID', {
-                    day: '2-digit', month: '2-digit', year: 'numeric'
-                }) + ' ' + now.toLocaleTimeString('id-ID', {
-                    hour: '2-digit', minute: '2-digit', second: '2-digit'
-                });
-
-                await addDoc(scoresRef, {
-                    nama: studentData.nama,
-                    nis: studentData.nis,
-                    skor: score,
-                    sisaNyawa: livesLeft,
-                    levelDicapai: maxLevelReached,
-                    timestamp: formattedDate,
-                    createdAt: Date.now()
-                });
-                return true;
-            } catch (err) {
-                console.error("Error saving score to firestore:", err);
-                return false;
-            }
-        };
-
-        window.getFetchedScores = function() {
-            return fetchedScoresData;
-        };
-
-        function initFirestoreListener() {
-            if (!db) return;
-            const scoresRef = collection(db, 'artifacts', appId, 'public', 'data', 'student_assessment_results');
-            onSnapshot(scoresRef, (snapshot) => {
-                fetchedScoresData = [];
-                snapshot.forEach((doc) => {
-                    fetchedScoresData.push({ id: doc.id, ...doc.data() });
-                });
-                fetchedScoresData.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-                if (typeof window.renderTeacherTable === 'function') {
-                    window.renderTeacherTable(fetchedScoresData);
-                }
-            }, (err) => {
-                console.warn("Firestore snapshot listener:", err);
-            });
-        }
 
         try {
             app = initializeApp(firebaseConfig);
             db = getFirestore(app);
             auth = getAuth(app);
 
-            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                signInWithCustomToken(auth, __initial_auth_token)
-                    .then((userCredential) => {
-                        currentUser = userCredential.user;
-                        initFirestoreListener();
-                    })
-                    .catch(() => {
-                        signInAnonymously(auth).then(u => { currentUser = u.user; initFirestoreListener(); });
-                    });
-            } else {
-                signInAnonymously(auth).then((u) => {
-                    currentUser = u.user;
-                    initFirestoreListener();
-                }).catch(err => console.log("Auth anonymously error", err));
-            }
-        } catch(e) {
-            console.error("Firebase init error:", e);
+            signInAnonymously(auth).catch((err) => {
+                console.warn("Firebase Anonymous Auth warning:", err);
+            });
+
+            window.saveResultToFirestore = async function(dataObj) {
+                try {
+                    await addDoc(collection(db, "student_scores"), dataObj);
+                    const el = document.getElementById("resFirebaseStatus");
+                    if (el) {
+                        el.className = "bg-emerald-950/80 border border-emerald-800 p-3 rounded-xl text-center text-xs text-emerald-300";
+                        el.innerHTML = '<i class="fa-solid fa-circle-check mr-1.5"></i> Output berhasil tersimpan secara online di Firebase!';
+                    }
+                } catch (e) {
+                    console.error("Save error:", e);
+                    const el = document.getElementById("resFirebaseStatus");
+                    if (el) {
+                        el.className = "bg-amber-950/80 border border-amber-800 p-3 rounded-xl text-center text-xs text-amber-300";
+                        el.innerHTML = '<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Mode offline: Silakan lengkapi Firebase Config di kode.';
+                    }
+                }
+            };
+
+            onSnapshot(collection(db, "student_scores"), (snapshot) => {
+                fetchedScoresData = [];
+                snapshot.forEach((doc) => {
+                    fetchedScoresData.push(doc.data());
+                });
+                renderTeacherTable(fetchedScoresData);
+            }, (error) => {
+                console.warn("Firestore snapshot error:", error);
+            });
+
+        } catch (e) {
+            console.warn("Firebase Init Error (Using fallback mode):", e);
         }
+
+        window.getFetchedScoresData = () => fetchedScoresData;
     </script>
 
-    <!-- Main Game Script Logic -->
+    <!-- Main Game Logic Script -->
     <script>
-        // TOTAL 30 QUESTIONS: 
-        // 1-10  : Level 1 - Single Choice PG (4 Opsi)
-        // 11-20 : Level 2 - Benar / Salah (True/False)
-        // 21-30 : Level 3 - PG Kompleks (6 Opsi, >2 Jawaban Benar)
+        let gameState = {
+            nama: '',
+            nis: '',
+            currentQuestionIndex: 0,
+            score: 0,
+            lives: 3,
+            maxLevelReached: 'Level 1',
+            timerSeconds: 45 * 60,
+            timerInterval: null,
+            isExamActive: false,
+            userSelectedOptions: []
+        };
 
-        const questData = [
-            // ================= LEVEL 1: PILIHAN GANDA (1-10) =================
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Input & Scanner",
-                title: "Pembacaan Input Tipe Presisi Desimal",
-                text: "Untuk membaca harga satuan laptop (misal: 12500000.0) bertipe `double` dari objek `Scanner input`, metode manakah yang wajib dipakai?",
-                options: ["input.nextInt()", "input.nextDouble()", "input.nextLine()", "input.readDouble()"],
-                correct: 1,
-                hint: "Gunakan metode Scanner yang berakhiran tipe datanya dalam format CamelCase (`next...`)."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Input & Scanner",
-                title: "Pembacaan Jumlah Unit (Integer)",
-                text: "Manakah sintaks penampungan variabel yang benar saat membaca jumlah unit laptop yang dibeli (bilangan bulat)?",
-                options: ["String jumlah = input.nextLine();", "int jumlah = input.nextInt();", "double jumlah = input.nextInt();", "boolean jumlah = input.nextBoolean();"],
-                correct: 1,
-                hint: "Jumlah unit barang dalam kasir adalah bilangan bulat (`int`)."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Deklarasi Variabel",
-                title: "Inisialisasi Tipe Data String",
-                text: "Di awal program, variabel `namaLaptop` digunakan untuk menampung teks merk laptop. Tipe data apa yang paling sesuai?",
-                options: ["int namaLaptop;", "double namaLaptop;", "String namaLaptop;", "char namaLaptop;"],
-                correct: 2,
-                hint: "Data berupa deretan karakter atau teks menggunakan tipe data `String` (diawali huruf besar S)."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Proses Aritmatika",
-                title: "Perhitungan Total Belanja Kategori Awal",
-                text: "Diketahui variabel `double harga` dan `int jumlah`. Rumus ekspresi Java untuk menentukan `double totalBelanja` yang benar adalah...",
-                options: ["double totalBelanja = harga + jumlah;", "double totalBelanja = harga * jumlah;", "double totalBelanja = harga / jumlah;", "double totalBelanja = harga % jumlah;"],
-                correct: 1,
-                hint: "Total perkalian belanja diperoleh dari harga satuan dikali (`*`) kuantitas jumlah."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Pengondisian IF",
-                title: "Kondisi Syarat Diskon Belanja",
-                text: "Toko memberikan diskon jika `totalBelanja` minimal Rp 10.000.000. Operator relasional pengondisian `if` yang tepat adalah...",
-                options: ["if (totalBelanja > 10000000)", "if (totalBelanja == 10000000)", "if (totalBelanja >= 10000000)", "if (totalBelanja <= 10000000)"],
-                correct: 2,
-                hint: "Kata 'minimal' berarti nilainya bisa lebih besar atau sama dengan (`>=`)."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Proses Diskon",
-                title: "Menghitung Nilai Potongan Diskon 10%",
-                text: "Di dalam blok `if` diskon 10%, bagaimanakah perhitungan potongan `diskon` dalam sintaks Java?",
-                options: ["diskon = 0.10 * totalBelanja;", "diskon = 10 * totalBelanja;", "diskon = totalBelanja / 100;", "diskon = totalBelanja - 10;"],
-                correct: 0,
-                hint: "10% dalam angka desimal Java dituliskan `0.10` atau `0.1`."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Pengondisian ELSE",
-                title: "Blok Alternatif Tanpa Diskon",
-                text: "Jika `totalBelanja` kurang dari Rp 10.000.000, maka program akan masuk ke blok `else`. Berapakah nilai variabel `diskon`?",
-                options: ["diskon = 0.05 * totalBelanja;", "diskon = 0;", "diskon = totalBelanja;", "diskon = null;"],
-                correct: 1,
-                hint: "Jika syarat diskon tidak terpenuhi, potongan diskon bernilai `0`."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Proses Akhir",
-                title: "Menghitung Total Pembayaran Kasir",
-                text: "Bagaimanakah rumus untuk mendapatkan nilai bersih `totalBayar` yang harus dibayar konsumen?",
-                options: ["double totalBayar = totalBelanja + diskon;", "double totalBayar = totalBelanja * diskon;", "double totalBayar = totalBelanja - diskon;", "double totalBayar = diskon - totalBelanja;"],
-                correct: 2,
-                hint: "Total bayar akhir adalah total awal dikurangi (`-`) besaran potongan diskon."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Analisis Logika",
-                title: "Uji Kasus Simulasi Angka",
-                text: "Jika Pembeli membeli 1 Laptop seharga Rp 12.000.000, berapakah nilai variabel `diskon` dan `totalBayar` yang dihitung program?",
-                options: [
-                    "Diskon: Rp 0 | Total Bayar: Rp 12.000.000",
-                    "Diskon: Rp 1.200.000 | Total Bayar: Rp 10.800.000",
-                    "Diskon: Rp 1.000.000 | Total Bayar: Rp 11.000.000",
-                    "Diskon: Rp 120.000 | Total Bayar: Rp 11.880.000"
-                ],
-                correct: 1,
-                hint: "Diskon 10% dari 12 Juta adalah 1,2 Juta. Maka total bayar = 12 Juta - 1,2 Juta."
-            },
-            {
-                level: 1,
-                type: 'single',
-                levelName: "Level 1: PG Standar (Mudah)",
-                category: "Error Handling & Scanner",
-                title: "Pencegahan Buffer Skip pada Scanner",
-                text: "Mengapa setelah perintah `nextInt()` atau `nextDouble()`, kita disarankan memanggil `input.nextLine()` jika ingin membaca data String berikutnya?",
-                options: [
-                    "Untuk mengubah angka menjadi huruf",
-                    "Untuk membersihkan sisa karakter Enter (newline '\\n') di buffer masukan",
-                    "Untuk menghapus memori variabel",
-                    "Untuk menutup program Java"
-                ],
-                correct: 1,
-                hint: "Scanner numerik menyisakan karakter ENTER di buffer input yang bisa terbaca otomatis oleh `nextLine()`."
-            },
+        const questionsList = [
+            // LEVEL 1: Single Choice (Q1 - Q10)
+            { id: 1, type: 'single', level: 1, title: 'Import Package Scanner', text: 'Pustaka manakah yang wajib di-import di awal program agar kelas Scanner dapat digunakan?', options: ['java.io.*', 'java.util.Scanner', 'java.text.*', 'java.system.Scanner'], correct: 1, hint: 'Scanner berada dalam paket utilitas standar Java (java.util).' },
+            { id: 2, type: 'single', level: 1, title: 'Metode Pembacaan Teks', text: 'Metode Scanner apa yang digunakan untuk membaca nilai String namaLaptop dari keyboard?', options: ['input.nextInt()', 'input.nextDouble()', 'input.nextLine()', 'input.readString()'], correct: 2, hint: 'nextLine() membaca satu baris kalimat/string.' },
+            { id: 3, type: 'single', level: 1, title: 'Tipe Data Harga Satuan', text: 'Pada kode program, variabel harga dideklarasikan dengan tipe data...', options: ['int', 'double', 'String', 'boolean'], correct: 1, hint: 'Tipe data desimal/presisi tinggi yang digunakan adalah double.' },
+            { id: 4, type: 'single', level: 1, title: 'Perhitungan Total Belanja', text: 'Rumus aritmatika Java yang tepat untuk menghitung totalBelanja adalah...', options: ['harga + jumlah', 'harga / jumlah', 'harga * jumlah', 'harga % jumlah'], correct: 2, hint: 'Total diperoleh dari perkalian harga per unit dengan jumlah barang.' },
+            { id: 5, type: 'single', level: 1, title: 'Syarat Syarat Diskon 10%', text: 'Kondisi IF manakah yang memberikan diskon 10% jika total belanja minimal Rp 10.000.000?', options: ['if (totalBelanja > 10000000)', 'if (totalBelanja >= 10000000)', 'if (totalBelanja == 10000000)', 'if (totalBelanja <= 10000000)'], correct: 1, hint: 'Minimal berarti lebih besar atau sama dengan (>=).' },
+            { id: 6, type: 'single', level: 1, title: 'Nilai Diskon 10%', text: 'Ekspresi desimal 10% di Java yang dikalikan dengan totalBelanja dituliskan sebagai...', options: ['10 * totalBelanja', '0.10 * totalBelanja', '10% * totalBelanja', '10.0 * totalBelanja'], correct: 1, hint: 'Persentase 10% ditulis dalam desimal float/double 0.10.' },
+            { id: 7, type: 'single', level: 1, title: 'Cabang Else', text: 'Apa yang terjadi pada variabel diskon jika totalBelanja kurang dari Rp 10.000.000?', options: ['diskon = 0.05 * totalBelanja', 'diskon = 0', 'Program error', 'diskon = 1000000'], correct: 1, hint: 'Pada cabang else, diskon diset bernilai 0.' },
+            { id: 8, type: 'single', level: 1, title: 'Menghitung Total Bayar', text: 'Rumus untuk variabel totalBayar akhir pembayar kasir adalah...', options: ['totalBelanja + diskon', 'totalBelanja * diskon', 'totalBelanja - diskon', 'diskon - totalBelanja'], correct: 2, hint: 'Total bayar adalah total belanja dikurangi besaran diskon.' },
+            { id: 9, type: 'single', level: 1, title: 'Instansiasi Objek Scanner', text: 'Sintaks pembuatan objek Scanner input dari keyboard yang benar adalah...', options: ['Scanner input = Scanner(System.in);', 'Scanner input = new Scanner(System.in);', 'new Scanner input = System.in;', 'Scanner input = new Scanner();'], correct: 1, hint: 'Menggunakan kata kunci new Scanner(System.in).' },
+            { id: 10, type: 'single', level: 1, title: 'Metode Pembacaan Angka Bulat', text: 'Metode Scanner untuk membaca jumlah unit barang (integer) adalah...', options: ['input.nextInt()', 'input.readInt()', 'input.nextLine()', 'input.nextInteger()'], correct: 0, hint: 'Gunakan nextInt() untuk membaca tipe data int.' },
 
-            // ================= LEVEL 2: BENAR / SALAH (11-20) =================
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Kosep Package & Import",
-                title: "Pustaka Scanner Java",
-                text: "Pernyataan: Kelas `Scanner` berada di dalam paket `java.util.*` sehingga wajib diimpor sebelum digunakan.",
-                options: ["BENAR", "SALAH"],
-                correct: 0,
-                hint: "Perhatikan instruksi `import java.util.Scanner;` atau `import java.util.*;` di awal program."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Konversi Tipe Data",
-                title: "Kapasitas Tipe Data Integer",
-                text: "Pernyataan: Variabel bertipe `int` pada Java sanggup menampung nilai desimal seperti harga laptop `12500000.50` tanpa error.",
-                options: ["BENAR", "SALAH"],
-                correct: 1,
-                hint: "Tipe data `int` hanya untuk bilangan bulat. Untuk pecahan/desimal gunakan `double` atau `float`."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Operator Relasional",
-                title: "Perbandingan Kesamaan Nilai",
-                text: "Pernyataan: Untuk menguji kesamaan dua nilai angka pada kondisi `if`, kita menggunakan operator tunggal `=` (misal: `if(x = 10)`).",
-                options: ["BENAR", "SALAH"],
-                correct: 1,
-                hint: "Tanda `=` adalah operator assignment (pengisian nilai), sedangkan pembanding kesamaan adalah `==`."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Perhitungan Diskon",
-                title: "Pengkondisian Belanja Rp 10 Juta Pass",
-                text: "Pernyataan: Jika `totalBelanja = 10000000` (pas 10 juta), maka pernyataan `if (totalBelanja >= 10000000)` akan bernilai `true` dan pembeli mendapat diskon 10%.",
-                options: ["BENAR", "SALAH"],
-                correct: 0,
-                hint: "Operator `>=` (lebih besar atau sama dengan) mencakup nilai batas itu sendiri."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Metode Output",
-                title: "Perbedaan Print & Println",
-                text: "Pernyataan: Perintah `System.out.print()` mencetak teks dan otomatis berpindah ke baris baru di bawahnya.",
-                options: ["BENAR", "SALAH"],
-                correct: 1,
-                hint: "Perintah yang berpindah baris baru adalah `println()`, sedangkan `print()` kursor tetap sejajar."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Syntax Case Sensitivity",
-                title: "Sifat Case-Sensitivity Java",
-                text: "Pernyataan: Java bersifat *case-sensitive*, sehingga variabel `totalBelanja` dan `TotalBelanja` dianggap sebagai dua variabel yang berbeda.",
-                options: ["BENAR", "SALAH"],
-                correct: 0,
-                hint: "Huruf besar dan kecil sangat dibedakan dalam sintaks identifier Java."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "String Concatenation",
-                title: "Penggabungan String",
-                text: "Pernyataan: Tanda `+` pada `System.out.println(\"Diskon: \" + diskon);` berfungsi mengalokasikan memori baru bukan menggabungkan teks.",
-                options: ["BENAR", "SALAH"],
-                correct: 1,
-                hint: "Tanda `+` jika digunakan bersama String bertindak sebagai operator penggabungan (concatenation)."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "System Input Stream",
-                title: "Peran System.in",
-                text: "Pernyataan: Argumen `System.in` pada `new Scanner(System.in)` menandakan bahwa sumber masukan berasal dari keyboard standar konsol.",
-                options: ["BENAR", "SALAH"],
-                correct: 0,
-                hint: "`System.in` merujuk pada standar input stream keyboard."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Exception Handling",
-                title: "Input Mismatch Exception",
-                text: "Pernyataan: Jika pengguna mengetikkan teks huruf saat `input.nextInt()` dieksekusi, program akan mengalami crash `InputMismatchException`.",
-                options: ["BENAR", "SALAH"],
-                correct: 0,
-                hint: "Metode `nextInt()` menantikan tipe data integer, jika diberi String akan melempar exception."
-            },
-            {
-                level: 2,
-                type: 'single',
-                levelName: "Level 2: Analisis Benar / Salah (Menengah)",
-                category: "Resource Leak",
-                title: "Penutupan Objek Scanner",
-                text: "Pernyataan: Praktik terbaik (best practice) untuk mencegah kebocoran resource setelah selesai menggunakan Scanner adalah memanggil `input.close()`;.",
-                options: ["BENAR", "SALAH"],
-                correct: 0,
-                hint: "Memanggil `.close()` pada objek I/O membersihkan alokasi memori stream."
-            },
+            // LEVEL 2: True / False (Q11 - Q20)
+            { id: 11, type: 'tf', level: 2, title: 'Analisis Case Sensitivity', text: 'Java bersifat case-sensitive, sehingga namaLaptop dan NamaLaptop dianggap dua variabel yang berbeda.', options: ['BENAR', 'SALAH'], correct: 0, hint: 'Java membedakan huruf kapital dan huruf kecil.' },
+            { id: 12, type: 'tf', level: 2, title: 'Penggabungan String', text: 'Simbol + pada System.out.println("Laptop: " + namaLaptop) berfungsi melakukan penjumlahan aritmatika.', options: ['BENAR', 'SALAH'], correct: 1, hint: 'Simbol + pada String berfungsi sebagai String Concatenation.' },
+            { id: 13, type: 'tf', level: 2, title: 'Fungsi System.out.print', text: 'Perintah System.out.print() mencetak teks dan langsung membuat ganti baris baru.', options: ['BENAR', 'SALAH'], correct: 1, hint: 'System.out.print tidak mengganti baris. Yang mengganti baris adalah println().' },
+            { id: 14, type: 'tf', level: 2, title: 'Exception Mismatch', text: 'Jika pengguna memasukkan teks "LIMA" pada input.nextInt(), program akan melempar InputMismatchException.', options: ['BENAR', 'SALAH'], correct: 0, hint: 'Metode nextInt() menantikan masukan nilai angka integer.' },
+            { id: 15, type: 'tf', level: 2, title: 'Inisialisasi Variabel Diskon', text: 'Variabel diskon harus diberi nilai awal sebelum diproses pada percabangan if-else.', options: ['BENAR', 'SALAH'], correct: 0, hint: 'Variabel lokal wajib diinisialisasi nilai awalnya di Java.' },
+            { id: 16, type: 'tf', level: 2, title: 'Ketentuan Diskon Belanja', text: 'Pembelian laptop senilai Rp 10.000.000 pas TIDAK akan mendapatkan diskon 10%.', options: ['BENAR', 'SALAH'], correct: 1, hint: 'Operator >= mencakup nilai batas (10.000.000 pas tetap mendapat diskon).' },
+            { id: 17, type: 'tf', level: 2, title: 'Titik Koma (Semicolon)', text: 'Setiap instruksi pernyataan di Java wajib diakhiri dengan tanda titik koma (;).', options: ['BENAR', 'SALAH'], correct: 0, hint: 'Titik koma (;) adalah penanda akhir statement di Java.' },
+            { id: 18, type: 'tf', level: 2, title: 'Output System.in', text: 'System.in menyatakan alur keluaran standar ke monitor layar.', options: ['BENAR', 'SALAH'], correct: 1, hint: 'System.in adalah standard INPUT, sedangkan System.out adalah standard OUTPUT.' },
+            { id: 19, type: 'tf', level: 2, title: 'Perilaku nextDouble()', text: 'Metode nextDouble() dapat membaca angka pecahan berdesimal seperti 1500000.50.', options: ['BENAR', 'SALAH'], correct: 0, hint: 'nextDouble() khusus untuk nilai floating-point double.' },
+            { id: 20, type: 'tf', level: 2, title: 'Penutupan Scanner', text: 'Memanggil input.close() disarankan untuk mencegah kebocoran resource memori.', options: ['BENAR', 'SALAH'], correct: 0, hint: 'input.close() membebaskan stream masukan setelah selesai digunakan.' },
 
-            // ================= LEVEL 3: PG KOMPLEKS (6 OPSI, >2 JAWABAN BENAR) (21-30) =================
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Deklarasi Variabel & Tipe Data",
-                title: "Analisis Variabel yang Valid dalam Java",
-                text: "Manakah dari deklarasi variabel berikut yang **BENAR & VALID** secara sintaksis dalam Java untuk menyimpan data toko laptop? (Pilih 3 jawaban benar)",
-                options: [
-                    "double hargaLaptop = 8500000.0;",
-                    "int jumlahBeli = 2;",
-                    "String nama_toko = \"CyberTech\";",
-                    "double 1stDiskon = 0.10;", // Salah (diawali angka)
-                    "int total-belanja = 1000000;", // Salah (menggunakan hypen -)
-                    "String class = \"Gaming\";" // Salah (class keyword reserved)
-                ],
-                correct: [0, 1, 2],
-                hint: "Identifier Java tidak boleh diawali angka, mengandung karakter minus `-`, atau menggunakan keyword terlarang seperti `class`."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Metode Scanner",
-                title: "Metode Pembacaan Scanner yang Benar",
-                text: "Manakah di antara metode-metode berikut yang **BENAR & TERSEDIA** pada kelas `java.util.Scanner`? (Pilih 3 jawaban benar)",
-                options: [
-                    "nextInt()",
-                    "nextDouble()",
-                    "nextLine()",
-                    "readString()", // Salah
-                    "nextInteger()", // Salah
-                    "parseNext()" // Salah
-                ],
-                correct: [0, 1, 2],
-                hint: "Scanner Java menggunakan penamaan `nextByte()`, `nextInt()`, `nextDouble()`, `nextLine()`, dsb."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Pengondisian IF-ELSE",
-                title: "Ekspresi Logika Diskon Belanja",
-                text: "Toko ingin memberi diskon jika total belanja **minimal 10 Juta ATAU** pembeli memiliki kartu **Member VIP**. Manakah ekspresi logika IF yang BENAR? (Pilih 3 jawaban benar)",
-                options: [
-                    "if (totalBelanja >= 10000000 || isMember == true)",
-                    "if (totalBelanja >= 10000000 | isMember)",
-                    "if (isMember || totalBelanja >= 10000000)",
-                    "if (totalBelanja >= 10000000 && isMember == true)", // Salah (menggunakan AND padahal ATAU)
-                    "if (totalBelanja > 10000000 AND isMember)", // Salah (syntax AND huruf besar)
-                    "if (totalBelanja = 10000000 || isMember)" // Salah (assignment =)
-                ],
-                correct: [0, 1, 2],
-                hint: "Operator logika 'ATAU' menggunakan `||` atau `|`. Jangan tertukar dengan `&&` (DAN)."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Operator Aritmatika & Assignment",
-                title: "Penulisan Rumus Diskon Ekuivalen",
-                text: "Manakah penulisan ekspresi penyesuaian potongan diskon 10% dari `totalBelanja` yang **VALID** dalam sintaks Java? (Pilih 3 jawaban benar)",
-                options: [
-                    "diskon = 0.10 * totalBelanja;",
-                    "diskon = (10.0 / 100.0) * totalBelanja;",
-                    "diskon = totalBelanja * 10 / 100;",
-                    "diskon = 10% * totalBelanja;", // Salah (% adalah modulo di Java)
-                    "diskon = totalBelanja - 10%;", // Salah
-                    "diskon = 0,10 * totalBelanja;" // Salah (koma bukan titik desimal)
-                ],
-                correct: [0, 1, 2],
-                hint: "Dalam Java, desimal memakai titik `.`, persen bukan operator `%` melainkan sisa bagi (modulo)."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Analisis Output Program",
-                title: "Hasil Cetakan Nota Kasir",
-                text: "Jika `harga = 5000000` dan `jumlah = 3`, pernyataan manakah mengenai alur program yang **BENAR**? (Pilih 3 jawaban benar)",
-                options: [
-                    "Nilai `totalBelanja` adalah Rp 15.000.000",
-                    "Kondisi `if (totalBelanja >= 10000000)` bernilai TRUE",
-                    "Besaran `diskon` yang didapat adalah Rp 1.500.000",
-                    "Nilai `totalBayar` akhir adalah Rp 15.000.000", // Salah
-                    "Besaran `diskon` adalah Rp 0", // Salah
-                    "Kondisi `else` yang dieksekusi" // Salah
-                ],
-                correct: [0, 1, 2],
-                hint: "5 Juta x 3 = 15 Juta (≥ 10 Juta -> Diskon 10% = 1,5 Juta. Total Bayar = 13,5 Juta)."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Format Code Standard",
-                title: "Karakteristik Tipe Data Primitive Desimal",
-                text: "Manakah pernyataan yang **BENAR** mengenai tipe data desimal (`double` & `float`) di Java? (Pilih 3 jawaban benar)",
-                options: [
-                    "Tipe `double` memiliki presisi 64-bit lebih besar dari `float` (32-bit)",
-                    "Secara default, angka desimal literal seperti `0.10` dianggap bertipe `double`",
-                    "Pengisian `float` membutuhkan sufiks 'f' (contoh: `float d = 0.10f;`)",
-                    "Tipe `double` tidak bisa dikali dengan variabel bertipe `int`", // Salah
-                    "Tipe `float` hanya bisa menampung bilangan bulat", // Salah
-                    "Keyword `Double` (huruf kapital D) adalah tipe data primitif", // Salah (itu Wrapper Class)
-                ],
-                correct: [0, 1, 2],
-                hint: "`double` berukuran 64-bit desimal bawaan Java, sedangkan `float` berukuran 32-bit dan membutuhkan akhiran `f`."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Scanner & Memory Buffer",
-                title: "Penyebab Terjadinya Buffer Skip",
-                text: "Faktor apa saja yang dapat menyebabkan loncatnya (*skipping*) pembacaan `input.nextLine()` pada Java? (Pilih 3 jawaban benar)",
-                options: [
-                    "Memanggil `nextLine()` tepat setelah `nextInt()` tanpa pembersihan buffer",
-                    "Memanggil `nextLine()` tepat setelah `nextDouble()` tanpa pembersihan buffer",
-                    "Adanya karakter newline (`\\n`) tersisa yang tidak diserap oleh fungsi numerik",
-                    "Menggunakan nama variabel bertipe `String` yang terlalu panjang", // Salah
-                    "Menutup objek Scanner dengan `input.close()` sebelum program dijalankan", // Salah
-                    "Lupa mengimpor pustaka `java.util.Scanner`" // Salah (ini compile error)
-                ],
-                correct: [0, 1, 2],
-                hint: "Perintah numerik (`nextInt`, `nextDouble`) menyisakan karakter ENTER (`\\n`) di buffer."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Syntax Highlighting & Error",
-                title: "Penyebab Error Kompilasi (Syntax Error)",
-                text: "Manakah dari kesalahan penulisan sintaks Java berikut yang akan menyebabkan **Compile Error**? (Pilih 3 jawaban benar)",
-                options: [
-                    "Lupa memberikan tanda titik koma (`;`) di akhir instruksi",
-                    "Menuliskan nama kelas `public class` yang tidak sama dengan nama file .java",
-                    "Menggunakan keyword terlarang Java sebagai nama variabel (misal: `int double = 10;`)",
-                    "Memberikan nilai prompt String yang salah pada `System.out.print()`", // Logika Error, bukan Syntax
-                    "Menghitung diskon 10% dengan angka `0` (misal: `diskon = 0`)", // Logika Error
-                    "Membuat variabel tetapi tidak pernah menggunakannya di output" // Warning saja
-                ],
-                correct: [0, 1, 2],
-                hint: "Compile error terjadi karena pelanggaran aturan sintaks bahasa (titik koma, nama file class, reserved keywords)."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Struktur Program Java",
-                title: "Komponen Utama Method Main",
-                text: "Manakah pernyataan yang **BENAR** mengenai method `public static void main(String[] args)`? (Pilih 3 jawaban benar)",
-                options: [
-                    "Merupakan titik awal (entry point) eksekusi program Java",
-                    "Keyword `public` berarti method dapat diakses dari mana saja oleh JVM",
-                    "Keyword `void` menandakan method tersebut tidak mengembalikan nilai return",
-                    "Keyword `static` berarti method harus diinstansiasi dengan `new` terlebih dahulu", // Salah
-                    "Parameter `String[] args` digunakan untuk menampung koneksi database", // Salah
-                    "Method main wajib dibuat di dalam setiap file pustaka tanpa class" // Salah
-                ],
-                correct: [0, 1, 2],
-                hint: "`public` = akses luas, `static` = dipanggil tanpa instansiasi objek, `void` = tanpa return value."
-            },
-            {
-                level: 3,
-                type: 'complex',
-                levelName: "Level 3: PG Kompleks (Sangat Sulit)",
-                category: "Best Practices Pemrograman",
-                title: "Praktik Penulisan Kode Clean Code Java",
-                text: "Manakah dari praktik berikut yang tergolong **Clean Code & Best Practice** dalam Java? (Pilih 3 jawaban benar)",
-                options: [
-                    "Menggunakan penamaan variabel gaya *camelCase* yang deskriptif (misal: `totalBelanja`)",
-                    "Memberikan komentar penjelas pada bagian logika yang kompleks",
-                    "Menutup alokasi stream resource `Scanner` setelah tidak lagi digunakan (`input.close()`)",
-                    "Menuliskan seluruh kode program dalam satu baris tanpa spasi", // Salah
-                    "Menggunakan nama variabel 1 huruf acak untuk semua data (misal: `a`, `b`, `c`, `d`)", // Salah
-                    "Menghapus semua blok `else` untuk menghemat baris kode" // Salah
-                ],
-                correct: [0, 1, 2],
-                hint: "Clean code mencakup variabel camelCase deskriptif, dokumentasi komentar, dan penutupan resource stream."
-            }
+            // LEVEL 3: Complex Multi-Choice (6 Options, Select > 2 Correct Answers) (Q21 - Q30)
+            { id: 21, type: 'multi', level: 3, title: 'Aturan Nama Variabel Valid', text: 'Pilihlah 3 nama variabel Java yang VALID dan sesuai konvensi penulisan di Java!', options: ['double totalBelanja;', 'double 1totalBelanja;', 'int jumlah_beli;', 'String nama-laptop;', 'double $diskon;', 'int class;'], correct: [0, 2, 4], hint: 'Variabel tidak boleh diawali angka, mengandung tanda hubung (-), atau kata kunci terpesan seperti class.' },
+            { id: 22, type: 'multi', level: 3, title: 'Metode Valid Kelas Scanner', text: 'Manakah 3 metode resmi yang BENAR-BENAR ada di dalam kelas java.util.Scanner?', options: ['nextInt()', 'readInteger()', 'nextDouble()', 'nextLine()', 'readString()', 'inputDouble()'], correct: [0, 2, 3], hint: 'Scanner menggunakan nextInt(), nextDouble(), dan nextLine().' },
+            { id: 23, type: 'multi', level: 3, title: 'Ekspresi Diskon Ekuivalen', text: 'Manakah 3 ekspresi matematika Java yang ekuivalen untuk menghitung diskon 10% dari totalBelanja?', options: ['0.10 * totalBelanja', '(10 * totalBelanja) / 100', 'totalBelanja / 10', 'totalBelanja * 10%', '0.1 * totalBelanja', 'totalBelanja - 10'], correct: [0, 2, 4], hint: '10% sama dengan 0.10, 0.1, atau membagi totalBelanja dengan 10.' },
+            { id: 24, type: 'multi', level: 3, title: 'Identifikasi Keyword Terpesan', text: 'Pilihlah 3 kata kunci terpesan (reserved keywords) resmi Java dari opsi berikut!', options: ['public', 'double', 'scanner', 'static', 'total', 'harga'], correct: [0, 1, 3], hint: 'public, double, dan static adalah keyword utama Java (huruf kecil semua).' },
+            { id: 25, type: 'multi', level: 3, title: 'Syarat Syarat Mendapatkan Diskon', text: 'Manakah 3 kombinasi harga satuan dan jumlah beli yang BERHAK mendapatkan diskon 10% (Total ≥ 10 Juta)?', options: ['Harga 5 Juta, Jumlah 2 Unit', 'Harga 12 Juta, Jumlah 1 Unit', 'Harga 3 Juta, Jumlah 3 Unit', 'Harga 2.5 Juta, Jumlah 4 Unit', 'Harga 4 Juta, Jumlah 2 Unit', 'Harga 1 Juta, Jumlah 9 Unit'], correct: [0, 1, 3], hint: 'Hitung (Harga * Jumlah). Pilihlah yang hasilnya >= 10.000.000.' },
+            { id: 26, type: 'multi', level: 3, title: 'Karakter Escape Sequence', text: 'Pilihlah 3 karakter escape sequence Java yang valid untuk memformat tampilan string!', options: ['\\n (ganti baris)', '\\t (tabulas)', '\\" (petik ganda)', '\\p (print)', '\\s (space)', '\\e (enter)'], correct: [0, 1, 2], hint: '\\n, \\t, dan \\" adalah escape sequence standar Java.' },
+            { id: 27, type: 'multi', level: 3, title: 'Pernyataan Percabangan Java', text: 'Pilihlah 3 bentuk struktur kontrol percabangan/kondisi yang sah dalam pemrograman Java!', options: ['if statement', 'if-else statement', 'switch-case statement', 'loop-until statement', 'check-when statement', 'select-if statement'], correct: [0, 1, 2], hint: 'Java mendukung struktur if, if-else, dan switch-case.' },
+            { id: 28, type: 'multi', level: 3, title: 'Simulasi Output Program', text: 'Jika harga = 15.000.000 dan jumlah = 1, manakah 3 nilai output variabel yang BENAR?', options: ['totalBelanja = 15000000.0', 'diskon = 1500000.0', 'totalBayar = 13500000.0', 'diskon = 0.0', 'totalBayar = 15000000.0', 'diskon = 10.0'], correct: [0, 1, 2], hint: 'Total = 15 Juta, Diskon 10% = 1.5 Juta, Total Bayar = 13.5 Juta.' },
+            { id: 29, type: 'multi', level: 3, title: 'Tipe Data Primtif Numerik', text: 'Manakah 3 jenis tipe data primitif Java khusus untuk menampung bilangan bulat (integer)?', options: ['int', 'byte', 'long', 'double', 'float', 'String'], correct: [0, 1, 2], hint: 'byte, short, int, dan long adalah tipe data bilangan bulat.' },
+            { id: 30, type: 'multi', level: 3, title: 'Struktur Method Main Java', text: 'Manakah 3 komponen penulisan signature method main Java yang BENAR?', options: ['public', 'static', 'void', 'mainString()', 'args[]', 'SystemMain'], correct: [0, 1, 2], hint: 'public static void main(String[] args) terdiri dari modifier public, static, dan return type void.' }
         ];
 
-        // State variables
-        let studentData = { nama: '', nis: '' };
-        let currentStage = 0;
-        let score = 0;
-        let lives = 3;
-        let maxLevelReached = 1;
-        let selectedOptionsSingle = null;
-        let selectedOptionsComplex = []; // Array of indices for multi-choice
-        let examTimerInterval = null;
-        let timeRemaining = 45 * 60; // 45 minutes in seconds
-        let isExamActive = false;
+        // --- GAME CONTROLLER FUNCTIONS ---
 
-        // Anti-cheat Window Listener
-        function handleAntiCheatTrigger() {
-            if (isExamActive) {
-                clearInterval(examTimerInterval);
-                document.getElementById('modalAntiCheat').classList.remove('hidden');
-            }
-        }
-
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) handleAntiCheatTrigger();
-        });
-
-        window.addEventListener('blur', () => {
-            if (isExamActive) handleAntiCheatTrigger();
-        });
-
-        function acknowledgeAntiCheatReset() {
-            document.getElementById('modalAntiCheat').classList.add('hidden');
-            resetToLogin();
-        }
-
-        // Reset system to login
-        function resetToLogin() {
-            clearInterval(examTimerInterval);
-            isExamActive = false;
-            currentStage = 0;
-            score = 0;
-            lives = 3;
-            selectedOptionsSingle = null;
-            selectedOptionsComplex = [];
-            timeRemaining = 45 * 60;
-
-            document.getElementById('headerExamStats').classList.add('hidden');
-            document.getElementById('screenQuest').classList.add('hidden');
-            document.getElementById('screenResult').classList.add('hidden');
-            document.getElementById('screenLogin').classList.remove('hidden');
-            document.getElementById('formLogin').reset();
-        }
-
-        // Start Quest
         function handleStartQuest(e) {
             e.preventDefault();
             const nama = document.getElementById('inputNama').value.trim();
@@ -1015,363 +529,349 @@
 
             if (!nama || !nis) return;
 
-            studentData = { nama, nis };
-            isExamActive = true;
-            currentStage = 0;
-            score = 0;
-            lives = 3;
-            timeRemaining = 45 * 60;
+            gameState.nama = nama;
+            gameState.nis = nis;
+            gameState.currentQuestionIndex = 0;
+            gameState.score = 0;
+            gameState.lives = 3;
+            gameState.maxLevelReached = 'Level 1';
+            gameState.timerSeconds = 45 * 60;
+            gameState.isExamActive = true;
 
-            // Update UI
             document.getElementById('screenLogin').classList.add('hidden');
             document.getElementById('screenQuest').classList.remove('hidden');
             document.getElementById('headerExamStats').classList.remove('hidden');
 
-            renderLives();
             startTimer();
-            loadStage(0);
+            renderLives();
+            loadQuestion();
+            setupAntiCheat();
+        }
+
+        function startTimer() {
+            clearInterval(gameState.timerInterval);
+            gameState.timerInterval = setInterval(() => {
+                gameState.timerSeconds--;
+                const mins = Math.floor(gameState.timerSeconds / 60);
+                const secs = gameState.timerSeconds % 60;
+                document.getElementById('timerText').innerText =
+                    `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+
+                if (gameState.timerSeconds <= 0) {
+                    clearInterval(gameState.timerInterval);
+                    finishQuest();
+                }
+            }, 1000);
         }
 
         function renderLives() {
             const container = document.getElementById('livesContainer');
             container.innerHTML = '';
             for (let i = 0; i < 3; i++) {
-                if (i < lives) {
-                    container.innerHTML += `<i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>`;
+                if (i < gameState.lives) {
+                    container.innerHTML += '<i class="fa-solid fa-heart text-rose-500 animate-pulse"></i>';
                 } else {
-                    container.innerHTML += `<i class="fa-regular fa-heart text-slate-700"></i>`;
+                    container.innerHTML += '<i class="fa-regular fa-heart text-slate-600"></i>';
                 }
             }
         }
 
-        function startTimer() {
-            updateTimerDisplay();
-            clearInterval(examTimerInterval);
-            examTimerInterval = setInterval(() => {
-                timeRemaining--;
-                updateTimerDisplay();
+        function loadQuestion() {
+            const q = questionsList[gameState.currentQuestionIndex];
+            gameState.userSelectedOptions = [];
 
-                if (timeRemaining <= 0) {
-                    clearInterval(examTimerInterval);
-                    finishQuest();
-                }
-            }, 1000);
-        }
+            // Update level tracker
+            if (q.level === 1) gameState.maxLevelReached = 'Level 1';
+            else if (q.level === 2) gameState.maxLevelReached = 'Level 2';
+            else if (q.level === 3) gameState.maxLevelReached = 'Level 3';
 
-        function updateTimerDisplay() {
-            const m = Math.floor(timeRemaining / 60);
-            const s = timeRemaining % 60;
-            const str = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-            document.getElementById('timerText').innerText = str;
-        }
+            document.getElementById('badgeStage').innerText = `Soal ${gameState.currentQuestionIndex + 1} / ${questionsList.length}`;
 
-        function loadStage(index) {
-            currentStage = index;
-            selectedOptionsSingle = null;
-            selectedOptionsComplex = [];
-            const q = questData[index];
+            const badgeCat = document.getElementById('badgeCategory');
+            const multiNotice = document.getElementById('multiChoiceNotice');
 
-            // Track max level reached
-            if (q.level > maxLevelReached) {
-                maxLevelReached = q.level;
+            if (q.level === 1) {
+                badgeCat.className = 'bg-cyan-950 text-cyan-400 border border-cyan-800 px-2.5 py-1 rounded-full text-xs font-semibold';
+                badgeCat.innerText = 'Level 1: Pilihan Ganda (4 Opsi)';
+                multiNotice.classList.add('hidden');
+            } else if (q.level === 2) {
+                badgeCat.className = 'bg-amber-950 text-amber-400 border border-amber-800 px-2.5 py-1 rounded-full text-xs font-semibold';
+                badgeCat.innerText = 'Level 2: Pernyataan Benar / Salah';
+                multiNotice.classList.add('hidden');
+            } else {
+                badgeCat.className = 'bg-purple-950 text-purple-300 border border-purple-800 px-2.5 py-1 rounded-full text-xs font-semibold';
+                badgeCat.innerText = 'Level 3: PG Kompleks (6 Opsi)';
+                multiNotice.classList.remove('hidden');
             }
 
-            document.getElementById('badgeStage').innerText = `Soal ${index + 1} / ${questData.length}`;
-            document.getElementById('badgeCategory').innerText = q.levelName;
-            document.getElementById('currentScore').innerText = score;
-            document.getElementById('questionTitle').innerText = `${index + 1}. ${q.title}`;
+            document.getElementById('currentScore').innerText = Math.round(gameState.score);
+            document.getElementById('questionTitle').innerText = q.title;
             document.getElementById('questionText').innerText = q.text;
 
-            const notice = document.getElementById('multiChoiceNotice');
-            if (q.type === 'complex') {
-                notice.classList.remove('hidden');
-            } else {
-                notice.classList.add('hidden');
-            }
+            const feedback = document.getElementById('feedbackBox');
+            feedback.classList.add('hidden');
 
-            // Reset feedback
-            const fbBox = document.getElementById('feedbackBox');
-            fbBox.classList.add('hidden');
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
 
-            // Render options
-            const optContainer = document.getElementById('optionsContainer');
-            optContainer.innerHTML = '';
+            const btnSubmit = document.getElementById('btnSubmitAnswer');
+            btnSubmit.disabled = false;
 
-            q.options.forEach((optStr, optIdx) => {
-                const btn = document.createElement('button');
-                btn.type = 'button';
-                btn.onclick = () => selectOption(optIdx);
-                btn.className = `w-full text-left p-3.5 rounded-xl border-2 transition duration-150 flex items-center justify-between text-xs sm:text-sm font-medium border-slate-800 bg-slate-950 hover:border-slate-700 text-slate-300 opt-btn-${optIdx}`;
-                
-                const optionLabel = String.fromCharCode(65 + optIdx);
-                const isCheckStyle = (q.type === 'complex');
-                const iconClass = isCheckStyle ? "fa-regular fa-square text-slate-600 radio-icon" : "fa-regular fa-circle text-slate-600 radio-icon";
+            q.options.forEach((optText, idx) => {
+                const optBtn = document.createElement('div');
+                optBtn.className = 'w-full p-4 rounded-xl border border-slate-800 bg-slate-950 hover:border-cyan-500 cursor-pointer transition flex items-center space-x-3 text-xs sm:text-sm font-medium';
+                optBtn.onclick = () => selectOption(idx, optBtn, q.type);
 
-                btn.innerHTML = `
-                    <div class="flex items-start space-x-3">
-                        <span class="w-6 h-6 rounded-lg bg-slate-900 border border-slate-700 text-slate-400 font-bold flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
-                            ${optionLabel}
-                        </span>
-                        <span class="code-font leading-relaxed">${escapeHtml(optStr)}</span>
-                    </div>
-                    <i class="${iconClass} text-base flex-shrink-0 ml-2"></i>
-                `;
-                optContainer.appendChild(btn);
-            });
-
-            document.getElementById('btnSubmitAnswer').disabled = false;
-        }
-
-        function selectOption(optIdx) {
-            const q = questData[currentStage];
-
-            if (q.type === 'single') {
-                selectedOptionsSingle = optIdx;
-                q.options.forEach((_, idx) => {
-                    const btn = document.querySelector(`.opt-btn-${idx}`);
-                    const icon = btn.querySelector('.radio-icon');
-
-                    if (idx === optIdx) {
-                        btn.className = "w-full text-left p-3.5 rounded-xl border-2 transition duration-150 flex items-center justify-between text-xs sm:text-sm font-medium border-cyan-500 bg-cyan-950/40 text-cyan-200 shadow-md shadow-cyan-500/10";
-                        icon.className = "fa-solid fa-circle-check text-cyan-400 text-base flex-shrink-0 ml-2";
-                    } else {
-                        btn.className = "w-full text-left p-3.5 rounded-xl border-2 transition duration-150 flex items-center justify-between text-xs sm:text-sm font-medium border-slate-800 bg-slate-950 hover:border-slate-700 text-slate-400";
-                        icon.className = "fa-regular fa-circle text-slate-600 text-base flex-shrink-0 ml-2";
-                    }
-                });
-            } else { // Complex type
-                const existingIdx = selectedOptionsComplex.indexOf(optIdx);
-                if (existingIdx > -1) {
-                    selectedOptionsComplex.splice(existingIdx, 1);
-                } else {
-                    selectedOptionsComplex.push(optIdx);
+                if (q.type === 'single' || q.type === 'tf') {
+                    const label = String.fromCharCode(65 + idx);
+                    optBtn.innerHTML = `
+                        <span class="w-6 h-6 rounded-lg bg-slate-900 border border-slate-700 flex items-center justify-center font-bold text-xs text-slate-400 opt-badge">${label}</span>
+                        <span class="text-slate-200">${optText}</span>
+                    `;
+                } else { // multi
+                    optBtn.innerHTML = `
+                        <div class="w-5 h-5 rounded border border-slate-700 bg-slate-900 flex items-center justify-center check-box">
+                            <i class="fa-solid fa-check text-xs text-transparent"></i>
+                        </div>
+                        <span class="text-slate-200">${optText}</span>
+                    `;
                 }
 
-                q.options.forEach((_, idx) => {
-                    const btn = document.querySelector(`.opt-btn-${idx}`);
-                    const icon = btn.querySelector('.radio-icon');
+                optionsContainer.appendChild(optBtn);
+            });
+        }
 
-                    if (selectedOptionsComplex.includes(idx)) {
-                        btn.className = "w-full text-left p-3.5 rounded-xl border-2 transition duration-150 flex items-center justify-between text-xs sm:text-sm font-medium border-purple-500 bg-purple-950/40 text-purple-200 shadow-md shadow-purple-500/10";
-                        icon.className = "fa-solid fa-square-check text-purple-400 text-base flex-shrink-0 ml-2";
-                    } else {
-                        btn.className = "w-full text-left p-3.5 rounded-xl border-2 transition duration-150 flex items-center justify-between text-xs sm:text-sm font-medium border-slate-800 bg-slate-950 hover:border-slate-700 text-slate-400";
-                        icon.className = "fa-regular fa-square text-slate-600 text-base flex-shrink-0 ml-2";
-                    }
-                });
+        function selectOption(idx, element, type) {
+            if (type === 'single' || type === 'tf') {
+                gameState.userSelectedOptions = [idx];
+                const allOpts = document.getElementById('optionsContainer').children;
+                for (let opt of allOpts) {
+                    opt.classList.remove('border-cyan-500', 'bg-cyan-950/30');
+                    opt.classList.add('border-slate-800', 'bg-slate-950');
+                }
+                element.classList.remove('border-slate-800', 'bg-slate-950');
+                element.classList.add('border-cyan-500', 'bg-cyan-950/30');
+            } else { // multi choice
+                const pos = gameState.userSelectedOptions.indexOf(idx);
+                const checkIcon = element.querySelector('.fa-check');
+                const checkBox = element.querySelector('.check-box');
+
+                if (pos > -1) {
+                    gameState.userSelectedOptions.splice(pos, 1);
+                    element.classList.remove('border-purple-500', 'bg-purple-950/30');
+                    element.classList.add('border-slate-800', 'bg-slate-950');
+                    checkBox.classList.remove('bg-purple-600', 'border-purple-500');
+                    checkIcon.classList.add('text-transparent');
+                } else {
+                    gameState.userSelectedOptions.push(idx);
+                    element.classList.remove('border-slate-800', 'bg-slate-950');
+                    element.classList.add('border-purple-500', 'bg-purple-950/30');
+                    checkBox.classList.add('bg-purple-600', 'border-purple-500');
+                    checkIcon.classList.remove('text-transparent');
+                }
             }
         }
 
         function checkAnswer() {
-            const q = questData[currentStage];
+            if (gameState.userSelectedOptions.length === 0) {
+                alert('Pilihlah setidaknya satu jawaban terlebih dahulu!');
+                return;
+            }
+
+            const q = questionsList[gameState.currentQuestionIndex];
+            const feedback = document.getElementById('feedbackBox');
             let isCorrect = false;
 
-            if (q.type === 'single') {
-                if (selectedOptionsSingle === null) {
-                    showFeedback(false, "Silakan pilih salah satu opsi jawaban terlebih dahulu!");
-                    return;
-                }
-                isCorrect = (selectedOptionsSingle === q.correct);
-
-            } else { // Complex Multi-Choice
-                if (selectedOptionsComplex.length === 0) {
-                    showFeedback(false, "Silakan centang pilihan jawaban Anda terlebih dahulu!");
-                    return;
-                }
-                
-                // Compare arrays
-                const sortedSelected = [...selectedOptionsComplex].sort((a,b) => a-b);
-                const sortedCorrect = [...q.correct].sort((a,b) => a-b);
-                
-                isCorrect = (sortedSelected.length === sortedCorrect.length) && 
-                            sortedSelected.every((val, idx) => val === sortedCorrect[idx]);
+            if (q.type === 'single' || q.type === 'tf') {
+                isCorrect = (gameState.userSelectedOptions[0] === q.correct);
+            } else { // multi
+                const userAns = [...gameState.userSelectedOptions].sort();
+                const correctAns = [...q.correct].sort();
+                isCorrect = (JSON.stringify(userAns) === JSON.stringify(correctAns));
             }
+
+            document.getElementById('btnSubmitAnswer').disabled = true;
 
             if (isCorrect) {
-                // Point calculation (Total 30 questions = max score 100 approx ~ 3.33 pts per question)
-                score += (currentStage >= 20) ? 4 : 3;
-                if (score > 100) score = 100;
-                
-                document.getElementById('currentScore').innerText = score;
-                showFeedback(true, "Jawaban BENAR! Logika Java Anda sangat tepat!");
-
-                setTimeout(() => {
-                    if (currentStage + 1 < questData.length) {
-                        loadStage(currentStage + 1);
-                    } else {
-                        finishQuest();
-                    }
-                }, 1200);
-
+                gameState.score += (100 / questionsList.length);
+                feedback.className = 'mt-4 p-4 rounded-xl border border-emerald-800 bg-emerald-950/50 text-emerald-300 text-xs font-medium';
+                feedback.innerHTML = '<i class="fa-solid fa-circle-check mr-2"></i><strong>JAWABAN BENAR!</strong> Jawaban Anda sangat tepat.';
             } else {
-                lives--;
+                gameState.lives--;
                 renderLives();
+                feedback.className = 'mt-4 p-4 rounded-xl border border-rose-800 bg-rose-950/50 text-rose-300 text-xs font-medium';
+                feedback.innerHTML = '<i class="fa-solid fa-circle-xmark mr-2"></i><strong>JAWABAN KURANG TEPAT!</strong> Nyawa Anda berkurang 1.';
 
-                if (lives <= 0) {
-                    showFeedback(false, "Jawaban SALAH! Nyawa Anda telah HABIS (0). Game Over!");
+                if (gameState.lives <= 0) {
                     setTimeout(() => {
-                        alert("Nyawa habis! Ujian dan petualangan Anda di-reset dari awal login.");
+                        alert('💔 NYAWA HABIS! Sesi petualangan Anda direset kembali ke awal.');
                         resetToLogin();
-                    }, 1500);
-                } else {
-                    let errMsg = (q.type === 'complex') 
-                        ? `Jawaban Belum Tepat! Pastikan Anda mencentang SEMUA opsi jawaban yang benar. (Sisa Nyawa: ${lives})`
-                        : `Jawaban Kurang Tepat! Nyawa berkurang 1. (Sisa Nyawa: ${lives})`;
-                    showFeedback(false, errMsg);
+                    }, 1200);
+                    return;
                 }
             }
+
+            feedback.classList.remove('hidden');
+
+            setTimeout(() => {
+                gameState.currentQuestionIndex++;
+                if (gameState.currentQuestionIndex < questionsList.length) {
+                    loadQuestion();
+                } else {
+                    gameState.maxLevelReached = 'Level 3 (Selesai!)';
+                    finishQuest();
+                }
+            }, 1500);
         }
 
         function showHint() {
-            const q = questData[currentStage];
-            showFeedback(true, `💡 Petunjuk: ${q.hint}`);
+            const q = questionsList[gameState.currentQuestionIndex];
+            alert(`💡 PETUNJUK LEVEL ${q.level}:\n${q.hint}`);
         }
 
-        function showFeedback(isPositive, message) {
-            const fb = document.getElementById('feedbackBox');
-            fb.classList.remove('hidden', 'bg-cyan-950/60', 'border-cyan-800', 'text-cyan-300', 'bg-rose-950/60', 'border-rose-800', 'text-rose-300');
-            
-            if (isPositive) {
-                fb.classList.add('bg-cyan-950/60', 'border-cyan-800', 'text-cyan-300');
-            } else {
-                fb.classList.add('bg-rose-950/60', 'border-rose-800', 'text-rose-300');
-            }
-            fb.innerHTML = message;
-        }
+        function finishQuest() {
+            gameState.isExamActive = false;
+            clearInterval(gameState.timerInterval);
 
-        async function finishQuest() {
-            clearInterval(examTimerInterval);
-            isExamActive = false;
-
-            document.getElementById('headerExamStats').classList.add('hidden');
             document.getElementById('screenQuest').classList.add('hidden');
+            document.getElementById('headerExamStats').classList.add('hidden');
             document.getElementById('screenResult').classList.remove('hidden');
 
-            document.getElementById('resNama').innerText = studentData.nama;
-            document.getElementById('resNis').innerText = studentData.nis;
-            document.getElementById('finalScore').innerText = score;
+            const finalScore = Math.min(100, Math.round(gameState.score));
+            document.getElementById('finalScore').innerText = finalScore;
+            document.getElementById('resNama').innerText = gameState.nama;
+            document.getElementById('resNis').innerText = gameState.nis;
+            document.getElementById('resHearts').innerText = `${gameState.lives} / 3 ❤️`;
 
-            let levelTextDisplay = `Level ${maxLevelReached}`;
-            if (currentStage + 1 >= questData.length && score >= 70) {
-                levelTextDisplay = `Level 3 (Selesai Max 30 Soal)`;
-            }
-
-            let heartStr = '';
-            for(let i=0; i<lives; i++) heartStr += '❤️ ';
-            document.getElementById('resHearts').innerText = heartStr || '0';
-
-            const isPassed = score >= 70;
-            const resStatus = document.getElementById('resStatus');
-            if (isPassed) {
-                resStatus.innerText = `LULUS (${levelTextDisplay})`;
-                resStatus.className = "font-extrabold text-xs sm:text-sm uppercase text-emerald-400";
+            const statusEl = document.getElementById('resStatus');
+            if (finalScore >= 70) {
+                statusEl.innerText = 'LULUS (KKM 70)';
+                statusEl.className = 'font-extrabold text-xs sm:text-sm uppercase text-emerald-400';
             } else {
-                resStatus.innerText = `BELUM TUNTAS (${levelTextDisplay})`;
-                resStatus.className = "font-extrabold text-xs sm:text-sm uppercase text-rose-400";
+                statusEl.innerText = 'REMEDIAL';
+                statusEl.className = 'font-extrabold text-xs sm:text-sm uppercase text-rose-400';
             }
 
-            // Save to Firebase Database
-            const resFb = document.getElementById('resFirebaseStatus');
+            const now = new Date();
+            const record = {
+                nama: gameState.nama,
+                nis: gameState.nis,
+                skor: finalScore,
+                sisaNyawa: gameState.lives,
+                levelDicapai: gameState.maxLevelReached,
+                timestamp: now.toLocaleDateString('id-ID') + ' ' + now.toLocaleTimeString('id-ID')
+            };
+
             if (window.saveResultToFirestore) {
-                const saved = await window.saveResultToFirestore(studentData, score, lives, levelTextDisplay);
-                if (saved) {
-                    resFb.innerHTML = `<i class="fa-solid fa-cloud-check text-emerald-400 mr-1.5"></i> <span class="text-emerald-300">Data & Hasil Level (${levelTextDisplay}) tersimpan di Firebase!</span>`;
-                } else {
-                    resFb.innerHTML = `<i class="fa-solid fa-info-circle text-amber-400 mr-1.5"></i> <span>Data tersimpan di sesi lokal.</span>`;
-                }
+                window.saveResultToFirestore(record);
             }
         }
 
-        // Toggle Teacher Dashboard Modal
+        function setupAntiCheat() {
+            window.onblur = function() {
+                if (gameState.isExamActive) {
+                    gameState.isExamActive = false;
+                    clearInterval(gameState.timerInterval);
+                    document.getElementById('modalAntiCheat').classList.remove('hidden');
+                }
+            };
+        }
+
+        function acknowledgeAntiCheatReset() {
+            document.getElementById('modalAntiCheat').classList.add('hidden');
+            resetToLogin();
+        }
+
+        function resetToLogin() {
+            gameState.isExamActive = false;
+            clearInterval(gameState.timerInterval);
+            document.getElementById('screenQuest').classList.add('hidden');
+            document.getElementById('screenResult').classList.add('hidden');
+            document.getElementById('headerExamStats').classList.add('hidden');
+            document.getElementById('screenLogin').classList.remove('hidden');
+            document.getElementById('formLogin').reset();
+        }
+
         function toggleTeacherDashboard(show) {
             const modal = document.getElementById('modalTeacherDashboard');
             if (show) {
                 modal.classList.remove('hidden');
+                if (window.getFetchedScoresData) {
+                    renderTeacherTable(window.getFetchedScoresData());
+                }
             } else {
                 modal.classList.add('hidden');
             }
         }
 
-        // Render Data Table for Teacher Dashboard
-        window.renderTeacherTable = function(dataList) {
+        function renderTeacherTable(dataArray) {
             const tbody = document.getElementById('tableBodyScores');
-            document.getElementById('totalAttemptCount').innerText = dataList.length;
+            document.getElementById('totalAttemptCount').innerText = dataArray.length;
 
-            if (!dataList || dataList.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="7" class="p-6 text-center text-slate-500 italic">Belum ada siswa yang menyelesaikan asesmen.</td></tr>`;
+            if (dataArray.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="p-6 text-center text-slate-500 italic">Belum ada data siswa yang menyelesaikan ujian.</td></tr>';
                 return;
             }
 
             tbody.innerHTML = '';
-            dataList.forEach((row, idx) => {
+            dataArray.forEach((item, i) => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-slate-900/80 transition border-b border-slate-800/60";
-                
-                let heartDisplay = '';
-                for(let i=0; i < (row.sisaNyawa || 0); i++) heartDisplay += '❤️';
-
+                tr.className = 'hover:bg-slate-900 transition';
                 tr.innerHTML = `
-                    <td class="p-3 font-mono text-slate-400">${idx + 1}</td>
-                    <td class="p-3 font-bold text-white">${escapeHtml(row.nama || '-')}</td>
-                    <td class="p-3 font-mono text-slate-300">${escapeHtml(row.nis || '-')}</td>
-                    <td class="p-3 font-bold text-amber-400 font-mono text-xs">${escapeHtml(row.levelDicapai || 'Level 1')}</td>
-                    <td class="p-3 font-extrabold text-cyan-400 font-mono text-sm">${row.skor}</td>
-                    <td class="p-3 text-xs">${heartDisplay || '0'}</td>
-                    <td class="p-3 text-slate-400 font-mono text-[11px]">${escapeHtml(row.timestamp || '-')}</td>
+                    <td class="p-3 font-mono text-slate-500">${i + 1}</td>
+                    <td class="p-3 font-bold text-white">${item.nama || '-'}</td>
+                    <td class="p-3 font-mono text-slate-400">${item.nis || '-'}</td>
+                    <td class="p-3"><span class="bg-cyan-950 text-cyan-400 px-2 py-0.5 rounded text-[11px] border border-cyan-800">${item.levelDicapai || 'Level 1'}</span></td>
+                    <td class="p-3 font-bold text-cyan-400 font-mono">${item.skor ?? 0}</td>
+                    <td class="p-3 text-rose-400 font-bold">${item.sisaNyawa ?? 0} ❤️</td>
+                    <td class="p-3 text-slate-400 text-[11px] font-mono">${item.timestamp || '-'}</td>
                 `;
                 tbody.appendChild(tr);
             });
-        };
+        }
 
-        // Download Excel (.xlsx) Report using SheetJS
         function downloadExcelReport() {
-            const dataList = window.getFetchedScores ? window.getFetchedScores() : [];
-            
-            if (!dataList || dataList.length === 0) {
-                alert("Belum ada data nilai siswa untuk di-download.");
+            const dataArray = window.getFetchedScoresData ? window.getFetchedScoresData() : [];
+            if (dataArray.length === 0) {
+                alert('Belum ada data nilai siswa untuk diunduh.');
                 return;
             }
 
-            // Format data rows for Excel sheet including Level Dicapai
-            const excelRows = dataList.map((item, index) => ({
-                "No": index + 1,
-                "Nama Siswa": item.nama || "",
-                "NIS": item.nis || "",
-                "Level Dicapai": item.levelDicapai || "Level 1",
-                "Skor Akhir": item.skor || 0,
-                "Sisa Nyawa": item.sisaNyawa || 0,
-                "Tanggal & Jam": item.timestamp || ""
+            const formatted = dataArray.map((item, idx) => ({
+                'No': idx + 1,
+                'Nama Siswa': item.nama,
+                'NIS': item.nis,
+                'Level Dicapai': item.levelDicapai || 'Level 1',
+                'Skor Akhir': item.skor,
+                'Sisa Nyawa': item.sisaNyawa,
+                'Tanggal & Jam': item.timestamp
             }));
 
-            // Create workbook
-            const worksheet = XLSX.utils.json_to_sheet(excelRows);
+            const worksheet = XLSX.utils.json_to_sheet(formatted);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap_Nilai_Java");
-
-            // Auto column widths
-            worksheet['!cols'] = [
-                { wch: 6 },
-                { wch: 25 },
-                { wch: 15 },
-                { wch: 22 },
-                { wch: 12 },
-                { wch: 12 },
-                { wch: 22 }
-            ];
-
-            // Trigger file download
-            XLSX.writeFile(workbook, `Rekap_Asesmen_Java_3Level_${new Date().toISOString().slice(0,10)}.xlsx`);
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Rekap Skor Java");
+            XLSX.writeFile(workbook, "Rekap_Nilai_Java_Diskon_Laptop.xlsx");
         }
 
-        // Helper string escape
-        function escapeHtml(str) {
-            return String(str)
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
+        function shareApplicationLink() {
+            const url = window.location.href;
+            navigator.clipboard.writeText(url).then(() => {
+                const toast = document.getElementById('toastNotification');
+                toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+                setTimeout(() => {
+                    toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+                }, 3000);
+            }).catch(() => {
+                alert('URL Web: ' + url);
+            });
         }
     </script>
 </body>
 </html>
+```
+
+---
+
+### What Changed:
+1. **Replaced bare module imports**: Swapped `"firebase/app"` imports with absolute CDN paths (`https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js`, `firebase-auth.js`, and `firebase-firestore.js`).
+2. **Global scope bindings**: Exposed `saveResultToFirestore` and `getFetchedScoresData` onto `window` inside the module block to prevent reference errors when accessed by non-module game scripts.
