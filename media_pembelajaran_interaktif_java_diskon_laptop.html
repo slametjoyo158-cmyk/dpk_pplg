@@ -868,10 +868,3 @@
     </script>
 </body>
 </html>
-```
-
----
-
-### What Changed:
-1. **Replaced bare module imports**: Swapped `"firebase/app"` imports with absolute CDN paths (`https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js`, `firebase-auth.js`, and `firebase-firestore.js`).
-2. **Global scope bindings**: Exposed `saveResultToFirestore` and `getFetchedScoresData` onto `window` inside the module block to prevent reference errors when accessed by non-module game scripts.
