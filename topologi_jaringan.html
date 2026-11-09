@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Interaktif Topologi Jaringan - Informatika SMK</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700" rel="stylesheet">
+    
+    <style>
+        /* Fallback CSS & Core Styles to guarantee visual rendering even if CDN is blocked */
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        
+        /* Layout Fixes */
+        .canvas-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            background-color: #f1f5f9;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 0.75rem;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Dynamic Tab Button Active State */
+        .tab-btn.active {
+            background-color: #2563eb !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        
+        .quiz-option.correct {
+            background-color: #10b981 !important;
+            color: white !important;
+            border-color: #059669 !important;
+        }
+        .quiz-option.incorrect {
+            background-color: #ef4444 !important;
+            color: white !important;
+            border-color: #dc2626 !important;
+        }
+        
+        /* SVG Icon alignment */
+        .icon-svg {
+            display: inline-block;
+            vertical-align: middle;
+            fill: currentColor;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Header Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Brand Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/30">
+                        <svg class="w-6 h-6 icon-svg" viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 1 1v2.071c3.9.447 7 3.548 7 7.429a1 1 0 1 1-2 0 5.4 5.4 0 0 0-5.4-5.4A5.4 5.4 0 0 0 7.2 12.5a1 1 0 1 1-2 0c0-3.881 3.1-6.982 7-7.429V3a1 1 0 0 1 1-1zm-7 15a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm14 0a3 3 0 1 1 0 6 3 3 0 0 1 0-6zm-7 0a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight text-slate-900">NetEdu<span class="text-blue-600">Sim</span></h1>
+                        <p class="text-xs text-slate-500 font-medium">SMK Bhakti Persada • Modul Topologi Jaringan</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center p-1 bg-slate-100 rounded-xl border border-slate-200">
+                    <button onclick="switchTab('bus')" id="tab-bus" class="tab-btn active px-4 py-1.5 text-xs font-semibold rounded-lg transition-all flex items-center space-x-2">
+                        <svg class="w-4 h-4 icon-svg" viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z"/></svg>
+                        <span>Topologi Bus</span>
+                    </button>
+                    <button onclick="switchTab('star')" id="tab-star" class="tab-btn px-4 py-1.5 text-xs font-semibold text-slate-600 rounded-lg transition-all flex items-center space-x-2 hover:text-slate-900">
+                        <svg class="w-4 h-4 icon-svg" viewBox="0 0 24 24"><path d="M12 2l2.4 7.4H22l-6 4.5 2.3 7.1-6.3-4.6-6.3 4.6 2.3-7.1-6-4.5h7.6z"/></svg>
+                        <span>Topologi Star</span>
+                    </button>
+                    <button onclick="switchTab('ring')" id="tab-ring" class="tab-btn px-4 py-1.5 text-xs font-semibold text-slate-600 rounded-lg transition-all flex items-center space-x-2 hover:text-slate-900">
+                        <svg class="w-4 h-4 icon-svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 16a6 6 0 1 1 6-6 6 6 0 0 1-6 6z"/></svg>
+                        <span>Topologi Ring</span>
+                    </button>
+                    <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn px-4 py-1.5 text-xs font-semibold text-slate-600 rounded-lg transition-all flex items-center space-x-2 hover:text-slate-900">
+                        <svg class="w-4 h-4 icon-svg" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+                        <span>Kuis Evaluasi</span>
+                    </button>
+                </nav>
+
+                <!-- Status Badge -->
+                <div class="hidden sm:flex items-center space-x-2 text-xs bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full border border-blue-200 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-blue-600 animate-ping"></span>
+                    <span>Modul Interaktif v2.5</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Row -->
+        <div class="md:hidden flex overflow-x-auto p-2 bg-slate-100 border-t border-slate-200 gap-1 text-xs">
+            <button onclick="switchTab('bus')" id="mob-tab-bus" class="flex-1 min-w-[80px] py-2 text-center font-semibold rounded-lg bg-blue-600 text-white">Bus</button>
+            <button onclick="switchTab('star')" id="mob-tab-star" class="flex-1 min-w-[80px] py-2 text-center font-semibold rounded-lg text-slate-600">Star</button>
+            <button onclick="switchTab('ring')" id="mob-tab-ring" class="flex-1 min-w-[80px] py-2 text-center font-semibold rounded-lg text-slate-600">Ring</button>
+            <button onclick="switchTab('quiz')" id="mob-tab-quiz" class="flex-1 min-w-[80px] py-2 text-center font-semibold rounded-lg text-slate-600">Kuis</button>
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+
+        <!-- SECTION: BUS TOPOLOGY -->
+        <section id="section-bus" class="tab-content space-y-6">
+            <!-- Contextual Banner -->
+            <div class="bg-gradient-to-r from-blue-900 via-indigo-900 to-slate-900 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+                <div class="max-w-4xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                        💡 Pembelajaran Kontekstual & Skenario Lapangan
+                    </div>
+                    <h2 class="text-2xl font-bold tracking-tight">Kapan & Dimana Topologi Bus Digunakan?</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Topologi Bus menghubungkan semua perangkat menggunakan satu kabel utama (backbone). Sangat efisien untuk skala sangat kecil seperti <strong>ruang lab sementara, sistem informasi bus antar-kota, jaringan sensor kendaraan sederhana (CAN Bus), atau instalasi darurat</strong> karena hemat kabel dan mudah dipasang tanpa butuh hub/switch tambahan.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2 text-xs">
+                        <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">➕ Keuntungan: Hemat Biaya & Kabel</span>
+                        <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">➖ Tantangan: Sering Tabrakan Sinyal (Collision)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Deep Dive Material: Collision & CSMA/CD -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Why Collision Happens -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-rose-600 font-bold text-sm">
+                        <span class="text-lg">💥</span>
+                        <h3>Mengapa Bisa Terjadi Collision (Tabrakan Sinyal)?</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Pada Topologi Bus, seluruh perangkat berbagi <strong>satu saluran kabel fisik tunggal (*shared medium*)</strong> yang sama. Ketika dua atau lebih komputer mengirimkan data (sinyal listrik/voltase) pada saat bersamaan:
+                    </p>
+                    <ul class="text-xs text-slate-600 space-y-1.5 list-disc list-inside bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        <li>Sinyal listrik dari kedua komputer bertemu di kabel *backbone*.</li>
+                        <li>Gelombang voltase saling menimpa dan memicu <strong>distorsi sinyal</strong> (*Collision Domain*).</li>
+                        <li>Data paket menjadi hancur (*corrupted*) dan tidak dapat dibaca oleh komputer mana pun.</li>
+                    </ul>
+                </div>
+
+                <!-- CSMA/CD Explanation -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+                    <div class="flex items-center space-x-2 text-blue-600 font-bold text-sm">
+                        <span class="text-lg">📡</span>
+                        <h3>Apa itu Metode CSMA/CD?</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        <strong>CSMA/CD</strong> (*Carrier Sense Multiple Access with Collision Detection*) adalah protokol lalu lintas jaringan pada Topologi Bus untuk mencegah dan menangani tabrakan data:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
+                        <div class="bg-blue-50 p-2.5 rounded-xl border border-blue-100">
+                            <strong class="text-blue-800 block mb-0.5">1. Carrier Sense</strong>
+                            Komputer "mendengarkan" kabel dulu. Jika sepi, data boleh dikirim.
+                        </div>
+                        <div class="bg-indigo-50 p-2.5 rounded-xl border border-indigo-100">
+                            <strong class="text-indigo-800 block mb-0.5">2. Multiple Access</strong>
+                            Banyak komputer terhubung dan berhak memakai media kabel yang sama.
+                        </div>
+                        <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-100">
+                            <strong class="text-amber-800 block mb-0.5">3. Collision Detect</strong>
+                            Jika tabrakan terdeteksi, sinyal *Jamming* dikirim & pengirim acak *Backoff*.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulation Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Control Panel -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center border-b pb-3">
+                            ⚙️ Control Panel Bus
+                        </h3>
+                        
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Pengirim Data</label>
+                                <select id="busSource" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                                    <option value="1">PC 01 (Kiri Ujung)</option>
+                                    <option value="2">PC 02</option>
+                                    <option value="3">PC 03 (Tengah)</option>
+                                    <option value="4">PC 04</option>
+                                    <option value="5">PC 05 (Kanan Ujung)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Penerima Data</label>
+                                <select id="busDest" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2.5 outline-none focus:ring-2 focus:ring-blue-500 font-medium">
+                                    <option value="1">PC 01</option>
+                                    <option value="2" selected>PC 02</option>
+                                    <option value="3">PC 03</option>
+                                    <option value="4">PC 04</option>
+                                    <option value="5">PC 05</option>
+                                </select>
+                            </div>
+
+                            <button onclick="runBusSim()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-xl shadow-md shadow-blue-500/20 transition active:scale-95 flex items-center justify-center gap-2">
+                                🚀 Kirim Paket Data
+                            </button>
+                        </div>
+
+                        <div class="pt-3 border-t space-y-2">
+                            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">Eksperimen Kendala</span>
+                            <button onclick="triggerBusCollision()" class="w-full bg-amber-500 hover:bg-amber-600 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                                💥 Simulasi Tabrakan (Collision)
+                            </button>
+                            <button onclick="toggleBusTerminators()" id="btnBusTerminator" class="w-full bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                                🔌 Lepas Terminator (Reflection)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Live Log -->
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-2xl shadow-sm text-xs font-mono space-y-2 h-44 flex flex-col">
+                        <div class="text-slate-400 font-bold border-b border-slate-800 pb-1.5 flex justify-between items-center">
+                            <span>💻 Activity Log</span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        </div>
+                        <div id="busLog" class="flex-1 overflow-y-auto space-y-1 text-[11px]">
+                            <div class="text-slate-500">[System] Simulasi Bus siap digunakan.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Canvas Area -->
+                <div class="lg:col-span-3 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Visualisasi Jalur Bus (Coaxial / Single Backbone)</h3>
+                            <p class="text-xs text-slate-500">Seluruh node berbagi 1 medium transmisi fisik yang sama.</p>
+                        </div>
+                        <span id="terminatorBadge" class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300">
+                            Terminator: ACTIVE
+                        </span>
+                    </div>
+
+                    <div class="canvas-container rounded-xl border border-slate-200 overflow-hidden">
+                        <canvas id="busCanvas"></canvas>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-3 text-center text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div><span class="font-bold text-slate-800 block">Metode Akses</span> CSMA/CD</div>
+                        <div><span class="font-bold text-slate-800 block">Perangkat Ujung</span> BNC Terminator 50 Ω</div>
+                        <div><span class="font-bold text-slate-800 block">Kabel Fisik</span> Coaxial RG-58</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: STAR TOPOLOGY -->
+        <section id="section-star" class="tab-content hidden space-y-6">
+            <!-- Contextual Banner -->
+            <div class="bg-gradient-to-r from-blue-900 via-slate-900 to-indigo-950 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+                <div class="max-w-3xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-500/20 text-blue-300 border border-blue-400/30">
+                        💡 Pembelajaran Kontekstual & Skenario Lapangan
+                    </div>
+                    <h2 class="text-2xl font-bold tracking-tight">Kapan & Dimana Topologi Star Digunakan?</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Topologi Star adalah <strong>standar industri utama</strong> saat ini yang diterapkan di <strong>Lab Komputer Sekolah, Perkantoran, Rumah Sakit, dan Wi-Fi Home Router</strong>. Semua komputer terhubung ke Switch/Hub sentral. Jika salah satu kabel putus, komputer lain <strong>tetap bekerja normal tanpa gangguan</strong>.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2 text-xs">
+                        <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">➕ Keuntungan: Isolasi Kerusakan Tinggi & Mudah Diperluas</span>
+                        <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">⚠️ Ketergantungan: Switch Sentral (Single Point of Failure)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulation Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Controls -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center border-b pb-3">
+                            ⚙️ Control Panel Star
+                        </h3>
+
+                        <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-2 text-xs">
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-500">Pengirim (Src):</span>
+                                <span id="starSenderLbl" class="font-bold font-mono text-blue-600 bg-blue-100 px-2 py-0.5 rounded">-</span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-500">Penerima (Dst):</span>
+                                <span id="starReceiverLbl" class="font-bold font-mono text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded">-</span>
+                            </div>
+                        </div>
+
+                        <button id="btnStarSend" onclick="sendStarPacket()" disabled class="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed text-white font-semibold py-2.5 px-4 rounded-xl shadow-md transition flex items-center justify-center gap-2">
+                            🚀 Transmisikan Paket
+                        </button>
+
+                        <div class="pt-3 border-t space-y-2">
+                            <button onclick="addStarNode()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                                ➕ Tambah Workstation
+                            </button>
+                            <button onclick="resetStarNet()" class="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                                🔄 Reset Konfigurasi
+                            </button>
+                        </div>
+
+                        <div class="p-3 bg-amber-50 text-amber-800 rounded-xl border border-amber-200 text-xs leading-tight">
+                            🖱️ <strong>Interaksi Canvas:</strong><br>
+                            - Klik Kiri: Pilih Sender & Receiver<br>
+                            - Klik Kanan: Putus/Hubungkan Kabel Node
+                        </div>
+                    </div>
+
+                    <!-- Log -->
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-2xl shadow-sm text-xs font-mono space-y-2 h-44 flex flex-col">
+                        <div class="text-slate-400 font-bold border-b border-slate-800 pb-1.5 flex justify-between items-center">
+                            <span>💻 Activity Log</span>
+                        </div>
+                        <div id="starLog" class="flex-1 overflow-y-auto space-y-1 text-[11px]">
+                            <div class="text-slate-500">[System] Klik node untuk menentukan jalur data.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas -->
+                <div class="lg:col-span-3 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Visualisasi Topologi Star (Centralized Switch)</h3>
+                            <p class="text-xs text-slate-500">Setiap node memiliki jalur independen (Point-to-Point ke Switch Central).</p>
+                        </div>
+                        <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full border border-blue-300">
+                            Perangkat Pusat: Switch Layer-2
+                        </span>
+                    </div>
+
+                    <div class="canvas-container rounded-xl border border-slate-200 overflow-hidden">
+                        <canvas id="starCanvas"></canvas>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-3 text-center text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div><span class="font-bold text-slate-800 block">Jenis Kabel</span> UTP Cat6 (RJ-45)</div>
+                        <div><span class="font-bold text-slate-800 block">Manajemen Kerusakan</span> Sangat Mudah (Isolasi Port)</div>
+                        <div><span class="font-bold text-slate-800 block">Efisiensi Trafik</span> Bebas Collision (Full Duplex)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: RING TOPOLOGY -->
+        <section id="section-ring" class="tab-content hidden space-y-6">
+            <!-- Contextual Banner -->
+            <div class="bg-gradient-to-r from-indigo-900 via-purple-950 to-slate-900 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+                <div class="max-w-3xl space-y-3 relative z-10">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-500/20 text-purple-300 border border-purple-400/30">
+                        💡 Pembelajaran Kontekstual & Skenario Lapangan
+                    </div>
+                    <h2 class="text-2xl font-bold tracking-tight">Kapan & Dimana Topologi Ring Digunakan?</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        Topologi Ring menghubungkan komputer dalam lingkaran tertutup menggunakan mekanisme <strong>Token Passing</strong>. Sangat cocok untuk <strong>Jaringan Akses Serat Optik Kota (FDDI), Jaringan Rel Kereta / Metro, dan Otomasi Pabrik High-Speed</strong> di mana aliran data harus pasti (deterministic) tanpa risiko bentrok.
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2 text-xs">
+                        <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">➕ Keuntungan: Performa Stabil Tanpa Tabrakan Sinyal</span>
+                        <span class="bg-white/10 px-3 py-1.5 rounded-lg border border-white/10 flex items-center">➖ Risiko: Putus 1 Kabel Menghentikan Seluruh Ring</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Simulation Area -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Controls -->
+                <div class="lg:col-span-1 space-y-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <h3 class="font-bold text-slate-800 text-sm flex items-center border-b pb-3">
+                            ⚙️ Control Panel Ring
+                        </h3>
+
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Node Pengirim</label>
+                                <select id="ringSrcSelect" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 outline-none focus:ring-2 focus:ring-purple-500 font-medium">
+                                    <option value="0">Node A</option>
+                                    <option value="1">Node B</option>
+                                    <option value="2">Node C</option>
+                                    <option value="3">Node D</option>
+                                    <option value="4">Node E</option>
+                                    <option value="5">Node F</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block font-semibold text-slate-600 mb-1">Node Tujuan</label>
+                                <select id="ringDstSelect" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 outline-none focus:ring-2 focus:ring-purple-500 font-medium">
+                                    <option value="0">Node A</option>
+                                    <option value="1">Node B</option>
+                                    <option value="2" selected>Node C</option>
+                                    <option value="3">Node D</option>
+                                    <option value="4">Node E</option>
+                                    <option value="5">Node F</option>
+                                </select>
+                            </div>
+
+                            <button onclick="sendRingTokenPacket()" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2.5 px-4 rounded-xl shadow-md shadow-purple-500/20 transition flex items-center justify-center gap-2">
+                                🪙 Lampirkan Data ke Token
+                            </button>
+                        </div>
+
+                        <div class="pt-3 border-t space-y-2">
+                            <button onclick="toggleRingBreak()" id="btnRingBreak" class="w-full bg-rose-600 hover:bg-rose-700 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                                ✂️ Putus Kabel Ring (Simulasi Error)
+                            </button>
+                            <button onclick="toggleDualRingMode()" id="btnDualRing" class="w-full bg-slate-700 hover:bg-slate-800 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center justify-center gap-1.5">
+                                🛡️ Mode Redundansi (Dual Ring)
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Log -->
+                    <div class="bg-slate-900 text-slate-200 p-4 rounded-2xl shadow-sm text-xs font-mono space-y-2 h-44 flex flex-col">
+                        <div class="text-slate-400 font-bold border-b border-slate-800 pb-1.5 flex justify-between items-center">
+                            <span>💻 Activity Log</span>
+                        </div>
+                        <div id="ringLog" class="flex-1 overflow-y-auto space-y-1 text-[11px]">
+                            <div class="text-slate-500">[System] Token berputar terus secara teratur.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas -->
+                <div class="lg:col-span-3 bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div class="flex justify-between items-center mb-4">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base">Visualisasi Token Ring (Circulating Data Stream)</h3>
+                            <p class="text-xs text-slate-500">Perangkat hanya bisa mengirim data jika memegang penanda spesial ("Token").</p>
+                        </div>
+                        <span id="ringStatusBadge" class="bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full border border-purple-300">
+                            Single Ring: ACTIVE
+                        </span>
+                    </div>
+
+                    <div class="canvas-container rounded-xl border border-slate-200 overflow-hidden">
+                        <canvas id="ringCanvas"></canvas>
+                    </div>
+
+                    <div class="mt-4 grid grid-cols-3 text-center text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                        <div><span class="font-bold text-slate-800 block">Protokol Akses</span> IEEE 802.5 Token Ring</div>
+                        <div><span class="font-bold text-slate-800 block">Mekanisme Kirim</span> Uni-Directional Ring</div>
+                        <div><span class="font-bold text-slate-800 block">Proteksi Kegagalan</span> Dual-Ring Loopback (FDDI)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: QUIZ EVALUATION -->
+        <section id="section-quiz" class="tab-content hidden space-y-6">
+            <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200/80 shadow-sm max-w-4xl mx-auto space-y-6">
+                <div class="border-b pb-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-2">
+                            📝 Evaluasi Pemahaman Topologi
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">Uji pemahaman teori dan penerapan kasus jaringan nyata Anda.</p>
+                    </div>
+                    <div class="bg-blue-50 px-4 py-2 rounded-xl border border-blue-200 text-center">
+                        <span class="text-xs text-blue-600 font-semibold block">Skor Saat Ini</span>
+                        <span id="scoreDisplay" class="text-xl font-bold text-blue-800">0 / 6</span>
+                    </div>
+                </div>
+
+                <!-- Quiz Container -->
+                <div id="quizListContainer" class="space-y-6">
+                    <!-- Dynamic Javascript standard quiz -->
+                </div>
+
+                <div id="quizResultAlert" class="hidden p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-center space-y-2">
+                    <span class="text-3xl block">🏆</span>
+                    <h3 class="font-bold text-lg">Selamat! Anda Telah Menyelesaikan Evaluasi.</h3>
+                    <p id="quizScoreSummaryText" class="text-xs text-emerald-700"></p>
+                    <button onclick="resetQuiz()" class="mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-5 py-2 rounded-lg transition">
+                        Ulangi Latihan Kuis
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-slate-500 text-xs">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-2">
+                <span class="font-semibold text-slate-700">🎓 Media Pembelajaran Interaktif Teknik Komputer & Jaringan</span>
+            </div>
+            <p>© 2026 SMK Bhakti Persada Patebon Kendal. Designed for Interactive Learning.</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC & CANVAS SIMULATIONS -->
+    <script>
+        // --- GLOBAL NAVIGATION TAB LOGIC ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active', 'bg-blue-600', 'text-white');
+                el.classList.add('text-slate-600');
+            });
+            document.querySelectorAll('[id^=mob-tab-]').forEach(el => {
+                el.classList.remove('bg-blue-600', 'text-white');
+                el.classList.add('text-slate-600');
+            });
+
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+            
+            const deskBtn = document.getElementById('tab-' + tabId);
+            if (deskBtn) deskBtn.classList.add('active');
+
+            const mobBtn = document.getElementById('mob-tab-' + tabId);
+            if (mobBtn) {
+                mobBtn.classList.remove('text-slate-600');
+                mobBtn.classList.add('bg-blue-600', 'text-white');
+            }
+
+            // Trigger canvas resize redraws
+            setTimeout(() => {
+                if(tabId === 'bus') resizeBus();
+                if(tabId === 'star') resizeStar();
+                if(tabId === 'ring') resizeRing();
+            }, 50);
+        }
+
+        function appendLog(elementId, msg, type = 'info') {
+            const container = document.getElementById(elementId);
+            if (!container) return;
+            const item = document.createElement('div');
+            const time = new Date().toLocaleTimeString('id-ID', { hour12: false });
+            
+            let colorClass = 'text-slate-300';
+            if (type === 'warn') colorClass = 'text-amber-400';
+            if (type === 'error') colorClass = 'text-rose-400 font-bold';
+            if (type === 'success') colorClass = 'text-emerald-400 font-bold';
+
+            item.className = colorClass;
+            item.innerHTML = `<span class="text-slate-600">[${time}]</span> ${msg}`;
+            container.appendChild(item);
+            container.scrollTop = container.scrollHeight;
+        }
+
+
+        // ==========================================
+        // 4. QUIZ EVALUATION SYSTEM (20 QUESTIONS)
+        // ==========================================
+        const quizQuestions = [
+            {
+                q: "1. Mengapa pada Topologi Bus wajib dipasang Terminator 50 Ω di kedua ujung kabelnya?",
+                options: [
+                    "A. Untuk mempercepat daya listrik arus searah pada komputer",
+                    "B. Menyerap sinyal agar tidak memantul (Signal Reflection) dan merusak data lain",
+                    "C. Menghubungkan topologi Bus ke internet secara nirkabel",
+                    "D. Mencegah malware jaringan masuk ke komputer"
+                ],
+                answer: 1
+            },
+            {
+                q: "2. Mengapa tabrakan data (Collision) dapat terjadi pada Topologi Bus?",
+                options: [
+                    "A. Karena seluruh perangkat berbagi satu media transmisi fisik (shared medium) yang sama",
+                    "B. Karena perangkat sentral Switch mengalami kelebihan beban",
+                    "C. Karena kabel UTP yang digunakan tidak memiliki pelindung aluminium",
+                    "D. Karena sinyal token berputar terlalu cepat"
+                ],
+                answer: 0
+            },
+            {
+                q: "3. Apa kepanjangan dari metode CSMA/CD yang digunakan pada Topologi Bus?",
+                options: [
+                    "A. Central System Main Access / Cable Detection",
+                    "B. Carrier Sense Multiple Access with Collision Detection",
+                    "C. Computer Signal Master Adapter / Connection Driver",
+                    "D. Control Server Media Access / Data Code"
+                ],
+                answer: 1
+            },
+            {
+                q: "4. Pada metode CSMA/CD, apa yang dilakukan oleh perangkat pada tahap 'Carrier Sense'?",
+                options: [
+                    "A. Memutus koneksi kabel jika terjadi gangguan voltase",
+                    "B. Mengirim sinyal ledakan ke seluruh komputer",
+                    "C. Mendengarkan/memeriksa saluran kabel apakah sedang ada lalu lintas data atau kosong",
+                    "D. Mengubah IP address pengirim menjadi acak"
+                ],
+                answer: 2
+            },
+            {
+                q: "5. Apa tindakan yang diambil perangkat komputer jika terdeteksi Collision pada jaringan CSMA/CD?",
+                options: [
+                    "A. Mengirim sinyal Jamming dan menunggu waktu acak (Backoff) sebelum mengirim ulang",
+                    "B. Langsung mematikan daya listrik komputer secara otomatis",
+                    "C. Mengubah topologi jaringan menjadi Topologi Star",
+                    "D. Menghapus seluruh file data yang gagal terkirim"
+                ],
+                answer: 0
+            },
+            {
+                q: "6. Di sebuah perkantoran 4 lantai, administrator memilih Topologi Star. Apa alasan utamanya?",
+                options: [
+                    "A. Karena paling murah dan tidak memerlukan Switch sama sekali",
+                    "B. Jika salah satu kabel workstation putus, perangkat lain tetap dapat bekerja normal",
+                    "C. Kecepatannya selalu bergantung pada kabel antena TV",
+                    "D. Supaya tidak membutuhkan alamat IP sama sekali"
+                ],
+                answer: 1
+            },
+            {
+                q: "7. Topologi Ring menggunakan mekanisme Token Passing. Apa keunggulan mekanisme ini?",
+                options: [
+                    "A. Bebas dari tabrakan data (Collision-free) karena hanya pemegang token yang boleh mengirim",
+                    "B. Tidak membutuhkan media kabel fisik",
+                    "C. Komputer pengirim tidak memerlukan kartu jaringan (NIC)",
+                    "D. Data langsung otomatis terenkripsi secara militer"
+                ],
+                answer: 0
+            },
+            {
+                q: "8. Apakah kelemahan terbesar (Single Point of Failure) pada Topologi Star?",
+                options: [
+                    "A. Putusnya kabel di salah satu PC Klien",
+                    "B. Kerusakan pada Central Switch/Hub yang membuat seluruh jaringan lumpuh",
+                    "C. Kehadiran terminator yang terlalu panas",
+                    "D. Jumlah PC yang terhubung harus selalu bernilai genap"
+                ],
+                answer: 1
+            },
+            {
+                q: "9. Pada sistem transportasi kereta cepat (MRT), Topologi Dual-Ring (FDDI) sering digunakan karena...",
+                options: [
+                    "A. Menghemat penggunaan kabel optik",
+                    "B. Memiliki jalur sekunder otomatis saat kabel utama terputus (Redundancy/Self-Healing)",
+                    "C. Paling mudah dipasang oleh pemula",
+                    "D. Dapat diakses langsung tanpa sistem keamanan"
+                ],
+                answer: 1
+            },
+            {
+                q: "10. Jenis kabel fisik yang paling umum digunakan pada instalasi Topologi Bus klasik adalah...",
+                options: [
+                    "A. Kabel Coaxial (RG-58) dengan konektor BNC",
+                    "B. Kabel Fiber Optic Multimode",
+                    "C. Kabel UTP Cat6 dengan konektor RJ-45",
+                    "D. Kabel Telepon 2-pair"
+                ],
+                answer: 0
+            },
+            {
+                q: "11. Pada Topologi Star modern, perangkat pusat yang mampu membaca Alamat MAC dan mengirimkan paket hanya ke port tujuan adalah...",
+                options: [
+                    "A. Hub (Passive)",
+                    "B. Switch Layer-2",
+                    "C. Repeater",
+                    "D. BNC T-Connector"
+                ],
+                answer: 1
+            },
+            {
+                q: "12. Apa yang terjadi jika kita menggunakan Hub pasif (bukan Switch) pada Topologi Star?",
+                options: [
+                    "A. Data dikirim ke semua port (Broadcast), memicu potensi collision seperti pada Bus",
+                    "B. Kecepatan jaringan meningkat 10 kali lipat",
+                    "C. Semua komputer otomatis mematikan port LAN",
+                    "D. Topologi otomatis berubah menjadi Topologi Ring"
+                ],
+                answer: 0
+            },
+            {
+                q: "13. Dalam Topologi Ring, arah aliran data transmisi paket bersifat...",
+                options: [
+                    "A. Acak tergantung tegangan listrik",
+                    "B. Satu arah (Unidirectional) secara melingkar dari node ke node berikutnya",
+                    "C. Dua arah bersamaan pada satu kabel tunggal",
+                    "D. Tidak mengalir sama sekali"
+                ],
+                answer: 1
+            },
+            {
+                q: "14. Istilah 'Jamming Signal' pada protokol CSMA/CD berfungsi untuk...",
+                options: [
+                    "A. Memperbaiki file data yang rusak akibat tabrakan",
+                    "B. Memberitahu seluruh node di jaringan bahwa telah terjadi Collision sehingga semua berhenti mengisolasi kabel",
+                    "C. Mempercepat pengiriman video streaming",
+                    "D. Memblokir akses internet pengguna ilegal"
+                ],
+                answer: 1
+            },
+            {
+                q: "15. Mengapa penambahan komputer baru pada Topologi Star dianggap lebih mudah dibanding Topologi Bus?",
+                options: [
+                    "A. Cukup mencolokkan kabel UTP baru ke port Switch yang kosong tanpa memutus lalu lintas jaringan lain",
+                    "B. Karena tidak membutuhkan kabel sama sekali",
+                    "C. Karena Topologi Star tidak memerlukan IP Address",
+                    "D. Karena Topologi Bus membutuhkan persetujuan seluruh pengguna"
+                ],
+                answer: 0
+            },
+            {
+                q: "16. Apa risiko terbesar jika salah satu kabel fisik pada Topologi Ring tunggal (Single Ring) mengalami pemutusan?",
+                options: [
+                    "A. Hanya 1 komputer yang terputus, komputer lain normal",
+                    "B. Seluruh sirkulasi komunikasi jaringan Ring akan terhenti (Lumpuh Total)",
+                    "C. Jaringan otomatis berubah menjadi Wi-Fi",
+                    "D. Kecepatan transmisi meningkat 200%"
+                ],
+                answer: 1
+            },
+            {
+                q: "17. Mengapa Topologi Bus tidak direkomendasikan untuk jaringan skala besar (ratusan komputer)?",
+                options: [
+                    "A. Semakin banyak node, semakin tinggi frekuensi Collision dan penurunan kinerja jaringan",
+                    "B. Kabel Coaxial tidak dijual di pasaran",
+                    "C. Karena Topologi Bus memerlukan server superkomputer",
+                    "D. Karena harga Terminator sangat mahal"
+                ],
+                answer: 0
+            },
+            {
+                q: "18. Standar IEEE yang mengatur spesifikasi teknologi Token Ring adalah...",
+                options: [
+                    "A. IEEE 802.3",
+                    "B. IEEE 802.11",
+                    "C. IEEE 802.5",
+                    "D. IEEE 802.15"
+                ],
+                answer: 2
+            },
+            {
+                q: "19. Apakah peran utama perangkat Network Interface Card (NIC) saat membaca paket data pada Topologi Bus?",
+                options: [
+                    "A. Memeriksa Alamat Tujuan Paket; jika cocok data diterima, jika tidak cocok paket diabaikan",
+                    "B. Menyerap sinyal yang memantul di ujung kabel",
+                    "C. Mematikan arus listrik saat tidak digunakan",
+                    "D. Mengubah kabel Coaxial menjadi serat optik"
+                ],
+                answer: 0
+            },
+            {
+                q: "20. Di situasi manakah Topologi Bus paling tepat dan efisien untuk diimplementasikan saat ini?",
+                options: [
+                    "A. Data Center perusahaan e-commerce skala internasional",
+                    "B. Jaringan bus komunikasi antar-sensor kendaraan sederhana (CAN Bus) / Lab sederhana temporary",
+                    "C. Jaringan backbone antar-pulau",
+                    "D. Gedung bertingkat 50 lantai"
+                ],
+                answer: 1
+            }
+        ];
+
+        let quizUserAnswers = new Array(quizQuestions.length).fill(null);
+
+        function renderQuiz() {
+            const container = document.getElementById('quizListContainer');
+            if(!container) return;
+            container.innerHTML = '';
+
+            quizQuestions.forEach((item, idx) => {
+                const qBox = document.createElement('div');
+                qBox.className = 'p-5 bg-slate-50 border border-slate-200 rounded-xl space-y-3';
+                
+                let optionsHTML = '';
+                item.options.forEach((opt, optIdx) => {
+                    optionsHTML += `
+                        <button onclick="answerQuiz(${idx}, ${optIdx}, this)" 
+                                class="quiz-option w-full text-left p-3 text-xs rounded-lg border border-slate-200 bg-white hover:bg-blue-50 transition font-medium text-slate-700">
+                            ${opt}
+                        </button>
+                    `;
+                });
+
+                qBox.innerHTML = `
+                    <p class="font-bold text-slate-800 text-sm">${item.q}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2 font-sans">
+                        ${optionsHTML}
+                    </div>
+                `;
+                container.appendChild(qBox);
+            });
+        }
+
+        function answerQuiz(qIdx, optIdx, btnEl) {
+            if(quizUserAnswers[qIdx] !== null) return;
+
+            quizUserAnswers[qIdx] = optIdx;
+            const parent = btnEl.closest('.grid');
+            const buttons = parent.querySelectorAll('.quiz-option');
+
+            buttons.forEach(b => b.disabled = true);
+
+            if(optIdx === quizQuestions[qIdx].answer) {
+                btnEl.classList.add('correct');
+            } else {
+                btnEl.classList.add('incorrect');
+                buttons[quizQuestions[qIdx].answer].classList.add('correct');
+            }
+
+            updateQuizScore();
+        }
+
+        function updateQuizScore() {
+            let correctCount = 0;
+            let answeredCount = 0;
+
+            quizUserAnswers.forEach((ans, idx) => {
+                if(ans !== null) {
+                    answeredCount++;
+                    if(ans === quizQuestions[idx].answer) correctCount++;
+                }
+            });
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            if(scoreDisplay) scoreDisplay.innerText = `${correctCount} / ${quizQuestions.length}`;
+
+            if(answeredCount === quizQuestions.length) {
+                const alertBox = document.getElementById('quizResultAlert');
+                if(alertBox) alertBox.classList.remove('hidden');
+                const summary = document.getElementById('quizScoreSummaryText');
+                if(summary) summary.innerText = `Anda berhasil menjawab benar ${correctCount} dari ${quizQuestions.length} pertanyaan kontekstual.`;
+            }
+        }
+
+        function resetQuiz() {
+            quizUserAnswers = new Array(quizQuestions.length).fill(null);
+            const alertBox = document.getElementById('quizResultAlert');
+            if(alertBox) alertBox.classList.add('hidden');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            if(scoreDisplay) scoreDisplay.innerText = `0 / ${quizQuestions.length}`;
+            renderQuiz();
+        }
+
+        // ==========================================
+        // 1. TOPOLOGI BUS SIMULATION ENGINE
+        // ==========================================
+        let busCanvas, busCtx;
+        let busTerminatorsOn = true;
+        let busSimulating = false;
+        let busPackets = [];
+        let busExplosion = null;
+
+        function resizeBus() {
+            busCanvas = document.getElementById('busCanvas');
+            if(!busCanvas) return;
+            busCtx = busCanvas.getContext('2d');
+            const parent = busCanvas.parentElement;
+            busCanvas.width = parent.clientWidth;
+            busCanvas.height = parent.clientHeight;
+            drawBus();
+        }
+
+        function drawBus() {
+            if(!busCtx) return;
+            const w = busCanvas.width;
+            const h = busCanvas.height;
+            busCtx.clearRect(0, 0, w, h);
+
+            const backboneY = h * 0.6;
+            const startX = 60;
+            const endX = w - 60;
+
+            // Backbone Line (Coaxial)
+            busCtx.strokeStyle = busTerminatorsOn ? '#475569' : '#94a3b8';
+            busCtx.lineWidth = 6;
+            busCtx.beginPath();
+            busCtx.moveTo(startX, backboneY);
+            busCtx.lineTo(endX, backboneY);
+            busCtx.stroke();
+
+            // Terminators
+            const termColor = busTerminatorsOn ? '#10b981' : '#ef4444';
+            busCtx.fillStyle = termColor;
+            busCtx.fillRect(startX - 12, backboneY - 18, 12, 36);
+            busCtx.fillRect(endX, backboneY - 18, 12, 36);
+            
+            busCtx.fillStyle = '#ffffff';
+            busCtx.font = 'bold 10px sans-serif';
+            busCtx.textAlign = 'center';
+            busCtx.fillText('50Ω', startX - 6, backboneY + 4);
+            busCtx.fillText('50Ω', endX + 6, backboneY + 4);
+
+            // 5 PC Nodes
+            const nodeSpacing = (endX - startX) / 4;
+            for(let i = 0; i < 5; i++) {
+                const nx = startX + i * nodeSpacing;
+                const ny = h * 0.25;
+
+                // Cable Drop
+                busCtx.strokeStyle = '#cbd5e1';
+                busCtx.lineWidth = 3;
+                busCtx.beginPath();
+                busCtx.moveTo(nx, ny + 30);
+                busCtx.lineTo(nx, backboneY);
+                busCtx.stroke();
+
+                // BNC Connector
+                busCtx.fillStyle = '#64748b';
+                busCtx.fillRect(nx - 6, backboneY - 6, 12, 12);
+
+                // PC Graphic
+                busCtx.fillStyle = '#334155';
+                busCtx.fillRect(nx - 24, ny - 16, 48, 36);
+                busCtx.fillStyle = '#0f172a';
+                busCtx.fillRect(nx - 20, ny - 12, 40, 26);
+
+                busCtx.fillStyle = '#38bdf8';
+                busCtx.font = 'bold 11px sans-serif';
+                busCtx.textAlign = 'center';
+                busCtx.fillText(`PC 0${i+1}`, nx, ny + 4);
+            }
+
+            // Draw Packets
+            busPackets.forEach(p => {
+                busCtx.beginPath();
+                busCtx.arc(p.x, p.y, 8, 0, Math.PI * 2);
+                busCtx.fillStyle = p.color || '#ef4444';
+                busCtx.fill();
+                busCtx.lineWidth = 2;
+                busCtx.strokeStyle = '#ffffff';
+                busCtx.stroke();
+            });
+
+            // Draw Explosion
+            if(busExplosion) {
+                busCtx.beginPath();
+                busCtx.arc(busExplosion.x, busExplosion.y, busExplosion.r, 0, Math.PI * 2);
+                busCtx.fillStyle = `rgba(249, 115, 22, ${busExplosion.opacity})`;
+                busCtx.fill();
+            }
+        }
+
+        function getNodeBusX(nodeIdx) {
+            const w = busCanvas.width;
+            const startX = 60;
+            const endX = w - 60;
+            const spacing = (endX - startX) / 4;
+            return startX + (nodeIdx - 1) * spacing;
+        }
+
+        async function runBusSim() {
+            if(busSimulating) return;
+            const src = parseInt(document.getElementById('busSource').value);
+            const dst = parseInt(document.getElementById('busDest').value);
+
+            if(src === dst) {
+                appendLog('busLog', 'Error: Pengirim dan Penerima tidak boleh sama!', 'error');
+                return;
+            }
+
+            busSimulating = true;
+            appendLog('busLog', `CSMA/CD: PC 0${src} melakukan Carrier Sense (Mendengar kabel)...`, 'info');
+
+            const startX = getNodeBusX(src);
+            const targetX = getNodeBusX(dst);
+            const backboneY = busCanvas.height * 0.6;
+            const dropY = busCanvas.height * 0.25 + 30;
+
+            let pkt = { x: startX, y: dropY, color: '#2563eb' };
+            busPackets = [pkt];
+
+            // Step 1: Down to backbone
+            while(pkt.y < backboneY) {
+                pkt.y += 3;
+                drawBus();
+                await new Promise(r => setTimeout(r, 15));
+            }
+
+            appendLog('busLog', `Data dipancarkan ke kabel backbone menuju PC 0${dst}...`, 'info');
+            const step = startX < targetX ? 4 : -4;
+
+            while((step > 0 && pkt.x < targetX) || (step < 0 && pkt.x > targetX)) {
+                pkt.x += step;
+                drawBus();
+                await new Promise(r => setTimeout(r, 15));
+            }
+
+            // Reflection check
+            if(!busTerminatorsOn) {
+                appendLog('busLog', '⚠️ Sinyal memantul (Reflection) di ujung kabel karena terminator tidak ada!', 'warn');
+                const edgeX = step > 0 ? busCanvas.width - 60 : 60;
+                while((step > 0 && pkt.x < edgeX) || (step < 0 && pkt.x > edgeX)) {
+                    pkt.x += step;
+                    drawBus();
+                    await new Promise(r => setTimeout(r, 15));
+                }
+            }
+
+            // Step 2: Up to target node
+            while(pkt.y > dropY) {
+                pkt.y -= 3;
+                drawBus();
+                await new Promise(r => setTimeout(r, 15));
+            }
+
+            appendLog('busLog', `SUKSES: Data diterima oleh PC 0${dst}!`, 'success');
+            busPackets = [];
+            busSimulating = false;
+            drawBus();
+        }
+
+        async function triggerBusCollision() {
+            if(busSimulating) return;
+            busSimulating = true;
+            appendLog('busLog', '💥 COLLISION SIMULATION: PC 01 dan PC 05 mengirim data bersamaan!', 'warn');
+
+            const backboneY = busCanvas.height * 0.6;
+            const x1 = getNodeBusX(1);
+            const x5 = getNodeBusX(5);
+            const midX = (x1 + x5) / 2;
+
+            let p1 = { x: x1, y: backboneY, color: '#3b82f6' };
+            let p2 = { x: x5, y: backboneY, color: '#a855f7' };
+            busPackets = [p1, p2];
+
+            while(p1.x < midX) {
+                p1.x += 4;
+                p2.x -= 4;
+                drawBus();
+                await new Promise(r => setTimeout(r, 15));
+            }
+
+            busPackets = [];
+            busExplosion = { x: midX, y: backboneY, r: 10, opacity: 1 };
+            appendLog('busLog', '💥 TABRAKAN DETEKSI! Sinyal Jamming dipancarkan. Algoritma Backoff aktif.', 'error');
+
+            for(let i = 0; i < 20; i++) {
+                busExplosion.r += 2;
+                busExplosion.opacity -= 0.05;
+                drawBus();
+                await new Promise(r => setTimeout(r, 20));
+            }
+
+            busExplosion = null;
+            busSimulating = false;
+            drawBus();
+        }
+
+        function toggleBusTerminators() {
+            busTerminatorsOn = !busTerminatorsOn;
+            const badge = document.getElementById('terminatorBadge');
+            const btn = document.getElementById('btnBusTerminator');
+
+            if(busTerminatorsOn) {
+                badge.innerText = 'Terminator: ACTIVE';
+                badge.className = 'bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300';
+                btn.innerText = '🔌 Lepas Terminator (Reflection)';
+                appendLog('busLog', 'Terminator 50Ω dipasang. Sinyal aman dari pemantulan.', 'info');
+            } else {
+                badge.innerText = 'Terminator: OFF';
+                badge.className = 'bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full border border-rose-300';
+                btn.innerText = '🔌 Pasang Terminator';
+                appendLog('busLog', '⚠️ Terminator dilepas! Bahaya pemantulan sinyal (Signal Reflection).', 'warn');
+            }
+            drawBus();
+        }
+
+
+        // ==========================================
+        // 2. TOPOLOGI STAR SIMULATION ENGINE
+        // ==========================================
+        let starCanvas, starCtx;
+        let starNodes = [];
+        let starSelectedSender = null;
+        let starSelectedReceiver = null;
+        let starAnimating = false;
+        let starPackets = [];
+
+        function initStarNodes() {
+            starNodes = [];
+            for(let i = 1; i <= 6; i++) {
+                starNodes.push({ id: `PC-0${i}`, x: 0, y: 0, active: true });
+            }
+        }
+
+        function resizeStar() {
+            starCanvas = document.getElementById('starCanvas');
+            if(!starCanvas) return;
+            starCtx = starCanvas.getContext('2d');
+            const parent = starCanvas.parentElement;
+            starCanvas.width = parent.clientWidth;
+            starCanvas.height = parent.clientHeight;
+            repositionStarNodes();
+            drawStar();
+        }
+
+        function repositionStarNodes() {
+            if(!starCanvas) return;
+            const cx = starCanvas.width / 2;
+            const cy = starCanvas.height / 2;
+            const r = Math.min(cx, cy) * 0.65;
+
+            starNodes.forEach((node, idx) => {
+                const angle = (idx / starNodes.length) * Math.PI * 2 - Math.PI / 2;
+                node.x = cx + r * Math.cos(angle);
+                node.y = cy + r * Math.sin(angle);
+            });
+        }
+
+        function drawStar() {
+            if(!starCtx) return;
+            const w = starCanvas.width;
+            const h = starCanvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+
+            starCtx.clearRect(0, 0, w, h);
+
+            // Connections to Switch
+            starNodes.forEach(node => {
+                starCtx.beginPath();
+                starCtx.moveTo(cx, cy);
+                starCtx.lineTo(node.x, node.y);
+                if(node.active) {
+                    starCtx.strokeStyle = '#cbd5e1';
+                    starCtx.lineWidth = 2;
+                    starCtx.setLineDash([]);
+                } else {
+                    starCtx.strokeStyle = '#fca5a5';
+                    starCtx.lineWidth = 2;
+                    starCtx.setLineDash([5, 5]);
+                }
+                starCtx.stroke();
+            });
+            starCtx.setLineDash([]);
+
+            // Central Switch
+            starCtx.fillStyle = '#1e293b';
+            starCtx.fillRect(cx - 32, cy - 24, 64, 48);
+            starCtx.fillStyle = '#38bdf8';
+            starCtx.font = 'bold 10px sans-serif';
+            starCtx.textAlign = 'center';
+            starCtx.fillText('SWITCH L2', cx, cy + 4);
+
+            // Nodes
+            starNodes.forEach(node => {
+                const isSrc = starSelectedSender === node;
+                const isDst = starSelectedReceiver === node;
+
+                starCtx.beginPath();
+                starCtx.arc(node.x, node.y, 20, 0, Math.PI * 2);
+
+                if(!node.active) {
+                    starCtx.fillStyle = '#f1f5f9';
+                    starCtx.strokeStyle = '#94a3b8';
+                } else if(isSrc) {
+                    starCtx.fillStyle = '#2563eb';
+                    starCtx.strokeStyle = '#1d4ed8';
+                } else if(isDst) {
+                    starCtx.fillStyle = '#10b981';
+                    starCtx.strokeStyle = '#047857';
+                } else {
+                    starCtx.fillStyle = '#ffffff';
+                    starCtx.strokeStyle = '#64748b';
+                }
+
+                starCtx.lineWidth = 3;
+                starCtx.fill();
+                starCtx.stroke();
+
+                starCtx.fillStyle = (!node.active) ? '#94a3b8' : ((isSrc || isDst) ? '#ffffff' : '#0f172a');
+                starCtx.font = 'bold 10px sans-serif';
+                starCtx.textAlign = 'center';
+                starCtx.fillText(node.id, node.x, node.y + 3);
+
+                if(!node.active) {
+                    starCtx.strokeStyle = '#ef4444';
+                    starCtx.lineWidth = 2;
+                    starCtx.beginPath();
+                    starCtx.moveTo(node.x - 8, node.y - 8);
+                    starCtx.lineTo(node.x + 8, node.y + 8);
+                    starCtx.moveTo(node.x + 8, node.y - 8);
+                    starCtx.lineTo(node.x - 8, node.y + 8);
+                    starCtx.stroke();
+                }
+            });
+
+            // Packets
+            starPackets.forEach(p => {
+                starCtx.beginPath();
+                starCtx.arc(p.x, p.y, 7, 0, Math.PI * 2);
+                starCtx.fillStyle = '#ef4444';
+                starCtx.fill();
+            });
+        }
+
+        function sendStarPacket() {
+            if(!starSelectedSender || !starSelectedReceiver || starAnimating) return;
+            if(!starSelectedSender.active || !starSelectedReceiver.active) return;
+
+            starAnimating = true;
+            appendLog('starLog', `Mengirim paket dari ${starSelectedSender.id} ke Central Switch...`, 'info');
+
+            const cx = starCanvas.width / 2;
+            const cy = starCanvas.height / 2;
+
+            let pkt = { x: starSelectedSender.x, y: starSelectedSender.y };
+            starPackets = [pkt];
+
+            const animToSwitch = setInterval(() => {
+                const dx = cx - pkt.x;
+                const dy = cy - pkt.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if(dist < 4) {
+                    clearInterval(animToSwitch);
+                    appendLog('starLog', `Switch membaca MAC Address -> Meneruskan hanya ke ${starSelectedReceiver.id}...`, 'info');
+
+                    const animToTarget = setInterval(() => {
+                        const tdx = starSelectedReceiver.x - pkt.x;
+                        const tdy = starSelectedReceiver.y - pkt.y;
+                        const tdist = Math.sqrt(tdx * tdx + tdy * tdy);
+
+                        if(tdist < 4) {
+                            clearInterval(animToTarget);
+                            appendLog('starLog', `SUKSES: Paket diterima oleh ${starSelectedReceiver.id}!`, 'success');
+                            starPackets = [];
+                            starAnimating = false;
+                            starSelectedSender = null;
+                            starSelectedReceiver = null;
+                            updateStarUI();
+                            drawStar();
+                        } else {
+                            pkt.x += (tdx / tdist) * 4;
+                            pkt.y += (tdy / tdist) * 4;
+                            drawStar();
+                        }
+                    }, 20);
+                } else {
+                    pkt.x += (dx / dist) * 4;
+                    pkt.y += (dy / dist) * 4;
+                    drawStar();
+                }
+            }, 20);
+        }
+
+        function addStarNode() {
+            if(starNodes.length >= 10) {
+                appendLog('starLog', 'Maksimal 10 node workstation!', 'warn');
+                return;
+            }
+            const newId = `PC-0${starNodes.length + 1}`;
+            starNodes.push({ id: newId, x: 0, y: 0, active: true });
+            repositionStarNodes();
+            appendLog('starLog', `Node ${newId} ditambahkan ke port Switch.`, 'info');
+            drawStar();
+        }
+
+        function resetStarNet() {
+            initStarNodes();
+            starSelectedSender = null;
+            starSelectedReceiver = null;
+            starPackets = [];
+            starAnimating = false;
+            repositionStarNodes();
+            updateStarUI();
+            appendLog('starLog', 'Jaringan Star di-reset ke kondisi awal.', 'info');
+            drawStar();
+        }
+
+        function updateStarUI() {
+            document.getElementById('starSenderLbl').innerText = starSelectedSender ? starSelectedSender.id : '-';
+            document.getElementById('starReceiverLbl').innerText = starSelectedReceiver ? starSelectedReceiver.id : '-';
+            const btn = document.getElementById('btnStarSend');
+            btn.disabled = !(starSelectedSender && starSelectedReceiver && starSelectedSender.active && starSelectedReceiver.active);
+        }
+
+        // Star Canvas Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const canvasEl = document.getElementById('starCanvas');
+            if(!canvasEl) return;
+
+            canvasEl.addEventListener('click', (e) => {
+                if(starAnimating) return;
+                const rect = canvasEl.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+
+                const clickedNode = starNodes.find(n => Math.hypot(n.x - mx, n.y - my) < 22);
+                if(clickedNode) {
+                    if(!clickedNode.active) {
+                        appendLog('starLog', `Peringatan: ${clickedNode.id} sedang offline (kabel putus).`, 'warn');
+                        return;
+                    }
+                    if(!starSelectedSender) {
+                        starSelectedSender = clickedNode;
+                        appendLog('starLog', `Pengirim: ${clickedNode.id}`, 'info');
+                    } else if(!starSelectedReceiver && clickedNode !== starSelectedSender) {
+                        starSelectedReceiver = clickedNode;
+                        appendLog('starLog', `Penerima: ${clickedNode.id}. Siap kirim!`, 'info');
+                    } else {
+                        starSelectedSender = clickedNode;
+                        starSelectedReceiver = null;
+                        appendLog('starLog', `Pengirim diubah: ${clickedNode.id}`, 'info');
+                    }
+                    updateStarUI();
+                    drawStar();
+                }
+            });
+
+            canvasEl.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                if(starAnimating) return;
+                const rect = canvasEl.getBoundingClientRect();
+                const mx = e.clientX - rect.left;
+                const my = e.clientY - rect.top;
+
+                const clickedNode = starNodes.find(n => Math.hypot(n.x - mx, n.y - my) < 22);
+                if(clickedNode) {
+                    clickedNode.active = !clickedNode.active;
+                    appendLog('starLog', `${clickedNode.id} status koneksi: ${clickedNode.active ? 'ONLINE' : 'OFFLINE'}`, clickedNode.active ? 'info' : 'error');
+                    if(!clickedNode.active) {
+                        if(starSelectedSender === clickedNode) starSelectedSender = null;
+                        if(starSelectedReceiver === clickedNode) starSelectedReceiver = null;
+                    }
+                    updateStarUI();
+                    drawStar();
+                }
+            });
+        });
+
+
+        // ==========================================
+        // 3. TOPOLOGI RING SIMULATION ENGINE
+        // ==========================================
+        let ringCanvas, ringCtx;
+        let ringNodes = [];
+        let tokenAngle = 0;
+        let ringBroken = false;
+        let dualRingMode = false;
+        let activeDataPayload = null;
+
+        function initRingNodes() {
+            const labels = ['Node A', 'Node B', 'Node C', 'Node D', 'Node E', 'Node F'];
+            ringNodes = labels.map((lbl, i) => ({ id: lbl, idx: i, x: 0, y: 0 }));
+        }
+
+        function resizeRing() {
+            ringCanvas = document.getElementById('ringCanvas');
+            if(!ringCanvas) return;
+            ringCtx = ringCanvas.getContext('2d');
+            const parent = ringCanvas.parentElement;
+            ringCanvas.width = parent.clientWidth;
+            ringCanvas.height = parent.clientHeight;
+            repositionRingNodes();
+            drawRing();
+        }
+
+        function repositionRingNodes() {
+            if(!ringCanvas) return;
+            const cx = ringCanvas.width / 2;
+            const cy = ringCanvas.height / 2;
+            const r = Math.min(cx, cy) * 0.65;
+
+            ringNodes.forEach((node, idx) => {
+                const angle = (idx / ringNodes.length) * Math.PI * 2;
+                node.x = cx + r * Math.cos(angle);
+                node.y = cy + r * Math.sin(angle);
+            });
+        }
+
+        function drawRing() {
+            if(!ringCtx) return;
+            const w = ringCanvas.width;
+            const h = ringCanvas.height;
+            const cx = w / 2;
+            const cy = h / 2;
+            const r = Math.min(cx, cy) * 0.65;
+
+            ringCtx.clearRect(0, 0, w, h);
+
+            // Primary Ring
+            ringCtx.beginPath();
+            ringCtx.arc(cx, cy, r, 0, Math.PI * 2);
+            ringCtx.strokeStyle = ringBroken ? '#fca5a5' : '#c084fc';
+            ringCtx.lineWidth = 4;
+            if(ringBroken) ringCtx.setLineDash([8, 6]);
+            else ringCtx.setLineDash([]);
+            ringCtx.stroke();
+            ringCtx.setLineDash([]);
+
+            // Secondary Ring (Dual Ring Mode)
+            if(dualRingMode) {
+                ringCtx.beginPath();
+                ringCtx.arc(cx, cy, r - 16, 0, Math.PI * 2);
+                ringCtx.strokeStyle = '#38bdf8';
+                ringCtx.lineWidth = 2;
+                ringCtx.stroke();
+            }
+
+            // Broken Wire Visual Marker
+            if(ringBroken) {
+                const breakAngle = Math.PI / 6;
+                const bx = cx + r * Math.cos(breakAngle);
+                const by = cy + r * Math.sin(breakAngle);
+
+                ringCtx.strokeStyle = '#ef4444';
+                ringCtx.lineWidth = 4;
+                ringCtx.beginPath();
+                ringCtx.moveTo(bx - 10, by - 10);
+                ringCtx.lineTo(bx + 10, by + 10);
+                ringCtx.moveTo(bx + 10, by - 10);
+                ringCtx.lineTo(bx - 10, by + 10);
+                ringCtx.stroke();
+            }
+
+            // Nodes
+            ringNodes.forEach(node => {
+                ringCtx.beginPath();
+                ringCtx.arc(node.x, node.y, 18, 0, Math.PI * 2);
+                ringCtx.fillStyle = '#ffffff';
+                ringCtx.strokeStyle = '#7e22ce';
+                ringCtx.lineWidth = 3;
+                ringCtx.fill();
+                ringCtx.stroke();
+
+                ringCtx.fillStyle = '#581c87';
+                ringCtx.font = 'bold 10px sans-serif';
+                ringCtx.textAlign = 'center';
+                ringCtx.fillText(node.id, node.x, node.y + 3);
+            });
+
+            // Rotating Token
+            if(!ringBroken || dualRingMode) {
+                const tx = cx + r * Math.cos(tokenAngle);
+                const ty = cy + r * Math.sin(tokenAngle);
+
+                ringCtx.beginPath();
+                ringCtx.arc(tx, ty, 9, 0, Math.PI * 2);
+                ringCtx.fillStyle = activeDataPayload ? '#ef4444' : '#eab308';
+                ringCtx.fill();
+                ringCtx.lineWidth = 2;
+                ringCtx.strokeStyle = '#ffffff';
+                ringCtx.stroke();
+            }
+        }
+
+        function startRingLoop() {
+            setInterval(() => {
+                if(!ringBroken || dualRingMode) {
+                    tokenAngle += 0.03;
+                    if(tokenAngle >= Math.PI * 2) tokenAngle = 0;
+                    drawRing();
+                }
+            }, 30);
+        }
+
+        function sendRingTokenPacket() {
+            const srcIdx = parseInt(document.getElementById('ringSrcSelect').value);
+            const dstIdx = parseInt(document.getElementById('ringDstSelect').value);
+
+            if(srcIdx === dstIdx) {
+                appendLog('ringLog', 'Node Pengirim & Tujuan tidak boleh sama!', 'error');
+                return;
+            }
+
+            activeDataPayload = { src: srcIdx, dst: dstIdx };
+            appendLog('ringLog', `Data dilampirkan ke Token dari ${ringNodes[srcIdx].id} -> ${ringNodes[dstIdx].id}`, 'info');
+
+            setTimeout(() => {
+                appendLog('ringLog', `SUKSES: Token mengantarkan paket ke ${ringNodes[dstIdx].id}!`, 'success');
+                activeDataPayload = null;
+            }, 3000);
+        }
+
+        function toggleRingBreak() {
+            ringBroken = !ringBroken;
+            const badge = document.getElementById('ringStatusBadge');
+            const btn = document.getElementById('btnRingBreak');
+
+            if(ringBroken) {
+                badge.innerText = dualRingMode ? 'Dual Ring: SELF-HEALING' : 'Ring: BROKEN';
+                badge.className = 'bg-rose-100 text-rose-800 text-xs font-bold px-3 py-1 rounded-full border border-rose-300';
+                btn.innerText = '🩹 Perbaiki Kabel Ring';
+                appendLog('ringLog', '✂️ Kerusakan Fisik: Jalur Ring terputus!', 'error');
+            } else {
+                badge.innerText = 'Single Ring: ACTIVE';
+                badge.className = 'bg-purple-100 text-purple-800 text-xs font-bold px-3 py-1 rounded-full border border-purple-300';
+                btn.innerText = '✂️ Putus Kabel Ring (Simulasi Error)';
+                appendLog('ringLog', 'Jalur Ring kembali normal.', 'info');
+            }
+            drawRing();
+        }
+
+        function toggleDualRingMode() {
+            dualRingMode = !dualRingMode;
+            const btn = document.getElementById('btnDualRing');
+            if(dualRingMode) {
+                btn.innerText = '🛡️ Matikan Mode Redundansi';
+                appendLog('ringLog', 'Mode Dual-Ring (FDDI) diaktifkan untuk perlindungan redundansi.', 'info');
+            } else {
+                btn.innerText = '🛡️ Mode Redundansi (Dual Ring)';
+                appendLog('ringLog', 'Mode Dual-Ring dimatikan.', 'info');
+            }
+            drawRing();
+        }
+
+
+        // ==========================================
+        // INITIALIZATION ON LOAD
+        // ==========================================
+        window.addEventListener('load', () => {
+            initStarNodes();
+            initRingNodes();
+            
+            resizeBus();
+            resizeStar();
+            resizeRing();
+
+            startRingLoop();
+            renderQuiz();
+        });
+
+        window.addEventListener('resize', () => {
+            resizeBus();
+            resizeStar();
+            resizeRing();
+        });
+    </script>
+</body>
+</html>
